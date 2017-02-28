@@ -1,0 +1,63 @@
+.border-space {
+	padding: 15.0px 15.0px 15.0px 15.0px;
+}
+
+button {
+	background-color:transparent;
+}
+
+#logo {
+	position: absolute;
+	top: 50.0%;
+	left: 50.0%;
+	transform: translate(-50.0%, -50.0%);
+	width: 100.0px;
+	max-height: 100.0px;
+}
+
+#moi {
+	background-image: url("moi.png");
+	border-radius:25.0px;
+	width: 40.0px;
+	max-height: 40.0px;
+	background-size: cover;
+	background-repeat:no-repeat;
+}
+
+i:hover {
+	cursor: pointer;
+}.bg1 {
+	background-color: red;
+}.bg2 {
+	background-color: rgb(79,129,189);
+	position: relative;
+}
+.arrondi {
+	border-radius:25.0px;
+}
+
+.menu{
+	background-color: rgb(79,129,189);
+	color:white;
+}
+
+.menu:focus{
+	background-color: rgb(55,96,146);
+	color:white;
+}
+
+.list-group-item:selected{
+	background-color:blue;
+}
+.parent{
+	width:100%;
+	height:100%;
+	padding-top: 20px;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.btn{
+	background-color: rgb(79,129,189);
+	color:white;
+}

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>login</title>
+	<h:outputScript library="js" name="jquery-1.12.4.js" />
+	<h:outputStylesheet library="bootstrap" name="css/bootstrap.css" />
+	<h:outputStylesheet library="customcss" name="login.css" />
+		<link type="text/css" rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<h:outputScript library="bootstrap" name="js/bootstrap.js" />
+</h:head>
+<f:metadata>
+	<f:viewParam name="id" value='#{loginBean.email}' />
+	<f:event type="preRenderView" listener='#{loginBean.init}' />
+</f:metadata>
+<h:body>
+	<h:form>
+		<div class="row" id="login-inner">
+			<div class="col-sm-6 col-md-12 col-lg-12">
+				<div class="login-box">
+					<div id="user-icon">
+						<span class="fa fa-user" style="font-size: 150px;"
+							aria-hidden="true"></span>
+					</div>
+					<div class="control-group">
+						<label for="e-mail">E-Mail</label>
+						<div class="controls">
+							<h:inputText class="form-control input-xxlarge" id="e-mail" value="#{loginBean.email}" />
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label for="mot-de-pass">Mot de pass</label>
+						<div class="controls">
+							<h:inputSecret value="#{loginBean.motDepass}" class="form-control" 
+								id="mot-de-passe" />
+						</div>
+					</div>
+
+					<div class="controls">
+						<h:selectBooleanCheckbox value="Sauvegarder les données" />
+					</div>
+					<div class="input-group">
+							<h:commandButton value="Se connecter" action="#{loginBean.seConnecter()}"
+								class="btn btn-large btn-primary" />
+
+					</div>
+					<div class="controls">
+						<h:link value="S´enregister" outcome="sEnregistrer" />
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</h:form>
+</h:body>
+</html>

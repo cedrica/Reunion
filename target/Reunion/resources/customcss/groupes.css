@@ -1,0 +1,20 @@
+.bg1 {
+	background-color: red;
+}
+
+
+a {
+    text-decoration: underline;
+    color: rgb(79,129,189);
+}
+
+.bg2 {
+	background-color: rgb(79,129,189);
+	position: relative;
+}
+
+#group-ico{
+	background-size: cover;
+	background-repeat:no-repeat;
+	margin-top:5px;
+}

@@ -1,0 +1,26 @@
+.bg1 {
+	background-color: red;
+}
+
+
+a {
+    text-decoration: underline;
+    color: rgb(79,129,189);
+}
+
+.bg2 {
+	background-color: rgb(79,129,189);
+	position: relative;
+}
+
+.group-right-side{
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+#ico-membres{
+	float: left; 
+	padding-top:7px; 
+	margin-left: 5px; 
+	margin-right: 20px;
+}

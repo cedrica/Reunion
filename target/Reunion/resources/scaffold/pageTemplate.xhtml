@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>#{empty pageTitle ? 'Page Title' : pageTitle}</title>
+	<link rel="icon" href='#{resource["favicon.ico"]}' />
+	<h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+	<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+	<link href="bootstrap/css/bootstrap.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="customcss/template.css"/>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+</h:head>
+
+<h:body>
+	<div class="parent">
+		<div class="row" style="line-height: 50px;">
+			<div class="col-sm-1 col-md-1 col-lg-1">
+				<div class="pull-left">
+					<img src="images/logo.PNG" alt="" id="logo" />
+				</div>
+			</div>
+			<div class="col-sm-7 col-md-10 col-lg-10">
+				<div class="pull-right" style="vertical-align: middle;">Hallo
+					Cedric L.</div>
+			</div>
+
+			<div class="col-sm-1 col-md-1 col-lg-1">
+				<div class="btn-group">
+					<div id="moi"></div>
+					<div class="dropdown-toggle" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+					</div>
+					<ul class="dropdown-menu">
+						<li><a href="#">Profile</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="#">Déconnecter</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-sm-2 col-md-3 col-lg-3"></div>
+			<div class="col-sm-3 col-md-3 col-lg-3 bg1">
+				<div>nom de la pages ici</div>
+			</div>
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
+			<div class="col-sm-3 col-md-2 col-lg-2">
+				<button type="button" class="btn">Créer un nouveau groupe</button>
+			</div>
+		</div>
+		<div class="row">
+			<div role="separator" class="divider"></div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3 col-md-2 col-lg-2">
+				<div class="list-group">
+					<a href="#" class="list-group-item menu"> Groupes </a> <a href="#"
+						class="list-group-item menu">Reglement interieur</a> <a href="#"
+						class="list-group-item menu">Rondes</a> <a href="#"
+						class="list-group-item menu">Membres</a>
+				</div>
+			</div>
+
+			<div class="col-sm-9 col-md-10 col-lg-10 bg1" id="contenair"></div>
+		</div>
+	</div>
+
+
+	<!-- <ui:debug
+		rendered="#{facesContext.application.projectStage == 'Development'}" />
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<h:link id="brandLink" outcome="/index.xhtml" styleClass="brand">
+					<h:outputText value="Welcome to "
+						rendered=" #{request.userPrincipal !=null} " />
+                    Reunion
+                    <h:outputText
+						value=",  #{request.userPrincipal.name}"
+						rendered="#{request.userPrincipal !=null} " />
+				</h:link>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li><a href="http://forge.jboss.org/document/hands-on-lab">How
+								to Customize</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container forgecontainer">
+		<div id="navigation">
+			<h:link id="homeLink" outcome="/index.xhtml">
+				<h:graphicImage value='#{resource["forge-logo.png"]}'
+					alt="Forge... get hammered" border="0" />
+			</h:link>
+			<ul>
+				<li><h:link outcome="/account/search" value="Account" /></li>
+			</ul>
+		</div>
+
+		<div id="content">
+			<h1>
+				<ui:insert name="header" />
+			</h1>
+			<h2>
+				<ui:insert name="subheader" />
+			</h2>
+
+			<ui:insert name="main" />
+		</div>
+	</div>
+
+	<footer>
+		<div id="footer-wrapper">
+			<p>
+				Powered by <a href="http://jboss.org/forge">Forge</a>
+			</p>
+		</div>
+	</footer>
+ -->
+</h:body>
+</html>

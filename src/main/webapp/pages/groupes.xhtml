@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+
+	<ui:param name="pageTitle" value="groupes" />
+
+
+	<ui:define name="subheader">
+		groupes
+	</ui:define>
+
+
+	<ui:define name="main">
+	<h:outputStylesheet library="customcss" name="groupes.css" />
+		<h:form>
+ 			<ui:repeat var="groupe" value="#{groupeBean.tousLesGroupes}">
+				<div class="row">
+					<div class="col-sm-9 col-md-9 col-lg-10">
+						<h2>
+							<a href="#">#{groupe.nom}</a>
+						</h2>
+					</div>
+					<div class="col-sm-3 col-md-3 col-lg-2 h2-margin">
+						<div id="ico-membres">
+							<i class="fa fa-users"></i> #{groupe.membres.size()} membres
+						</div>
+						<h:commandLink class="btn btn-default">
+							<i class="fa fa-sign-out"></i>
+						</h:commandLink>
+					</div>
+				</div>
+				<div role="separator" class="divider" ></div>
+			</ui:repeat> 
+		</h:form>
+	</ui:define>
+
+</ui:composition>

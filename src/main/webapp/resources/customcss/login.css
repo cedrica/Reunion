@@ -1,0 +1,54 @@
+.bg1{
+	background-color: rgba(255, 0, 0, 0.3);
+}
+
+.bg2{
+	background-color: blue;
+}
+
+.bg3{
+	background-color: greenyellow;
+}
+#connecter{
+	height:30px;
+}
+.login-box{
+	border-radius:5px;
+	background-color:rgb(79,129,189);
+	margin:auto;
+	padding: 10px;
+	width: 500px;
+}
+
+.fit-to-parent{
+	width:100%;
+	margin: 5px;
+}
+
+#user-icon{
+	 display: table;
+    margin: 0 auto; 
+	width:150px;
+	height:150px;
+	text-align:center;
+	border-radius: 100px;
+	background-color:white;
+	border: 1px solid white;
+}
+
+label{
+	color:white;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    display: inline-block;
+    width: 100%;
+}
+
+#login-inner{
+	padding-top: 10%;
+}
+
+.input-group{
+	width:100%;
+}
