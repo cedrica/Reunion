@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<ui:param name="pageTitle" value="rondes" />
+
+	<f:metadata>
+		<f:event type="preRenderView" listener='#{rondeBean.init}' />
+	</f:metadata>
+	<ui:define name="subheader">
+		Les rondes
+	</ui:define>
+
+
+	<ui:define name="main">
+		<h:outputStylesheet library="customcss" name="rondes.css" />
+		<h:outputScript library="js" name="ronde.js" />
+		<h:form id="rondes">
+			<h:panelGroup rendered="#{rondeBean.rondeCreable}">
+				<ui:include src="/pages/ronde/creer-une-ronde.xhtml" />
+			</h:panelGroup>
+			<h:panelGroup rendered="#{!rondeBean.rondeCreable}">
+				<ui:include src="/pages/ronde/liste-des-rondes.xhtml" />
+			</h:panelGroup>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

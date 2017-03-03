@@ -12,7 +12,7 @@ import com.reunion.model.Groupe;
 
 @Named("groupeBean")
 @ConversationScoped
-public class GroupeBean extends BasicBean implements Serializable{
+public class GroupeBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	

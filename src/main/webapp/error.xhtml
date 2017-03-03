@@ -1,38 +1,27 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:f="http://java.sun.com/jsf/core"
 	template="/resources/scaffold/pageTemplate.xhtml">
 
 	<ui:param name="pageTitle" value="Server error" />
 
+	<ui:define name="header">
+		Oops
+	</ui:define>
+
 	<ui:define name="subheader">
-		Page introuvable <small><font face="Tahoma" color="red">Error
-				404</font></small>
+		That's going to leave a mark!
 	</ui:define>
 
 	<ui:define name="main">
-		<div class="container">
-			<div class="row">
-				<div class="span12">
-					<div class="hero-unit center">
-						<p>
-							La page que vous voulez acceder n´est disponible. Erreur de programmation. veuillez contacter l´administrateur s´il vous plait
-						</p>
-					</div>
-					<div class="thumbnail span3 center">
-						<div class="hero-unit">
-							<h:graphicImage value='#{resource["images/web-error.png"]}'
-								style="height:300px;" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
+		<p style="text-align: right; padding-top: 150px">
+			<a target="_blank" href="http://jboss.org">
+				<h:graphicImage value='#{resource["jboss-community.png"]}' alt="JBoss and JBoss Community" width="254" height="31" border="0" />
+			</a> <br /> To replace this page edit 'src/main/webapp/error.xhtml', or
+			keep Forging!
+		</p>
 	</ui:define>
 
 </ui:composition>

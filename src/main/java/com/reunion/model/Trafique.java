@@ -11,6 +11,12 @@ import javax.persistence.Version;
 import java.util.Date;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import com.reunion.model.Ronde;
+import java.util.Set;
+import java.util.HashSet;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "Trafique")
@@ -40,6 +46,10 @@ public class Trafique implements Serializable {
 
 	@Column(length = 10, name = "supplement")
 	private Float supplement;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
+			CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+	private Set<Ronde> rondes = new HashSet<Ronde>();
 
 	public Long getId() {
 		return this.id;
@@ -138,5 +148,13 @@ public class Trafique implements Serializable {
 		if (supplement != null)
 			result += ", supplement: " + supplement;
 		return result;
+	}
+
+	public Set<Ronde> getRondes() {
+		return this.rondes;
+	}
+
+	public void setRondes(final Set<Ronde> rondes) {
+		this.rondes = rondes;
 	}
 }

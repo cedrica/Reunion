@@ -9,16 +9,24 @@
 	<title>#{empty pageTitle ? 'Page Title' : pageTitle}</title>
 	<link rel="icon" href='#{resource["favicon.ico"]}' />
 	<h:outputScript library="js" name="jquery-1.12.4.js" />
+	<h:outputScript library="js" name="core.js" />
+	<h:outputScript library="bootstrap" name="js/bootstrap.js" />
+	<h:outputScript library="js" name="jquery.dataTables.min.js" />
+	<h:outputScript library="js" name="dataTables.bootstrap.min.js" />
+	<h:outputScript library="js" name="bootstrap.datepicker.js" />
 	<link type="text/css" rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 	<h:outputStylesheet library="bootstrap" name="css/bootstrap.css" />
+	<h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 	<h:outputStylesheet library="customcss" name="template.css" />
-	<h:outputScript library="bootstrap" name="js/bootstrap.js" />
-</h:head>
-	<f:metadata>
-		<f:event type="preRenderView" listener='#{loginBean.verificationDePermission()}' />
-	</f:metadata>
 
+
+</h:head>
+<!-- <f:metadata>
+	<f:event type="preRenderView"
+		listener='#{loginBean.verificationDePermission()}' />
+</f:metadata>
+ -->
 <h:body>
 
 	<ui:debug
@@ -29,7 +37,7 @@
 				<div class="col-sm-1 col-md-1 col-lg-1">
 					<div class="pull-left">
 						<h:graphicImage value='#{resource["images/logo.PNG"]}' border="0"
-						style="height:100px;" />
+							style="height:100px;" />
 					</div>
 				</div>
 				<div class="col-sm-7 col-md-10 col-lg-10">
@@ -40,8 +48,8 @@
 				<div class="col-sm-12 col-md-1 col-lg-1">
 					<div class="btn-group  pull-right">
 						<div style="float: left;">
-							<h:graphicImage value='#{resource["images/moi.png"]}' border="0" style="border-radius:50.0px; with:40px; height:40px;"
-								id="moi" />
+							<h:graphicImage value='#{resource["images/moi.png"]}' border="0"
+								style="border-radius:50.0px; with:40px; height:40px;" id="moi" />
 						</div>
 						<div class="dropdown-toggle" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false"
@@ -51,7 +59,8 @@
 						<ul class="dropdown-menu">
 							<li><h:commandLink>Profile</h:commandLink></li>
 							<li role="separator" class="divider"></li>
-							<li><h:commandLink action="#{loginBean.logout()}" immediate="true">Déconnecter</h:commandLink></li>
+							<li><h:commandLink action="#{loginBean.logout()}"
+									immediate="true">Déconnecter</h:commandLink></li>
 						</ul>
 					</div>
 				</div>
@@ -69,23 +78,18 @@
 				<div class="col-sm-2 col-md-1 col-lg-2">
 					<c:choose>
 						<c:when test="${pageTitle == 'Membres'}">
-							<h:commandLink class="btn btn-primary pull-right"
-								data-toggle="modal" data-target="#creerNouveauMembre"
+							<h:commandButton class="btn btn-primary pull-right"
 								value="Créer un nouveau membre"
-								onclick="$('#creerNouveauMembre').modal('show');"
-								immediate="true">
-								<f:ajax execute="@this" render=":creerNouveauMembre" />
-							</h:commandLink>
-							<ui:include src="/pages/creer-un-nouveau-membre.xhtml" />
+								action="#{membreBean.setShowModal(true)}" />
 						</c:when>
 						<c:when test="${pageTitle == 'groupes'}">
-							<h:commandLink class="btn btn-primary pull-right"
-								data-toggle="modal" data-target="#myModal"
-								value="Créer un nouveau groupe"
-								onclick="$('#myModal').modal('show');" immediate="true">
-								<f:ajax execute="@this" render=":myForm" />
-							</h:commandLink>
-							<ui:include src="/pages/creer-ou-editer-un-groupe.xhtml" />
+							<h:commandButton class="btn btn-primary pull-right" 
+								value="Créer un nouveau groupe" />
+						</c:when>
+						<c:when test="${pageTitle == 'rondes'}">
+							<h:commandButton class="btn btn-primary pull-right" action="#{rondeBean.setRondeCreable(true)}"
+								value="Créer une ronde">
+							</h:commandButton>
 						</c:when>
 					</c:choose>
 
@@ -104,7 +108,7 @@
 						<h:link value="Groupes" class="list-group-item menu"
 							outcome="/pages/groupes" />
 						<h:link value="Rondes" class="list-group-item menu"
-							outcome="/pages/rondes" />
+							outcome="/pages/ronde/rondes" />
 						<h:link value="Membres" class="list-group-item menu"
 							outcome="/pages/membres" />
 					</div>

@@ -33,11 +33,15 @@ public class Ronde implements Serializable {
 
 	@Column(length = 20, name = "date")
 	@Temporal(TemporalType.DATE)
-	private Date date;
+	private Date debutDeLaRonde;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
 			CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
 	private Set<Membre> membres = new HashSet<Membre>();
+
+	@Column(length = 15, name = "finDeLaRonde")
+	@Temporal(TemporalType.DATE)
+	private Date finDeLaRonde;
 
 	public Long getId() {
 		return this.id;
@@ -80,23 +84,13 @@ public class Ronde implements Serializable {
 		return result;
 	}
 
-	public Date getDate() {
-		return date;
+	
+	public Date getDebutDeLaRonde() {
+		return debutDeLaRonde;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	@Override
-	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (id != null)
-			result += "id: " + id;
-		result += ", version: " + version;
-		if (date != null)
-			result += ", date: " + date;
-		return result;
+	public void setDebutDeLaRonde(Date debutDeLaRonde) {
+		this.debutDeLaRonde = debutDeLaRonde;
 	}
 
 	public Set<Membre> getMembres() {
@@ -105,5 +99,28 @@ public class Ronde implements Serializable {
 
 	public void setMembres(final Set<Membre> membres) {
 		this.membres = membres;
+	}
+
+	public Date getFinDeLaRonde() {
+		return finDeLaRonde;
+	}
+
+	public void setFinDeLaRonde(Date finDeLaRonde) {
+		this.finDeLaRonde = finDeLaRonde;
+	}
+
+	@Override
+	public String toString() {
+		String result = getClass().getSimpleName() + " ";
+		if (id != null)
+			result += "id: " + id;
+		result += ", version: " + version;
+		if (debutDeLaRonde != null)
+			result += ", debutDeLaRonde: " + debutDeLaRonde;
+		if (membres != null)
+			result += ", membres: " + membres;
+		if (finDeLaRonde != null)
+			result += ", finDeLaRonde: " + finDeLaRonde;
+		return result;
 	}
 }

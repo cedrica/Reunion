@@ -13,8 +13,14 @@ a {
 	position: relative;
 }
 
-#group-ico{
-	background-size: cover;
-	background-repeat:no-repeat;
-	margin-top:5px;
+.group-right-side{
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+#ico-membres{
+	float: left; 
+	padding-top:7px; 
+	margin-left: 5px; 
+	margin-right: 20px;
 }

@@ -19,7 +19,7 @@ import com.reunion.model.Membre;
 
 @Named
 @ConversationScoped
-public class LoginBean extends BasicBean implements Serializable {
+public class LoginBean implements Serializable {
 
 	/**
 	 * 

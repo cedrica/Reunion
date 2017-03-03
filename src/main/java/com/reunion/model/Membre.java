@@ -12,6 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import com.reunion.model.Ronde;
+import java.util.Set;
+import java.util.HashSet;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import com.reunion.model.Trafique;
 
 @Entity
 @ManagedBean
@@ -45,12 +51,15 @@ public class Membre implements Serializable {
 			CascadeType.REFRESH, CascadeType.REMOVE})
 	private Groupe groupe;
 
+	@Column(length = 50, name = "motDePass")
+	private String motDePass;
+
+	@Column(name = "inserable")
+	private Boolean inserable = false;
+
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE, CascadeType.REFRESH})
 	private Trafique trafique;
-
-	@Column(length = 50, name = "motDePass")
-	private String motDePass;
 
 	public Long getId() {
 		return this.id;
@@ -133,14 +142,6 @@ public class Membre implements Serializable {
 		this.groupe = groupe;
 	}
 
-	public Trafique getTrafique() {
-		return trafique;
-	}
-
-	public void setTrafique(Trafique trafique) {
-		this.trafique = trafique;
-	}
-
 	public String getMotDePass() {
 		return motDePass;
 	}
@@ -149,26 +150,34 @@ public class Membre implements Serializable {
 		this.motDePass = motDePass;
 	}
 
+	public Boolean getInserable() {
+		return inserable;
+	}
+
+	public void setInserable(Boolean inserable) {
+		this.inserable = inserable;
+	}
+
+	public Trafique getTrafique() {
+		return trafique;
+	}
+
+	public void setTrafique(Trafique trafique) {
+		this.trafique = trafique;
+	}
+
 	@Override
 	public String toString() {
 		String result = getClass().getSimpleName() + " ";
-		if (id != null)
-			result += "id: " + id;
-		result += ", version: " + version;
 		if (nom != null && !nom.trim().isEmpty())
-			result += ", nom: " + nom;
+			result += "nom: " + nom;
 		if (prenom != null && !prenom.trim().isEmpty())
 			result += ", prenom: " + prenom;
-		if (adresse != null)
-			result += ", adresse: " + adresse;
-		if (contact != null)
-			result += ", contact: " + contact;
-		if (groupe != null)
-			result += ", groupe: " + groupe;
-		if (trafique != null)
-			result += ", trafique: " + trafique;
 		if (motDePass != null && !motDePass.trim().isEmpty())
 			result += ", motDePass: " + motDePass;
+		if (inserable != null)
+			result += ", inserable: " + inserable;
 		return result;
 	}
+
 }

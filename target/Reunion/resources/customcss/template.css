@@ -7,21 +7,15 @@ button {
 }
 
 #logo {
-	position: absolute;
-	top: 50.0%;
-	left: 50.0%;
-	transform: translate(-50.0%, -50.0%);
 	width: 100.0px;
 	max-height: 100.0px;
 }
 
 #moi {
-	background-image: url("moi.png");
 	border-radius:25.0px;
 	width: 40.0px;
 	max-height: 40.0px;
-	background-size: cover;
-	background-repeat:no-repeat;
+	float:left;
 }
 
 i:hover {
@@ -60,4 +54,28 @@ i:hover {
 .btn{
 	background-color: rgb(79,129,189);
 	color:white;
+}
+
+a.list-group-item, button.list-group-item {
+    color: #fff;
+}
+
+.h2-margin{
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+a.list-group-item:selected, button.list-group-item:selected {
+    color: #555;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+.table > thead > tr > th {
+  background-color: rgb(79,129,189);
+  color:white;
+  text-align:center;
+}
+
+.table > tbody > tr > td{
+  text-align:center;
 }
