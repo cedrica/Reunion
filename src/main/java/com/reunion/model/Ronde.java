@@ -31,7 +31,7 @@ public class Ronde implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	@Column(length = 20, name = "date")
+	@Column(length = 20, name = "debutDeLaRonde")
 	@Temporal(TemporalType.DATE)
 	private Date debutDeLaRonde;
 

@@ -3,6 +3,7 @@ package com.reunion.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
@@ -95,6 +96,7 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 
 	public String creerUneRonde() {
 		setRondeCreable(false);
+		ronde.setMembres((Set<Membre>) membresDelaNouvelleRonde);
 		rondeService.create(ronde);
 		return Pages.SELF;
 	}
