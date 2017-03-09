@@ -2,10 +2,13 @@ package com.reunion.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -34,7 +37,8 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 	private boolean inserer;
 	private Ronde ronde;
 	private Membre membreSelecter;
-
+	private String search;
+	
 	public void init() {
 		rondeService.startConversation();
 		rondes = rondeService.findAll();
@@ -66,10 +70,23 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 
 	public void ajouter(Membre membre) {
 		membreSelecter = membre;
-		if (!membresDelaNouvelleRonde.contains(membre))
+		if (!membresDelaNouvelleRonde.contains(membre)){
 			membresDelaNouvelleRonde.add(membre);
+			membre.setInserable(true);
+		}
+			
 	}
 
+	public void filtre(){
+		Membre m = listeDesMembres.stream().filter(new Predicate<Membre>() {
+			@Override
+			public boolean test(Membre t) {
+				return t.getNom().startsWith(search);
+			}
+		}).collect(Collectors.toList()).get(0);
+		listeDesMembres.remove(m);
+	}
+	
 	public List<Membre> getMembresDelaNouvelleRonde() {
 		return membresDelaNouvelleRonde;
 	}
@@ -96,7 +113,7 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 
 	public String creerUneRonde() {
 		setRondeCreable(false);
-		ronde.setMembres((Set<Membre>) membresDelaNouvelleRonde);
+		ronde.setMembres((new HashSet<>(membresDelaNouvelleRonde)));
 		rondeService.create(ronde);
 		return Pages.SELF;
 	}
@@ -108,4 +125,13 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 		}
 		return res;
 	}
+
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
+	
 }

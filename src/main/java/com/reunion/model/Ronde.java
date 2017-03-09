@@ -1,22 +1,22 @@
 package com.reunion.model;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.Version;
-import java.util.Date;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import com.reunion.model.Membre;
-import java.util.Set;
-import java.util.HashSet;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "Ronde")
@@ -35,8 +35,8 @@ public class Ronde implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date debutDeLaRonde;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
-			CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+	@OneToMany(fetch = FetchType.EAGER, cascade = {
+			CascadeType.MERGE})
 	private Set<Membre> membres = new HashSet<Membre>();
 
 	@Column(length = 15, name = "finDeLaRonde")
@@ -84,7 +84,6 @@ public class Ronde implements Serializable {
 		return result;
 	}
 
-	
 	public Date getDebutDeLaRonde() {
 		return debutDeLaRonde;
 	}
