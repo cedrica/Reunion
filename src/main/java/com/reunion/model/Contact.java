@@ -25,6 +25,9 @@ public class Contact implements Serializable {
 	@Column(length = 100, name = "email")
 	private String email;
 
+	@Column(length = 20, name = "telephone")
+	private String telephone;
+
 	public Long getId() {
 		return this.id;
 	}
@@ -74,6 +77,14 @@ public class Contact implements Serializable {
 		this.email = email;
 	}
 
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
 	@Override
 	public String toString() {
 		String result = getClass().getSimpleName() + " ";
@@ -82,6 +93,8 @@ public class Contact implements Serializable {
 		result += ", version: " + version;
 		if (email != null && !email.trim().isEmpty())
 			result += ", email: " + email;
+		if (telephone != null && !telephone.trim().isEmpty())
+			result += ", telephone: " + telephone;
 		return result;
 	}
 }

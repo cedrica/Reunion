@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.reunion.common.Pages;
+
 public abstract class AbstractModalBean <T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,8 +22,9 @@ public abstract class AbstractModalBean <T> implements Serializable {
 		return rondeCreable;
 	}
 
-	public void setRondeCreable(boolean rondeCreable) {
+	public String setRondeCreable(boolean rondeCreable) {
 		this.rondeCreable = rondeCreable;
+		return Pages.RONDES;
 	}
 
 	public boolean isShowModal() {

@@ -8,95 +8,96 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 	<h:form id="creerRonde">
+	
 		<div class="row">
 			<div class="col-md-2"></div>
-			<div class="col-md-4">
-				<div class="row form-inline pull-left" style="margin: 5px;">
+			<div class="col-md-2">
+				<div style="margin: 5px;">
 					<h:inputText class="form-control input-large"
 						id="debutDeLaRonde_dp" style="margin-right:5px;"
-						a:placeholder="Debut de la ronde"
+						a:placeholder="Debut de la ronde" required="true"
+						requiredMessage="Debut de la ronde obligatoire"
 						value="#{rondeBean.ronde.debutDeLaRonde}">
 						<f:convertDateTime pattern="dd/mm/yyyy" />
 					</h:inputText>
+					<h:message for="debutDeLaRonde_dp" style="color:red"
+						id="debutDeLaRonde_dpOut" />
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div style="margin: 5px;">
 
 					<h:inputText class="form-control input-large" id="finDeLaRonde_dp"
-						a:placeholder="fin de la ronde"
+						a:placeholder="fin de la ronde" required="true"
+						requiredMessage="Fin de la ronde obligatoire"
 						value="#{rondeBean.ronde.finDeLaRonde}">
 						<f:convertDateTime pattern="dd/mm/yyyy" />
 					</h:inputText>
+					<h:message for="finDeLaRonde_dp" style="color:red"
+						id="finDeLaRonde_dpOut" />
 				</div>
 			</div>
 			<div class="col-md-4"></div>
 		</div>
 		<div class="row">
 			<div class="col-md-2"></div>
-			<div class="col-md-6">
-				<div class="form-group" style="margin: 5px;">
-					<h:inputText class="form-control input-xlarge"
-					value="#{rondeBean.search}" 
-						a:placeholder="recherche d´un membre">
-						<f:ajax event="keyup" execute="foo" listener="#{rondeBean.filtre}" />
-						 </h:inputText>
-				</div>
-			</div>
-			<div class="col-md-4"></div>
+			<div class="col-md-4">
+			<h:messages style="color:red"
+						id="compareDate" />
+						</div>
+			<div class="col-md-6"></div>
+			
 		</div>
 		<div class="row">
 			<div class="col-md-2"></div>
 			<div class="col-md-6" style="overflow: scroll; height: 400px;">
-				<h:panelGroup id="foo">
+				<table>
 					<c:forEach var="membre" items="#{rondeBean.listeDesMembres}">
-						<div class="row form-inline">
-							<div class="col-md-3">
-								<h:selectBooleanCheckbox value="#{rondeBean.inserer}"
-									id="cb_#{membre.id}_membre"
-									style="margin-left:5px;margin-right:5px;">
-									<f:ajax
-										execute="cb_#{membre.id}_membre cb_#{membre.id}_membre_co cb_#{membre.id}_membre_dp"
-										render="output" />
-								</h:selectBooleanCheckbox>
-								#{membre.nom} #{membre.prenom}
-							</div>
-							<h:inputText a:placeholder="cotisation"
-								class="form-control input-small" id="ip_#{membre.id}_membre_co"
-								required="true" requiredMessage="cotisation obligatiore"
-								style="margin-left:5px;margin-right:5px;"
-								value="#{membre.trafique.cotisation}" />
-							<h:message for="ip_#{membre.id}_membre_co" style="color:red"
-								id="ip_#{membre.id}_membre_coOut" />
-
-							<h:inputText a:placeholder="Date de bouffe"
-								id="ip_#{membre.id}_membre_dp"
-								requiredMessage="Date de Bouffe obligatoire"
-								class="form-control input-small" required="true"
-								value="#{membre.trafique.dateDeBouffe}"
-								style="margin-left:5px;margin-right:5px;">
-								<f:convertDateTime pattern="dd/mm/yyyy" />
-							</h:inputText>
-							<h:message for="ip_#{membre.id}_membre_dp" style="color:red"
-								id="ip_#{membre.id}_membre_dbOut" />
-
-							<h:commandButton value="Ajouter" class="btn btn-primary"
-								rendered="#{!membre.inserable}"
-								action="#{rondeBean.ajouter(membre)}"
-								id="ip_#{membre.id}_membre_btn">
-								<f:ajax
-									execute="cb_#{membre.id}_membre cb_#{membre.id}_membre_co cb_#{membre.id}_membre_dp ip_#{membre.id}_membre_En_btn"
-									render="output" />
-							</h:commandButton>
-							<h:commandButton value="Enlever" class="btn btn-primary"
-								rendered="#{membre.inserable}"
-								id="ip_#{membre.id}_membre_En_btn">
-								<f:ajax
-									execute="cb_#{membre.id}_membre cb_#{membre.id}_membre_co cb_#{membre.id}_membre_dp"
-									render="output" />
-							</h:commandButton>
-
-						</div>
-						<br />
+						<tr>
+							<td><h:outputLabel style="margin-bottom:15px;"
+									value="#{membre.nom} #{membre.prenom}" /></td>
+							<td><h:inputText a:placeholder="cotisation"
+									class="form-control input-small" id="ip_#{membre.id}_membre_co"
+									required="true" requiredMessage="cotisation obligatiore"
+									style="margin-left:15px;margin-right:15px;margin-bottom:15px;"
+									value="#{membre.trafique.cotisation}" /> <h:message
+									for="ip_#{membre.id}_membre_co" style="color:red"
+									id="ip_#{membre.id}_membre_coOut" /></td>
+							<td><h:inputText a:placeholder="Date de bouffe"
+									id="ip_#{membre.id}_membre_dp"
+									requiredMessage="Date de Bouffe obligatoire"
+									class="form-control input-small" required="true"
+									value="#{membre.trafique.dateDeBouffe}"
+									style="margin-left:25px;margin-right:15px;margin-bottom:15px;">
+									<f:convertDateTime pattern="dd/mm/yyyy" />
+								</h:inputText> <h:message for="ip_#{membre.id}_membre_dp" style="color:red"
+									id="ip_#{membre.id}_membre_dbOut" /></td>
+							<td>
+								<div class="btn-toolbar">
+									<div class="btn-group">
+										<h:commandButton value="Ajouter" class="btn btn-primary"
+											action="#{rondeBean.ajouter(membre)}"
+											disabled="#{rondeBean.inserer}"
+											style="margin-left:35px;margin-bottom:15px;"
+											id="ip_#{membre.id}_membre_btn">
+											<f:ajax
+												execute="ip_#{membre.id}_membre_co ip_#{membre.id}_membre_dp"
+												render="output ip_#{membre.id}_membre_coOut ip_#{membre.id}_membre_dbOut save ip_#{membre.id}_membre_en_btn @this" />
+										</h:commandButton>
+										<h:commandButton value="Enlever" class="btn btn-primary"
+											action="#{rondeBean.setInserer(false)}"
+											disabled="#{!rondeBean.inserer}"
+											id="ip_#{membre.id}_membre_en_btn"
+											style="margin-bottom:15px;">
+											<f:ajax execute="output ip_#{membre.id}_membre_btn"
+												render="output save ip_#{membre.id}_membre_btn @this" />
+										</h:commandButton>
+									</div>
+								</div>
+							</td>
+						</tr>
 					</c:forEach>
-				</h:panelGroup>
-
+				</table>
 			</div>
 			<div class="col-md-4">
 				<div class="col-md-12">
@@ -106,8 +107,6 @@
 					<f:selectItems value="#{rondeBean.membresDelaNouvelleRonde}"
 						var="membre" itemLabel="#{membre.nom} #{membre.prenom}" />
 				</h:selectOneListbox>
-				<!-- 	<h:outputFormat  value="#{rondeBean.resultat}"
-						id="output" /> -->
 
 			</div>
 		</div>
@@ -116,10 +115,13 @@
 			<div class="col-md-4 modal-footer">
 				<h:commandButton value="Abbrechen" class="btn btn-default"
 					immediate="true" action="#{rondeBean.setRondeCreable(false)}" />
-				<h:commandButton value="Sauvegarder" class="btn btn-primary"
-					action="#{rondeBean.creerUneRonde()}" />
+				<h:commandButton id="save" value="Sauvegarder"
+					class="btn btn-primary"
+					disabled="#{empty rondeBean.membresDelaNouvelleRonde}"
+					action="#{rondeBean.sauvegarderLaRondeCreer()}" />
 			</div>
 			<div class="col-md-4"></div>
 		</div>
+
 	</h:form>
 </ui:composition>

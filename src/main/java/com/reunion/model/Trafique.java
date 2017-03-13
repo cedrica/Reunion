@@ -1,22 +1,17 @@
 package com.reunion.model;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.Version;
-import java.util.Date;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import com.reunion.model.Ronde;
-import java.util.Set;
-import java.util.HashSet;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "Trafique")
@@ -41,15 +36,11 @@ public class Trafique implements Serializable {
 	@Column(length = 10, name = "ristourne")
 	private Float ristourne;
 
-	@Column(length = 10, name = "cotisation")
-	private int cotisation;
-
 	@Column(length = 10, name = "supplement")
 	private Float supplement;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
-			CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
-	private Set<Ronde> rondes = new HashSet<Ronde>();
+	@Column(length = 20, name = "cotisation")
+	private Float cotisation;
 
 	public Long getId() {
 		return this.id;
@@ -116,20 +107,20 @@ public class Trafique implements Serializable {
 		this.ristourne = ristourne;
 	}
 
-	public int getCotisation() {
-		return cotisation;
-	}
-
-	public void setCotisation(int cotisation) {
-		this.cotisation = cotisation;
-	}
-
 	public Float getSupplement() {
 		return supplement;
 	}
 
 	public void setSupplement(Float supplement) {
 		this.supplement = supplement;
+	}
+
+	public Float getCotisation() {
+		return cotisation;
+	}
+
+	public void setCotisation(Float cotisation) {
+		this.cotisation = cotisation;
 	}
 
 	@Override
@@ -144,17 +135,10 @@ public class Trafique implements Serializable {
 			result += ", dateDeBouffe: " + dateDeBouffe;
 		if (ristourne != null)
 			result += ", ristourne: " + ristourne;
-		result += ", cotisation: " + cotisation;
 		if (supplement != null)
 			result += ", supplement: " + supplement;
+		if (cotisation != null)
+			result += ", cotisation: " + cotisation;
 		return result;
-	}
-
-	public Set<Ronde> getRondes() {
-		return this.rondes;
-	}
-
-	public void setRondes(final Set<Ronde> rondes) {
-		this.rondes = rondes;
 	}
 }

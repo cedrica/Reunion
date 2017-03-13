@@ -11,8 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import com.reunion.model.Ronde;
-import javax.persistence.ManyToOne;
+import com.reunion.model.Trafique;
 
 @Entity
 @Table(name = "Membre")
@@ -54,7 +53,6 @@ public class Membre implements Serializable {
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE, CascadeType.REFRESH})
 	private Trafique trafique;
-
 
 	public Long getId() {
 		return this.id;
@@ -135,20 +133,7 @@ public class Membre implements Serializable {
 	public void setTrafique(Trafique trafique) {
 		this.trafique = trafique;
 	}
-
-	@Override
-	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (nom != null && !nom.trim().isEmpty())
-			result += "nom: " + nom;
-		if (prenom != null && !prenom.trim().isEmpty())
-			result += ", prenom: " + prenom;
-		if (motDePass != null && !motDePass.trim().isEmpty())
-			result += ", motDePass: " + motDePass;
-		if (inserable != null)
-			result += ", inserable: " + inserable;
-		return result;
-	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -171,6 +156,21 @@ public class Membre implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public String toString() {
+		String result = getClass().getSimpleName() + " ";
+		if (nom != null && !nom.trim().isEmpty())
+			result += "nom: " + nom;
+		if (prenom != null && !prenom.trim().isEmpty())
+			result += ", prenom: " + prenom;
+		if (motDePass != null && !motDePass.trim().isEmpty())
+			result += ", motDePass: " + motDePass;
+		if (inserable != null)
+			result += ", inserable: " + inserable;
 		return result;
 	}
 

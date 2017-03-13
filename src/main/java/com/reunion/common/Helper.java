@@ -2,6 +2,7 @@ package com.reunion.common;
 
 import java.util.Iterator;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
@@ -40,5 +41,11 @@ public class Helper {
 		result[0] = id;
 		result[1] = valeur;
 		return result;
+	}
+
+	public static void showError(String message, String id) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					message, "title"));
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(id);
 	}
 }

@@ -2,21 +2,21 @@ package com.reunion.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import com.reunion.model.Membre;
+import java.util.Set;
+import java.util.HashSet;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "Ronde")
@@ -35,13 +35,13 @@ public class Ronde implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date debutDeLaRonde;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = {
-			CascadeType.MERGE})
-	private Set<Membre> membres = new HashSet<Membre>();
-
 	@Column(length = 15, name = "finDeLaRonde")
 	@Temporal(TemporalType.DATE)
 	private Date finDeLaRonde;
+
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE, CascadeType.REFRESH})
+	private Set<Membre> membres = new HashSet<Membre>();
 
 	public Long getId() {
 		return this.id;
@@ -58,7 +58,37 @@ public class Ronde implements Serializable {
 	public void setVersion(final int version) {
 		this.version = version;
 	}
+	public Date getDebutDeLaRonde() {
+		return debutDeLaRonde;
+	}
 
+	public void setDebutDeLaRonde(Date debutDeLaRonde) {
+		if (debutDeLaRonde != null) {
+	        this.debutDeLaRonde = new Date(debutDeLaRonde.getTime());
+	    } else {
+	        this.debutDeLaRonde = null;
+	    }
+	}
+
+	public Date getFinDeLaRonde() {
+		return finDeLaRonde;
+	}
+
+	public void setFinDeLaRonde(Date finDeLaRonde) {
+		if (finDeLaRonde != null) {
+	        this.finDeLaRonde = new Date(finDeLaRonde.getTime());
+	    } else {
+	        this.finDeLaRonde = null;
+	    }
+	}
+
+	public Set<Membre> getMembres() {
+		return this.membres;
+	}
+
+	public void setMembres(final Set<Membre> membres) {
+		this.membres = membres;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -84,30 +114,6 @@ public class Ronde implements Serializable {
 		return result;
 	}
 
-	public Date getDebutDeLaRonde() {
-		return debutDeLaRonde;
-	}
-
-	public void setDebutDeLaRonde(Date debutDeLaRonde) {
-		this.debutDeLaRonde = debutDeLaRonde;
-	}
-
-	public Set<Membre> getMembres() {
-		return this.membres;
-	}
-
-	public void setMembres(final Set<Membre> membres) {
-		this.membres = membres;
-	}
-
-	public Date getFinDeLaRonde() {
-		return finDeLaRonde;
-	}
-
-	public void setFinDeLaRonde(Date finDeLaRonde) {
-		this.finDeLaRonde = finDeLaRonde;
-	}
-
 	@Override
 	public String toString() {
 		String result = getClass().getSimpleName() + " ";
@@ -116,10 +122,10 @@ public class Ronde implements Serializable {
 		result += ", version: " + version;
 		if (debutDeLaRonde != null)
 			result += ", debutDeLaRonde: " + debutDeLaRonde;
-		if (membres != null)
-			result += ", membres: " + membres;
 		if (finDeLaRonde != null)
 			result += ", finDeLaRonde: " + finDeLaRonde;
 		return result;
 	}
+
+
 }

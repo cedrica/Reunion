@@ -45,23 +45,23 @@
 							<thead>
 								<tr>
 									<th>Nom</th>
-									<th>Adresse</th>
+									<th>Rue</th>
+									<th>Ville</th>
 									<th>Nr. de telefon</th>
 									<th>E-Mail</th>
-									<th>Nom du groupe</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 								<ui:repeat var="membre" value="#{membreBean.allMembers}">
 									<tr>
-										<td>#{membre.nom}</td>
+										<td>#{membre.nom} #{membre.prenom}</td>
 										<td>#{membre.adresse.rue} #{membre.adresse.numero}</td>
+										<td>#{membre.adresse.ville}</td>
+										<td>#{membre.contact.telephone}</td>
 										<td>#{membre.contact.email}</td>
-										<td>#{membre.contact.email}</td>
-										<td>#{membre.groupe.nom}</td>
-										<td><h:commandButton action="#{membreBean.delete(membre.id)}" >
-												<i class="fa fa-remove" style="color: red;"></i>
+										
+										<td><h:commandButton action="#{membreBean.delete(membre.id)}" class="btn btn-primary" value="Delete">
 												</h:commandButton></td>
 									</tr>
 								</ui:repeat>

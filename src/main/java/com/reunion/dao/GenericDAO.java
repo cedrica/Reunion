@@ -2,6 +2,8 @@ package com.reunion.dao;
 
 import java.util.List;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -17,19 +19,19 @@ public class GenericDAO<T> {
 	private EntityManager entityManager;
 	private static Logger LOG = LoggerFactory.getLogger(GenericDAO.class);
 
-
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public T create(T entity) {
 		
 		try {
-			this.entityManager.persist(entity);
+			return this.entityManager.merge(entity);
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
 			return null;
 		}
-		return entity;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void update(Long id, Class<T> clazz) {
 		
 		T entity = findById(id, clazz);

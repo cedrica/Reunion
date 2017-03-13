@@ -8,7 +8,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import com.reunion.business.MembreService;
 import com.reunion.business.RondeService;
+import com.reunion.common.CalendarUtils;
+import com.reunion.common.Helper;
 import com.reunion.common.Pages;
 import com.reunion.model.Membre;
 import com.reunion.model.Ronde;
@@ -37,8 +40,7 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 	private boolean inserer;
 	private Ronde ronde;
 	private Membre membreSelecter;
-	private String search;
-	
+
 	public void init() {
 		rondeService.startConversation();
 		rondes = rondeService.findAll();
@@ -70,23 +72,29 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 
 	public void ajouter(Membre membre) {
 		membreSelecter = membre;
-		if (!membresDelaNouvelleRonde.contains(membre)){
+		if (!membresDelaNouvelleRonde.contains(membre)) {
+			setInserer(true);
 			membresDelaNouvelleRonde.add(membre);
 			membre.setInserable(true);
 		}
-			
+
 	}
 
-	public void filtre(){
-		Membre m = listeDesMembres.stream().filter(new Predicate<Membre>() {
-			@Override
-			public boolean test(Membre t) {
-				return t.getNom().startsWith(search);
-			}
-		}).collect(Collectors.toList()).get(0);
-		listeDesMembres.remove(m);
-	}
-	
+	// public void filtre(){
+	// List<Membre> membres = listeDesMembres.stream().filter(new
+	// Predicate<Membre>() {
+	// @Override
+	// public boolean test(Membre t) {
+	// return t.getNom().startsWith(search);
+	// }
+	// }).collect(Collectors.toList());
+	// if(membres != null && !membres.isEmpty()){
+	// listeDesMembres.remove(membres.get(0));
+	// LOG.info("recherche dun membre: "+membres.get(0).getNom());
+	// }
+	//
+	// }
+
 	public List<Membre> getMembresDelaNouvelleRonde() {
 		return membresDelaNouvelleRonde;
 	}
@@ -111,27 +119,31 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 		this.rondes = rondes;
 	}
 
-	public String creerUneRonde() {
+	public String sauvegarderLaRondeCreer() {
+		if (ronde.getDebutDeLaRonde().after(ronde.getFinDeLaRonde())) {
+			Helper.showError("La fin de la ronde doit venir après son début","compareDate");
+			return Pages.SELF;
+		}
+		int nombreDeparticipants = membresDelaNouvelleRonde.size();
+		long ecartDeMois = CalendarUtils.monthsDifference(CalendarUtils.DateToLocalDate(ronde.getDebutDeLaRonde()),
+				CalendarUtils.DateToLocalDate(ronde.getFinDeLaRonde()));
+		if (nombreDeparticipants != ecartDeMois) {
+			Helper.showError("Le nombre de participants doit correspondre au nombre de tour de la ronde","compareDate");
+			return Pages.SELF;
+		}
 		setRondeCreable(false);
 		ronde.setMembres((new HashSet<>(membresDelaNouvelleRonde)));
-		rondeService.create(ronde);
+		rondeService.createRonde(ronde);
 		return Pages.SELF;
 	}
-	
-	public String getResultat(){
+
+
+	public String getResultat() {
 		String res = "";
 		for (Membre membre : membresDelaNouvelleRonde) {
-			res += membre.getNom()+" "+membre.getPrenom()+"\n";
+			res += membre.getNom() + " " + membre.getPrenom() + "\n";
 		}
 		return res;
 	}
 
-	public String getSearch() {
-		return search;
-	}
-
-	public void setSearch(String search) {
-		this.search = search;
-	}
-	
 }

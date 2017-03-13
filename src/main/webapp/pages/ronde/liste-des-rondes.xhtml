@@ -3,81 +3,43 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
-	<ui:param name="pageTitle" value="rondes" />
-
-
-	<ui:define name="subheader">
-		Les rondes
-	</ui:define>
-
-
-	<ui:define name="main">
+	<h:form id="listeDesRondes">
 		<div class="row">
-			<ui:repeat var="ronde" value="#{rondeBean.rondes}">
-				<div class="col-sm-12 col-md-12 col-lg-12">
-					<div class="pull-left nomDeLaRonde">#{ronde.date}</div>
-				</div>
-				<div class="col-lg-12">
-					<div class="dropdown pull-right">
-						<h:commandLink value="" class="btn btn-default" id="dropdownMenu1"
-							data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							<i class="fa fa-bars" style="font-size: 20px; color: #fff"></i>
-						</h:commandLink>
-						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1"
-							style="padding: 5px; width: 200px;">
-							<li><h:selectBooleanCheckbox /> Membres</li>
-							<li><h:selectBooleanCheckbox /> Cautisation</li>
-							<li><h:selectBooleanCheckbox /> Date de bouffe</li>
-							<li style="width: 200px;"><h:selectBooleanCheckbox />
-								Montant du bénéficiaire</li>
-							<li><h:selectBooleanCheckbox /> Supplement</li>
-						</ul>
-					</div>
-				</div>
-				<div style="width: 100%;">
-
-					<table class="table">
-						<thead>
-							<tr>
-								<th>Membres</th>
-								<th>Cautisation</th>
-								<th>Fond de caisse</th>
-								<th>Date de bouffe</th>
-								<th>Montant du bénéficiaire</th>
-								<th>Supplement</th>
-							</tr>
-						</thead>
-						<tbody>
-							<ui:repeat var="membre" value="#{ronde.membres}">
+			<div class="col-md-12">
+				<ui:repeat var="ronde" value="#{rondeBean.rondes.toArray()}">
+					<div>Ronde #{ronde.debutDeLaRonde} - #{ronde.finDeLaRonde}</div>
+					<div class="well" style="margin: 10px;">
+						<table class="table">
+							<thead>
 								<tr>
-									<td>#{membre.nom} #{membre.prenom}</td>
-									<td>#{membre.trafique.cotisation}</td>
-									<td>#{membre.trafique.fondDeCaisse}</td>
-									<td>#{membre.trafique.dateDeBouffe}</td>
-									<td>#{membre.trafique.ristourne}</td>
-									<td>#{membre.trafique.supplement}</td>
+									<th>Membre</th>
+									<th>Cotisation</th>
+									<th>ristourne</th>
+									<th>Date de bouffe</th>
+									<th>Supplement</th>
 								</tr>
-							</ui:repeat>
-						</tbody>
-					</table>
-				</div>
-				<div class="col-sm-4 col-md-4 col-lg-4"></div>
-				<div class="col-sm-4 col-md-4 col-lg-4">
-					<nav aria-label="...">
-						<ul class="pagination">
-							<li class="disabled"><h:link aria-label="Previous">
-									<span aria-hidden="true"></span>
-								</h:link></li>
-							<li class="active"><h:link>1 <span class="sr-only">(current)</span>
-								</h:link></li>
-						</ul>
-					</nav>
-				</div>
-				<div class="col-sm-4 col-md-4 col-lg-4"></div>
-			</ui:repeat>
-		</div>
-	</ui:define>
+							</thead>
+							<tbody>
+								<ui:repeat var="membre" value="#{ronde.membres.toArray()}">
+									<tr>
+										<td>#{membre.nom} #{membre.prenom}</td>
+										<td>#{membre.trafique.cotisation}</td>
+										<td>#{membre.trafique.ristourne}</td>
+										<td>#{membre.trafique.dateDeBouffe}</td>
+										<td>#{membre.trafique.supplement}</td>
+									</tr>
+								</ui:repeat>
+							</tbody>
+						</table>
+					</div>
 
+				</ui:repeat>
+			</div>
+		</div>
+
+	</h:form>
 </ui:composition>
