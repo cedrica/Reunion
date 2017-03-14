@@ -1,10 +1,10 @@
 com\reunion\bean\sEnregistrerBean.class
+com\reunion\common\FullTime.class
 com\reunion\helper\ModelInitializer.class
 com\reunion\model\Ronde.class
 com\reunion\model\Membre.class
 com\reunion\model\Trafique.class
 com\reunion\model\Adresse.class
-com\reunion\bean\RondeBean$1.class
 com\reunion\business\LoginService$1.class
 com\reunion\business\RondeService.class
 com\reunion\controller\MembreController.class
@@ -19,6 +19,7 @@ com\reunion\business\GroupeService.class
 com\reunion\bean\RondeBean.class
 com\reunion\common\Helper.class
 com\reunion\common\Pages.class
+com\reunion\common\CalendarUtils.class
 com\reunion\controller\BaseController.class
 com\reunion\enums\RoleType.class
 com\reunion\bean\LoginBean.class

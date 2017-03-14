@@ -26,6 +26,7 @@
 		<error-code>500</error-code>
 		<location>/faces/error.xhtml</location>
 	</error-page>
+
 	<context-param>
 		<param-name>javax.faces.application.CONFIG_FILES</param-name>
 		<param-value>/WEB-INF/faces-config.xml</param-value>
@@ -47,11 +48,4 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-	<listener>
-		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
-	<error-page>
-		<exception-type>org.jboss.weld.context.NonexistentConversationException</exception-type>
-		<location>/faces/error.xhtml</location>
-	</error-page>
 </web-app>

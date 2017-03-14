@@ -10,6 +10,11 @@
 
 
 	<div class="row">
+		<div class="row">
+			<div class="col-md-6">
+				<h:messages style="color:red" id="compareDate" />
+			</div>
+		</div>
 		<h:form>
 			<div class="col-md-6" style="overflow: scroll; height: 400px;">
 				<table>
@@ -92,11 +97,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<h:messages style="color:red" id="compareDate" />
-					</div>
-				</div>
+
 				<div class="row">
 					<div class="col-md-12">
 						<h3>Liste des Membres selectioner</h3>
@@ -114,12 +115,12 @@
 							class="btn btn-primary  pull-right"
 							disabled="#{empty rondeBean.membresDelaNouvelleRonde}"
 							action="#{rondeBean.sauvegarderLaRondeCreer()}">
-							<f:ajax execute="@form" render="@form"/>
+							<f:ajax execute="@form" render="@form" />
 						</h:commandButton>
 						<h:commandButton value="Abbrechen"
 							class="btn btn-default pull-right" immediate="true"
 							action="#{rondeBean.setRondeCreable(false)}">
-							<f:ajax execute="@form" render="@form"/>
+							<f:ajax execute="@form" render="@form" />
 						</h:commandButton>
 					</div>
 

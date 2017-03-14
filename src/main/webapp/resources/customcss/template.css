@@ -73,4 +73,8 @@ a.list-group-item, button.list-group-item {
   text-align:center;
 }
 
+.empty-btn{
+	background-color: transparent;
+	border-color:transparent;
+}
 

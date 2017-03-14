@@ -34,7 +34,7 @@ public class Helper {
 	}
 	
 	public static String[] valeurEntreeDansLeChamp(UIComponent components, String nom) {
-		UIInput uiInput = (UIInput) components.findComponent("motDePass");
+		UIInput uiInput = (UIInput) components.findComponent(nom);
 		String valeur = uiInput.getLocalValue() == null ? "" : uiInput.getLocalValue().toString();
 		String id = uiInput.getClientId();
 		String[] result = new String[2];

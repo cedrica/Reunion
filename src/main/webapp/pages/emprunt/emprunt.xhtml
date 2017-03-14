@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<ui:param name="pageTitle" value="Emprunts" />
+
+
+	<ui:define name="subheader">
+		Emprunts
+	</ui:define>
+
+	<ui:define name="main">
+		<h:outputStylesheet library="customcss" name="emprunts.css" />
+		<h:outputScript library="js" name="emprunt.js" />
+		<ui:include src="/pages/emprunt/creer-un-emprunt.xhtml" />
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="vert-claire"></div>
+				<p>
+					<i> La somme empreuntée a été remise</i>
+				</p>
+				<div class="rouge-claire"></div>
+				<p>
+					<i> La somme empreuntée n´a pas été remise à temps</i>
+				</p>
+				<div class="bleu-claire"></div>
+				<p>
+					<i> La somme empreuntée est ouverte</i>
+				</p>
+			</div>
+			<div class="col-lg-6">
+				<p>Le fond de caisse actuel est de:
+					#{empruntBean.calculDuFondDeCaisse()}€</p>
+				<p>Le bénéfice attendu est de:
+					#{empruntBean.calculDuBenefice()}€</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="modal-footer"></div>
+		</div>
+		<div class="row">
+			<div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Somme</th>
+							<th>Empruntée le</th>
+							<th>Date de remboursement</th>
+							<th>Somme à rembourser</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<ui:repeat var="emprunt" value="#{empruntBean.emprunts}">
+							<h:panelGroup rendered="#{emprunt.status.value == 'rembourse'}">
+								<tr class="success">
+									<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
+									<td>#{emprunt.sommeEmpruntee}€</td>
+									<td>#{emprunt.dateDeLemprunt}</td>
+									<td>#{emprunt.dateDeRemboursement}</td>
+									<td>#{empruntBean.calculDuRemboursement(emprunt)}€</td>
+									<td><h:commandButton class="fa fa-info" /></td>
+								</tr>
+							</h:panelGroup>
+							<h:panelGroup
+								rendered="#{emprunt.status.value == 'dateDepassee'}">
+								<tr class="danger">
+									<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
+									<td>#{emprunt.sommeEmpruntee}€</td>
+									<td>#{emprunt.dateDeLemprunt}</td>
+									<td>#{emprunt.dateDeRemboursement}</td>
+									<td>#{empruntBean.calculDuRemboursement(emprunt)}€</td>
+									<td></td>
+								</tr>
+							</h:panelGroup>
+
+							<h:panelGroup rendered="#{emprunt.status.value == 'ouvert'}">
+								<tr class="info">
+									<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
+									<td>#{emprunt.sommeEmpruntee}</td>
+									<td><h:outputText value="#{emprunt.dateDeLemprunt}">
+											<f:convertDateTime pattern="dd-MM-YYYY" />
+										</h:outputText></td>
+									<td><h:outputText value="#{emprunt.dateDeRemboursement}">
+											<f:convertDateTime pattern="dd-MM-YYYY" />
+										</h:outputText></td>
+									<td>#{empruntBean.calculDuRemboursement(emprunt)}</td>
+									<td><h:outputLink styleClass="jaune fa fa-info-circle" id="grow"
+											style="font-size: 20px; margin-right:10px;">
+										</h:outputLink> 
+										<p:tooltip id="toolTipGrow" for="grow"
+											value="This tooltip uses clip/explode effects for the animation"
+											showEffect="clip" hideEffect="explode" position="left" />
+											 <h:commandLink
+											styleClass="fa fa-edit"
+											style="font-size: 20px; color:green; margin-right:10px;" /> <h:commandLink
+											styleClass="fa fa-archive"
+											style="font-size: 20px; color:#000; margin-right:10px;" /> <h:commandLink
+											styleClass="fa fa-remove"
+											style="font-size: 20px; color:red; margin-right:10px;" /></td>
+									<td></td>
+								</tr>
+							</h:panelGroup>
+						</ui:repeat>
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+	</ui:define>
+
+</ui:composition>

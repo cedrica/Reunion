@@ -4,6 +4,7 @@ F:\devspace\java\Reunion\src\main\java\com\reunion\bean\LoginBean.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\converter\BooleanConverter.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\bean\GroupeBean.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\model\Contact.java
+F:\devspace\java\Reunion\src\main\java\com\reunion\common\CalendarUtils.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\model\Adresse.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\business\RondeService.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\dao\GenericDAO.java
@@ -19,6 +20,7 @@ F:\devspace\java\Reunion\src\main\java\com\reunion\controller\BaseController.jav
 F:\devspace\java\Reunion\src\main\java\com\reunion\model\Groupe.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\session\LastAccessTimeFilter.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\common\EmailValidator.java
+F:\devspace\java\Reunion\src\main\java\com\reunion\common\FullTime.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\controller\BaseModalController.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\bean\RondeBean.java
 F:\devspace\java\Reunion\src\main\java\com\reunion\model\Trafique.java

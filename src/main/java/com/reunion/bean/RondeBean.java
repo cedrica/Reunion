@@ -2,6 +2,7 @@ package com.reunion.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -14,11 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import com.reunion.business.MembreService;
 import com.reunion.business.RondeService;
-import com.reunion.common.CalendarUtils;
-import com.reunion.common.Helper;
 import com.reunion.common.Pages;
 import com.reunion.model.Membre;
 import com.reunion.model.Ronde;
+import com.reunion.util.CalendarUtils;
 
 @Named
 @ConversationScoped
@@ -106,24 +106,31 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 
 		return false;
 	}
+	
+	public String convertToMonthYear (Date dt){
+		if(dt != null){
+			return CalendarUtils.getMonthYear(dt);
+		}
+		return null;
+	}
 
 	public String sauvegarderLaRondeCreer() {
-		if (ronde.getDebutDeLaRonde().after(ronde.getFinDeLaRonde())) {
-			Helper.showError("La fin de la ronde doit venir après son début", "creerRonde:compareDate");
-			return Pages.SELF;
-		}
-		int nombreDeparticipants = membresDelaNouvelleRonde.size();
-		long ecartDeMois = CalendarUtils.monthsDifference(CalendarUtils.DateToLocalDate(ronde.getDebutDeLaRonde()),
-				CalendarUtils.DateToLocalDate(ronde.getFinDeLaRonde()));
-		if (nombreDeparticipants != ecartDeMois) {
-			Helper.showError("Le nombre de participants doit correspondre au nombre de tour de la ronde",
-					"compareDate");
-			return Pages.SELF;
-		}
+//		if (ronde.getDebutDeLaRonde().after(ronde.getFinDeLaRonde())) {
+//			Helper.showError("La fin de la ronde doit venir après son début", "compareDate");
+//			return Pages.SELF;
+//		}
+//		int nombreDeparticipants = membresDelaNouvelleRonde.size();
+//		long ecartDeMois = CalendarUtils.monthsDifference(CalendarUtils.DateToLocalDate(ronde.getDebutDeLaRonde()),
+//				CalendarUtils.DateToLocalDate(ronde.getFinDeLaRonde()));
+//		if (nombreDeparticipants != ecartDeMois) {
+//			Helper.showError("Le nombre de participants doit correspondre au nombre de tour de la ronde",
+//					"compareDate");
+//			return Pages.SELF;
+//		}
 		setRondeCreable(false);
 		ronde.setMembres((new HashSet<>(membresDelaNouvelleRonde)));
 		rondeService.createRonde(ronde);
-		return Pages.SELF;
+		return Pages.RONDES;
 	}
 
 	public String getResultat() {

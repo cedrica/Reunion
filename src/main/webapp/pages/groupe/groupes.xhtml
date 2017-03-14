@@ -7,18 +7,18 @@
 	template="/resources/scaffold/pageTemplate.xhtml">
 
 
-	<ui:param name="pageTitle" value="groupes" />
+	<ui:param name="pageTitle" value="Groupes" />
 
 
 	<ui:define name="subheader">
-		groupes
+		Groupes
 	</ui:define>
 
 
 	<ui:define name="main">
 	<h:outputStylesheet library="customcss" name="groupes.css" />
 		<h:form>
-		<ui:include src="/pages/creer-ou-editer-un-groupe.xhtml" />
+		<ui:include src="/pages/groupe/creer-ou-editer-un-groupe.xhtml" />
  			<ui:repeat var="groupe" value="#{groupeBean.tousLesGroupes}">
 				<div class="row">
 					<div class="col-sm-9 col-md-9 col-lg-10">

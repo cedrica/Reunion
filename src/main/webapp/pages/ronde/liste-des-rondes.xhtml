@@ -11,32 +11,34 @@
 		<div class="row">
 			<div class="col-md-12">
 				<ui:repeat var="ronde" value="#{rondeBean.rondes.toArray()}">
-					<div>Ronde #{ronde.debutDeLaRonde} - #{ronde.finDeLaRonde}</div>
-					<div class="well" style="margin: 10px;">
-						<table class="table">
-							<thead>
+					<div>Ronde
+						#{rondeBean.convertToMonthYear(ronde.debutDeLaRonde)} -
+						#{rondeBean.convertToMonthYear(ronde.finDeLaRonde)}</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Membre</th>
+								<th>Cotisation</th>
+								<th>ristourne</th>
+								<th>Date de bouffe</th>
+								<th>Supplement</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ui:repeat var="membre" value="#{ronde.membres.toArray()}">
 								<tr>
-									<th>Membre</th>
-									<th>Cotisation</th>
-									<th>ristourne</th>
-									<th>Date de bouffe</th>
-									<th>Supplement</th>
+									<td>#{membre.nom} #{membre.prenom}</td>
+									<td>#{membre.trafique.cotisation}</td>
+									<td>#{membre.trafique.ristourne}</td>
+									<td>#{membre.trafique.dateDeBouffe}</td>
+									<td>#{membre.trafique.supplement}</td>
 								</tr>
-							</thead>
-							<tbody>
-								<ui:repeat var="membre" value="#{ronde.membres.toArray()}">
-									<tr>
-										<td>#{membre.nom} #{membre.prenom}</td>
-										<td>#{membre.trafique.cotisation}</td>
-										<td>#{membre.trafique.ristourne}</td>
-										<td>#{membre.trafique.dateDeBouffe}</td>
-										<td>#{membre.trafique.supplement}</td>
-									</tr>
-								</ui:repeat>
-							</tbody>
-						</table>
+							</ui:repeat>
+						</tbody>
+					</table>
+					<div class="row">
+						<div class="modal-footer"></div>
 					</div>
-
 				</ui:repeat>
 			</div>
 		</div>

@@ -17,7 +17,7 @@ com.reunion.Page = function() {
 		$('table').DataTable();
 	}
 	var toggleButton = function() {
-		
+
 		$("input[id$='_membre_btn']").each(function() {
 			var idStr = $(this).attr("id");
 			var arr = idStr.split(":");
@@ -63,9 +63,9 @@ com.reunion.Page = function() {
 	}
 
 	var initDatePicker = function() {
-		$("input[id$='_dp']").each(function() {
-			$(this).datepicker({
-				format : 'dd/mm/yyyy'
+		$("div[id$='_dp']").each(function() {
+			$(this).datetimepicker({
+				format : 'DD-MM-YYYY',
 			});
 		});
 	}

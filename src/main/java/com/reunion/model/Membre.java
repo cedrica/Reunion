@@ -162,15 +162,7 @@ public class Membre implements Serializable {
 
 	@Override
 	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (nom != null && !nom.trim().isEmpty())
-			result += "nom: " + nom;
-		if (prenom != null && !prenom.trim().isEmpty())
-			result += ", prenom: " + prenom;
-		if (motDePass != null && !motDePass.trim().isEmpty())
-			result += ", motDePass: " + motDePass;
-		if (inserable != null)
-			result += ", inserable: " + inserable;
+		String result = nom+" "+prenom;
 		return result;
 	}
 

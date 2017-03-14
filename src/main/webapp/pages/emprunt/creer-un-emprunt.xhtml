@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<f:metadata>
+		<f:event type="preRenderView" listener='#{empruntBean.init}' />
+	</f:metadata>
+
+	<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="js_creerEmpruntModal" id="js_creerEmpruntModal"
+		aria-hiden="true">
+		<h:form id="creerUnEmpruntForm">
+
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="gridSystemModalLabel">Créer un
+							Emprunt</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<h:selectOneMenu id="emprunteur"
+								value="#{empruntBean.emprunt.membre}" class="form-control"
+								converter="#{membreConverter}">
+								<f:selectItem itemLabel="-- bitte wählen --" />
+								<f:selectItems value="#{empruntBean.membres}" />
+							</h:selectOneMenu>
+
+							<h:message for="emprunteur" style="color:red" id="emprunteurOut" />
+						</div>
+						<div class="form-group">
+							<h:inputText class="form-control" id="sommeEmpruntee"
+								value="#{empruntBean.emprunt.sommeEmpruntee}"
+								a:placeholder="Somme empruntée"
+								requiredMessage="Somme empruntée obligatoire" required="true">
+							</h:inputText>
+							<h:message for="sommeEmpruntee" style="color:red"
+								id="sommeEmprunteeOut" />
+						</div>
+						<div class="form-group">
+							<div class="input-group date" id="dateDeRemboursement_dp">
+								<h:inputText class="form-control" id="dateDeRemboursement"
+									requiredMessage="Date de rembousement obligatoire"
+									required="true" value="#{empruntBean.emprunt.dateDeRemboursement}"
+									a:placeholder="Date de remboursement">
+									<f:convertDateTime pattern="dd-MM-YYYY"/>
+									</h:inputText>
+								<span class="input-group-addon"> <span
+									class="fa fa-calendar"></span>
+								</span>
+							</div>
+							<h:message for="dateDeRemboursement" style="color:red"
+								id="dateDeRemboursementOut" />
+						</div>
+						<div class="form-group">
+							<h:selectOneMenu id="ronde" value="#{empruntBean.emprunt.ronde}"
+								class="form-control" converter="#{rondeConverter}">
+								<f:selectItem itemLabel="-- bitte wählen --" />
+								<f:selectItems value="#{empruntBean.rondes}" />
+							</h:selectOneMenu>
+
+							<h:message for="ronde" style="color:red" id="rondeOut" />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<h:commandButton value="Close" class="btn btn-default"
+							data-dismiss="dialog" immediate="true" />
+						<h:commandButton value="Sauvegarder" class="btn btn-primary"
+							id="saveCreatedEmprunt" action="#{empruntBean.sauvegarder}">
+							<f:ajax
+								execute="dateDeRemboursement sommeEmpruntee emprunteur"
+								render="dateDeRemboursementOut sommeEmprunteeOut emprunteurOut :creerUnEmpruntForm" />
+						</h:commandButton>
+					</div>
+				</div>
+
+			</div>
+		</h:form>
+	</div>
+</ui:composition>

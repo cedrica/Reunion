@@ -27,10 +27,10 @@ public class Trafique implements Serializable {
 	private int version;
 
 	@Column(length = 10, name = "fondDeCaisse")
-	private String fondDeCaisse;
+	private Float fondDeCaisse;
 
 	@Column(length = 20, name = "dateDeBouffe")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateDeBouffe;
 
 	@Column(length = 10, name = "ristourne")
@@ -83,11 +83,11 @@ public class Trafique implements Serializable {
 		return result;
 	}
 
-	public String getFondDeCaisse() {
+	public Float getFondDeCaisse() {
 		return fondDeCaisse;
 	}
 
-	public void setFondDeCaisse(String fondDeCaisse) {
+	public void setFondDeCaisse(Float fondDeCaisse) {
 		this.fondDeCaisse = fondDeCaisse;
 	}
 
@@ -129,7 +129,7 @@ public class Trafique implements Serializable {
 		if (id != null)
 			result += "id: " + id;
 		result += ", version: " + version;
-		if (fondDeCaisse != null && !fondDeCaisse.trim().isEmpty())
+		if (fondDeCaisse != null)
 			result += ", fondDeCaisse: " + fondDeCaisse;
 		if (dateDeBouffe != null)
 			result += ", dateDeBouffe: " + dateDeBouffe;

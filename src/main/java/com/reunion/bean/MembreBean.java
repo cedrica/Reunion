@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -26,24 +31,66 @@ public class MembreBean extends AbstractModalBean<Membre> implements Serializabl
 	private Membre membre;
 	private static final long serialVersionUID = 1L;
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
-	
 
 	public void init() {
 		membreService.startConversation();
 		if (membre == null)
 			membre = ModelInitializer.initMembre();
 		LOG.info("MemberBean a été initialiser");
-		if(allMembers == null){
+		if (allMembers == null) {
 			allMembers = membreService.findAll();
 		}
 	}
+	public void validatePassword(ComponentSystemEvent event) {
 
+		  FacesContext fc = FacesContext.getCurrentInstance();
+
+		  UIComponent components = event.getComponent();
+
+		  // get password
+		  UIInput uiInputPassword = (UIInput) components.findComponent("motDePass");
+		  String password = uiInputPassword.getLocalValue() == null ? ""
+			: uiInputPassword.getLocalValue().toString();
+		  String passwordId = uiInputPassword.getClientId();
+
+		  // get confirm password
+		  UIInput uiInputConfirmPassword = (UIInput) components.findComponent("confirmerMotDepass");
+		  String confirmPassword = uiInputConfirmPassword.getLocalValue() == null ? ""
+			: uiInputConfirmPassword.getLocalValue().toString();
+
+		  // Let required="true" do its job.
+		  if (password.isEmpty() || confirmPassword.isEmpty()) {
+			return;
+		  }
+
+		  if (!password.equals(confirmPassword)) {
+
+			FacesMessage msg = new FacesMessage("le mot de passe doit correspondre à sa confirmation");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			fc.addMessage(passwordId, msg);
+			fc.renderResponse();
+
+		  }
+
+		}
 	public String save() {
+//		if (!motDePassValide()) {
+//
+//			return Pages.SELF;
+//		}
 		Membre m = membreService.createMembre(membre);
 		if (m != null) {
 			LOG.debug("Le membre " + m.getNom() + " a été creer");
 		}
 		return Pages.MEMBRES;
+	}
+
+	private boolean motDePassValide() {
+		UIInput field1 = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("creerMembre:motDePass");
+		UIInput field2 = (UIInput) FacesContext.getCurrentInstance().getViewRoot().findComponent("creerMembre:confirmerMotDepass");
+		String password = (String) field1.getValue();
+		String confPassword = (String) field2.getValue();
+		return password.equals(confPassword);
 	}
 
 	public String close() {
@@ -67,7 +114,7 @@ public class MembreBean extends AbstractModalBean<Membre> implements Serializabl
 		this.allMembers = allMembers;
 	}
 
-	public String delete(Long id){
+	public String delete(Long id) {
 		membreService.delete(id);
 		return Pages.MEMBRES;
 	}

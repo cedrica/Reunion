@@ -12,4 +12,6 @@ public static final String REGLEMENT_INTERIEUR = "reglement-interieur?faces-redi
 public static final String INDEX = "index?faces-redirect=true";
 
 public static final String RONDES = "rondes?faces-redirect=true";
+
+public static final String EMPRUNT = "emprunt?faces-redirect=true";
 }

@@ -1,0 +1,29 @@
+
+.vert-claire {
+	 background-color: #dff0d8;
+	height: 15.0px;
+	width: 15.0px;
+	float: left;
+	margin-right: 5.0px;
+}
+
+.rouge-claire {
+	  background-color: #f2dede;
+	height: 15.0px;
+	width: 15.0px;
+	float: left;
+	margin-right: 5.0px;
+}
+
+.bleu-claire {
+	background-color: #d9edf7;
+	height: 15.0px;
+	width: 15.0px;
+	float: left;
+	margin-right: 5.0px;
+}
+
+.jaune{
+	color:orange;
+	
+}
