@@ -3,7 +3,6 @@
 	com.reunion.Emprunt = function() {
 		
 		var that = new com.reunion.Page();
-		
 		that.activeNavigation = 'emprunt';
 		return that;
 	};

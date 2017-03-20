@@ -18,11 +18,12 @@ public class Contact implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
+	
 	@Version
 	@Column(name = "version")
 	private int version;
 
-	@Column(length = 100, name = "email")
+	@Column(length = 100, name = "email", unique=true)
 	private String email;
 
 	@Column(length = 20, name = "telephone")

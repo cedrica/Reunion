@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data>
+	<membre>
+		<nom>Leumaleu</nom>
+		
+		<prenom>Djikeussi</prenom>
+		
+		<motDePass>a</motDePass>
+		
+		<inserable>false</inserable>
+		
+		<activer>true</activer>
+		
+		<adresse>
+		<rue>Schweinauer Hauptstrasse 129</rue>
+		<numero>123</numero>
+		<plz>90441</plz>
+		<ville>Nürnberg</ville>
+		</adresse>
+		
+		<contact>
+			<email>djikeussi2001@yahoo.fr</email>
+			<telephone>017663112957</telephone>
+		</contact>
+	</membre>
+	
+</data>

@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class GenericDAO<T> {
 			this.entityManager.remove(deletableEntity);
 			this.entityManager.flush();
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
+			LOG.info(e.getMessage());
 		}
 	}
 
@@ -61,6 +62,20 @@ public class GenericDAO<T> {
 		return this.entityManager.find(clazz, id);
 	}
 
+	public boolean executeCustomQuery(String customQuery, Class clazz, Object ...params) {
+		Query query = entityManager.createQuery(customQuery);
+		query.setParameter("activer", params[0]);
+		query.setParameter("id", params[1]);
+		try{
+			int numberOfUpdatedEntities = query.executeUpdate();
+			LOG.info(numberOfUpdatedEntities+" Données ont été modifié dans la table "+clazz.getSimpleName());
+			return true;
+		}catch (Exception e) {
+			LOG.error("Query :"+customQuery+" konnte nicht ausgeführt werden");
+			return false;
+		}
+	}
+	
 	public List<T> findAll(Class<T> clazz) {
 		CriteriaQuery<T> criteria = this.entityManager.getCriteriaBuilder().createQuery(clazz);
 		return this.entityManager.createQuery(criteria.select(criteria.from(clazz))).getResultList();

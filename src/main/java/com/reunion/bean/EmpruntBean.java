@@ -8,6 +8,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,9 @@ public class EmpruntBean implements Serializable {
 	private List<Ronde> rondes;
 	private Emprunt emprunt;
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
-
+	private boolean editerOuRembourser;
+	private boolean empruntCreer;
+	
 	@Inject
 	private EmpruntService empruntService;
 	@Inject
@@ -46,12 +49,18 @@ public class EmpruntBean implements Serializable {
 		if (membres == null) {
 			membres = membreService.findAll();
 		}
-		if (emprunts == null || emprunts.isEmpty()) {
+		if (emprunts == null || emprunts.isEmpty() || empruntCreer) {
 			emprunts = empruntService.toutLesEmprunts();
 			;
 		}
 		if (rondes == null) {
 			rondes = rondeService.findAll();
+		}
+		
+		//for editing case
+		if(emprunt == null){
+			emprunt = new Emprunt();
+			emprunt.setMembre(new Membre());
 		}
 	}
 
@@ -87,9 +96,28 @@ public class EmpruntBean implements Serializable {
 		this.membres = membres;
 	}
 
+	
+	public boolean getEditerOuRembourser() {
+		return editerOuRembourser;
+	}
+
+	public void setEditerOuRembourser(boolean editerOuRembourser) {
+		this.editerOuRembourser = editerOuRembourser;
+	}
+
 	public void creerUnEmprunt() {
+		empruntCreer = false;
+		setEditerOuRembourser(false);
 		emprunt = new Emprunt();
 		emprunt.setMembre(new Membre());
+	}
+	
+	public void editerOuRembourser(Emprunt emprunt){
+		setEditerOuRembourser(true);
+		setEmprunt(emprunt);
+		// call modal window vie Request context in order to run javascript after Bean method
+		RequestContext.getCurrentInstance().execute("$('#js_creerEmpruntModal').modal('show');");
+
 	}
 	
 	public Float calculDuBenefice(){
@@ -119,6 +147,9 @@ public class EmpruntBean implements Serializable {
 		if (create != null) {
 			LOG.info("l´Eprunt " + create.toString() + " a été creer");
 		}
+		empruntCreer = true;	
+		emprunt = new Emprunt();
+		emprunt.setMembre(new Membre());
 		return Pages.EMPRUNT;
 	}
 }

@@ -26,7 +26,7 @@ public class Adresse implements Serializable {
 	private String rue;
 
 	@Column(length = 10, name = "numero")
-	private int numero;
+	private String numero;
 
 	@Column(length = 10, name = "plz")
 	private int plz;
@@ -83,11 +83,11 @@ public class Adresse implements Serializable {
 		this.rue = rue;
 	}
 
-	public int getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 

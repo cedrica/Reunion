@@ -56,6 +56,9 @@ public class Emprunt implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date empruntRembourseLe;
 
+	@Column(name = "rembourser")
+	private boolean rembourser;
+
 	public Long getId() {
 		return this.id;
 	}
@@ -153,6 +156,14 @@ public class Emprunt implements Serializable {
 		this.empruntRembourseLe = empruntRembourseLe;
 	}
 
+	public boolean isRembourser() {
+		return rembourser;
+	}
+
+	public void setRembourser(boolean rembourser) {
+		this.rembourser = rembourser;
+	}
+
 	@Override
 	public String toString() {
 		String result = getClass().getSimpleName() + " ";
@@ -173,6 +184,7 @@ public class Emprunt implements Serializable {
 			result += ", status: " + status;
 		if (empruntRembourseLe != null)
 			result += ", empruntRembourseLe: " + empruntRembourseLe;
+		result += ", rembourser: " + rembourser;
 		return result;
 	}
 }

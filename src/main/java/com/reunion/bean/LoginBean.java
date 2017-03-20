@@ -1,7 +1,10 @@
 package com.reunion.bean;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.ExternalContext;
@@ -9,13 +12,21 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.reunion.business.LoginService;
+import com.reunion.business.MembreService;
 import com.reunion.common.Pages;
+import com.reunion.helper.Data;
+import com.reunion.model.Adresse;
+import com.reunion.model.Contact;
 import com.reunion.model.Membre;
+import com.reunion.model.Trafique;
 
 @Named
 @ConversationScoped
@@ -27,6 +38,9 @@ public class LoginBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private LoginService loginService;
+	@Inject
+	private MembreService membreService;
+	
 	private String email;
 	private String motDepass;
 	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -35,7 +49,78 @@ public class LoginBean implements Serializable {
 	
 	public void init() {
 		loginService.startConversation();
+		membreService.startConversation();
 		LOG.info("Coversation déclachée");
+		List<Membre> membres = membreService.findAll();
+		if(membres == null || membres.isEmpty()){
+			Membre membre = new Membre();
+			membre.setActiver(true);
+			membre.setMotDePass("a");
+			membre.setNom("Leumaleu");
+			membre.setPrenom("Cedric");
+			
+			membre.setTrafique(new Trafique());
+			Adresse adresse = new Adresse();
+			adresse.setNumero("127");
+			adresse.setPlz(90441);
+			adresse.setRue("Schweinauer Hauptstrasse");
+			adresse.setVille("Nürnberg");
+			membre.setAdresse(adresse);
+			
+			Contact contact = new Contact();
+			contact.setEmail("djikeussi2001@yahoo.fr");
+			contact.setTelephone("017663112957");
+			membre.setContact(contact);
+			
+			membreService.createMembre(membre);
+			membreService.startConversation();
+			
+			membre = new Membre();
+			membre.setActiver(true);
+			membre.setMotDePass("b");
+			membre.setNom("Kemoue");
+			membre.setPrenom("Silas");
+
+			membre.setTrafique(new Trafique());
+			adresse = new Adresse();
+			adresse.setNumero("127");
+			adresse.setPlz(90441);
+			adresse.setRue("Bissingerstrasse");
+			adresse.setVille("Erlangen");
+			membre.setAdresse(adresse);
+			
+			contact = new Contact();
+			contact.setEmail("silas@yahoo.fr");
+			contact.setTelephone("017663113357");
+			membre.setContact(contact);
+			
+			membreService.createMembre(membre);
+			membreService.startConversation();
+			
+			membre = new Membre();
+			membre.setActiver(true);
+			membre.setMotDePass("c");
+			membre.setNom("Komge");
+			membre.setPrenom("marc");
+
+			membre.setTrafique(new Trafique());
+			adresse = new Adresse();
+			adresse.setNumero("127");
+			adresse.setPlz(90441);
+			adresse.setRue("Manfredstrasse");
+			adresse.setVille("Erlangen");
+			membre.setAdresse(adresse);
+			
+			contact = new Contact();
+			contact.setEmail("marc@yahoo.fr");
+			contact.setTelephone("017345113357");
+			membre.setContact(contact);
+			
+			membreService.createMembre(membre);
+			membreService.startConversation();
+		}
+
+			
 	}
 
 	

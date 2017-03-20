@@ -1,6 +1,7 @@
 package com.reunion.common;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -47,5 +48,9 @@ public class Helper {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					message, "title"));
 			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(id);
+	}
+	
+	public static void envoieEmail(String auteur, List<String> destinateurs, String titre, String message){
+		
 	}
 }

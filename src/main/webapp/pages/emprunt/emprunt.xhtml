@@ -15,6 +15,7 @@
 	</ui:define>
 
 	<ui:define name="main">
+	<h:form id="empruntForm">
 		<h:outputStylesheet library="customcss" name="emprunts.css" />
 		<h:outputScript library="js" name="emprunt.js" />
 		<ui:include src="/pages/emprunt/creer-un-emprunt.xhtml" />
@@ -86,35 +87,45 @@
 									<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
 									<td>#{emprunt.sommeEmpruntee}</td>
 									<td><h:outputText value="#{emprunt.dateDeLemprunt}">
-											<f:convertDateTime pattern="dd-MM-YYYY" />
+											<f:convertDateTime locale="fr" timeStyle="short" type="both"
+												dateStyle="full" />
 										</h:outputText></td>
 									<td><h:outputText value="#{emprunt.dateDeRemboursement}">
-											<f:convertDateTime pattern="dd-MM-YYYY" />
+											<f:convertDateTime locale="fr" timeStyle="short" type="date"
+												dateStyle="full" />
 										</h:outputText></td>
 									<td>#{empruntBean.calculDuRemboursement(emprunt)}</td>
-									<td><h:outputLink styleClass="jaune fa fa-info-circle" id="grow"
-											style="font-size: 20px; margin-right:10px;">
-										</h:outputLink> 
-										<p:tooltip id="toolTipGrow" for="grow"
-											value="This tooltip uses clip/explode effects for the animation"
-											showEffect="clip" hideEffect="explode" position="left" />
-											 <h:commandLink
-											styleClass="fa fa-edit"
-											style="font-size: 20px; color:green; margin-right:10px;" /> <h:commandLink
-											styleClass="fa fa-archive"
-											style="font-size: 20px; color:#000; margin-right:10px;" /> <h:commandLink
-											styleClass="fa fa-remove"
+									<td><a
+										style="font-size: 20px; margin-right: 10px; text-decoration: none;"
+										title="INFO" data-placement="bottom" data-html="true"
+										data-toggle="popover" data-trigger="hover"
+										data-content="La somme empruntée n´a pas encore été remmise. Mais le délai n´est pas dépassé donc NO STRESS ;)">
+											<i class="jaune fa fa-info-circle"></i>
+									</a> <h:commandLink styleClass="fa fa-edit" data-toggle="tooltip"
+											title="Editer ou effectuer le remboursement" action="#{empruntBean.editerOuRembourser(emprunt)}"
+											style="font-size: 20px; color:green; margin-right:10px;" >
+											<f:ajax execute="@this"/></h:commandLink>
+
+										<h:commandLink styleClass="fa fa-archive" 
+											data-toggle="tooltip" title="Archiver le remboursement"
+											style="font-size: 20px; color:#000; margin-right:10px;">
+										</h:commandLink> 
+										
+										<h:commandLink styleClass="fa fa-remove"
+											data-toggle="tooltip" title="Enlever le remboursement"
 											style="font-size: 20px; color:red; margin-right:10px;" /></td>
 									<td></td>
 								</tr>
 							</h:panelGroup>
 						</ui:repeat>
+
 					</tbody>
 				</table>
 
 			</div>
 
 		</div>
+		</h:form>
 	</ui:define>
 
 </ui:composition>

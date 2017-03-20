@@ -11,10 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import com.reunion.model.Trafique;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "Membre")
+//@XmlRootElement(name = "membre")
 public class Membre implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -53,6 +54,9 @@ public class Membre implements Serializable {
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE, CascadeType.REFRESH})
 	private Trafique trafique;
+
+	@Column(length = 1, name = "activer")
+	private boolean activer;
 
 	public Long getId() {
 		return this.id;
@@ -133,7 +137,7 @@ public class Membre implements Serializable {
 	public void setTrafique(Trafique trafique) {
 		this.trafique = trafique;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -159,11 +163,18 @@ public class Membre implements Serializable {
 		return result;
 	}
 
+	public boolean getActiver() {
+		return activer;
+	}
+
+	public void setActiver(boolean activer) {
+		this.activer = activer;
+	}
 
 	@Override
 	public String toString() {
-		String result = nom+" "+prenom;
-		return result;
+		
+		return nom+" "+prenom;
 	}
 
 }
