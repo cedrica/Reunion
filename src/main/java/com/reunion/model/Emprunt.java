@@ -17,6 +17,7 @@ import javax.persistence.Version;
 import com.reunion.enums.StatusDeRemboursement;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "Emprunt")
@@ -31,8 +32,7 @@ public class Emprunt implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE, CascadeType.REFRESH})
+	@OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
 	private Membre membre;
 
 	@Column(length = 20, name = "sommeEmpruntee")
@@ -44,8 +44,7 @@ public class Emprunt implements Serializable {
 	@Column(name = "dateDeLemprunt")
 	private Date dateDeLemprunt;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REMOVE, CascadeType.REFRESH})
+	@OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
 	private Ronde ronde;
 
 	@Enumerated
@@ -56,8 +55,8 @@ public class Emprunt implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date empruntRembourseLe;
 
-	@Column(name = "rembourser")
-	private boolean rembourser;
+	@Transient
+	private boolean editable;
 
 	public Long getId() {
 		return this.id;
@@ -156,12 +155,13 @@ public class Emprunt implements Serializable {
 		this.empruntRembourseLe = empruntRembourseLe;
 	}
 
-	public boolean isRembourser() {
-		return rembourser;
+
+	public boolean getEditable() {
+		return editable;
 	}
 
-	public void setRembourser(boolean rembourser) {
-		this.rembourser = rembourser;
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class Emprunt implements Serializable {
 			result += ", status: " + status;
 		if (empruntRembourseLe != null)
 			result += ", empruntRembourseLe: " + empruntRembourseLe;
-		result += ", rembourser: " + rembourser;
+		result += ", editable: " + editable;
 		return result;
 	}
 }

@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<h:form>
+		<div class="modal fade" tabindex="-1" role="dialog"
+			aria-labelledby="js_creerUneRondeModal" id="js_creerUneRondeModal"
+			aria-hiden="true">
+
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="gridSystemModalLabel"
+							style="text-align: center;">Créer une nouvelle ronde</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<div class="input-group date">
+										<h:inputText class="form-control" id="dateDeRemboursement"
+											requiredMessage="Debut de la ronde obligatoire"
+											value="#{rondeBean.ronde.debutDeLaRonde}" required="true"
+											a:placeholder="Date de remboursement">
+											<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a"
+												locale="us" />
+										</h:inputText>
+										<span class="input-group-addon"> <span
+											class="fa fa-calendar"></span>
+										</span>
+									</div>
+									<h:message for="debutDeLaRonde_dp" style="color:red"
+										id="debutDeLaRonde_dpOut" />
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<div class="input-group date">
+										<h:inputText class="form-control" id="finDeLaRonde_dp"
+											requiredMessage="Fin de la ronde obligatoire"
+											value="#{rondeBean.ronde.finDeLaRonde}" required="true"
+											a:placeholder="Date de remboursement">
+											<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a"
+												locale="us" />
+										</h:inputText>
+										<span class="input-group-addon"> <span
+											class="fa fa-calendar"></span>
+										</span>
+									</div>
+									<h:message for="finDeLaRonde_dp" style="color:red"
+										id="finDeLaRonde_dpOut" />
+								</div>
+							</div>
+						</div>
+						<div style="height: 20px;"></div>
+						<div class="row">
+							<div class="col-md-12">
+								<table>
+									<ui:repeat var="membre" value="#{rondeBean.listeDesMembres}">
+										<tr>
+											<td><h:selectBooleanCheckbox value="#{membre.inserable}"
+													style="margin-right:5px">
+													<f:ajax execute="@this cotisation dateDeBouffe"
+														render="cotisation" />
+												</h:selectBooleanCheckbox></td>
+											<td><h:outputText style="margin-bottom:15px;"
+													value="#{membre.nom} #{membre.prenom}" /></td>
+											<td><h:inputText a:placeholder="cotisation"
+													id="cotisation" class="form-control input-small"
+													style="margin-left:15px;margin-right:15px;margin-bottom:15px;"
+													value="#{membre.trafique.cotisation}" /> <h:message
+													style="color:red" for="cotisation" id="cotisationIdOut" /></td>
+											<td>
+												<div class="input-group date"
+													style="margin-left: 25px; margin-right: 15px; margin-bottom: 15px;">
+													<h:inputText class="form-control" id="dateDeBouffe"
+														value="#{membre.trafique.dateDeBouffe}"
+														a:placeholder="Date de bouffe">
+														<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a"
+															locale="us" />
+													</h:inputText>
+													<span class="input-group-addon"> <span
+														class="fa fa-calendar"></span>
+													</span>
+												</div>
+											</td>
+<td><div class="input-group" style="margin-bottom: 15px;">
+									<h:commandLink value="ajouter les membres sélectionés" class="btn btn-primary fa fa-plus"
+										action="#{rondeBean.ajouter(membre)}">
+										<f:ajax execute="@this cotisation" render="membresAjoutes" />
+									</h:commandLink>
+								</div></td>
+										</tr>
+									</ui:repeat>
+								</table>
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-group" style="margin-bottom: 15px;">
+									<h:commandLink value="ajouter les membres sélectionés" class="btn btn-primary fa fa-plus"
+										action="#{rondeBean.ajouter()}">
+										<f:ajax execute="@this cotisation" render="membresAjoutes" />
+									</h:commandLink>
+								</div>
+								<h:outputText value="#{rondeBean.membresDelaNouvelleRonde}"
+									id="membresAjoutes"/>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<h:commandButton value="Interrompre" class="btn btn-default"
+							data-dismiss="dialog" action="#{rondeBean.creerUneRonde()}" immediate="true"/>
+						<h:commandLink value="Sauvegarder" class="btn btn-primary"
+							action="#{rondeBean.sauvegarderLaRondeCreer()}">
+							<f:ajax execute="debutDeLaRonde_dp finDeLaRonde_dp inserable"
+								render="debutDeLaRonde_dpOut finDeLaRonde_dpOut inserableOut" />
+						</h:commandLink>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</h:form>
+</ui:composition>

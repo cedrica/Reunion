@@ -19,12 +19,13 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title" id="gridSystemModalLabel">Créer un
-							Emprunt</h4>
+						<h4 class="modal-title" id="gridSystemModalLabel" style="text-align: center;">Créer un
+							emprunt</h4>
 					</div>
 					<div class="modal-body">
 						<div class="form-group">
-							<h:selectOneMenu id="emprunteur" required="true" requiredMessage="Nom de l ´emprunteur obligatoire"
+							<h:selectOneMenu id="emprunteur" required="true"
+								requiredMessage="Nom de l ´emprunteur obligatoire"
 								value="#{empruntBean.emprunt.membre}" class="form-control"
 								converter="#{membreConverter}">
 								<f:selectItem itemLabel="-- bitte wählen --" />
@@ -46,10 +47,11 @@
 							<div class="input-group date" id="dateDeRemboursement_dp">
 								<h:inputText class="form-control" id="dateDeRemboursement"
 									requiredMessage="Date de rembousement obligatoire"
-									required="true" value="#{empruntBean.emprunt.dateDeRemboursement}"
+									required="true"
+									value="#{empruntBean.emprunt.dateDeRemboursement}"
 									a:placeholder="Date de remboursement">
-									<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a" locale="us"/>
-									</h:inputText>
+									<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a" locale="us" />
+								</h:inputText>
 								<span class="input-group-addon"> <span
 									class="fa fa-calendar"></span>
 								</span>
@@ -58,7 +60,8 @@
 								id="dateDeRemboursementOut" />
 						</div>
 						<div class="form-group">
-							<h:selectOneMenu id="ronde" value="#{empruntBean.emprunt.ronde}" required="true" requiredMessage="Nom de la ronde obligatoire"
+							<h:selectOneMenu id="ronde" value="#{empruntBean.emprunt.ronde}"
+								required="true" requiredMessage="Nom de la ronde obligatoire"
 								class="form-control" converter="#{rondeConverter}">
 								<f:selectItem itemLabel="-- bitte wählen --" />
 								<f:selectItems value="#{empruntBean.rondes}" />
@@ -66,19 +69,13 @@
 
 							<h:message for="ronde" style="color:red" id="rondeOut" />
 						</div>
-										<div class="form-group">
-							<h:selectBooleanCheckbox  id="rembourser" value="#{empruntBean.emprunt.rembourser}" rendered="#{empruntBean.editerOuRembourser}" />
-							<h:outputText value="Remboursement effectué" rendered="#{empruntBean.editerOuRembourser}"/>
-
-						</div>
 					</div>
 					<div class="modal-footer">
 						<h:commandButton value="Close" class="btn btn-default"
 							data-dismiss="dialog" immediate="true" />
-						<h:commandButton value="Sauvegarder" class="btn btn-primary" 
+						<h:commandButton value="Sauvegarder" class="btn btn-primary"
 							id="saveCreatedEmprunt" action="#{empruntBean.sauvegarder}">
 							<f:ajax
-							
 								execute="dateDeRemboursement sommeEmpruntee emprunteur ronde"
 								render="dateDeRemboursementOut sommeEmprunteeOut emprunteurOut rondeOut" />
 						</h:commandButton>

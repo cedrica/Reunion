@@ -5,6 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	template="/resources/scaffold/pageTemplate.xhtml">
 
 	<ui:param name="pageTitle" value="Emprunts" />
@@ -15,116 +16,259 @@
 	</ui:define>
 
 	<ui:define name="main">
-	<h:form id="empruntForm">
-		<h:outputStylesheet library="customcss" name="emprunts.css" />
-		<h:outputScript library="js" name="emprunt.js" />
-		<ui:include src="/pages/emprunt/creer-un-emprunt.xhtml" />
-		<div class="row">
-			<div class="col-lg-6">
-				<div class="vert-claire"></div>
-				<p>
-					<i> La somme empreuntée a été remise</i>
-				</p>
-				<div class="rouge-claire"></div>
-				<p>
-					<i> La somme empreuntée n´a pas été remise à temps</i>
-				</p>
-				<div class="bleu-claire"></div>
-				<p>
-					<i> La somme empreuntée est ouverte</i>
-				</p>
+		<h:form id="empruntForm">
+			<h:outputStylesheet library="customcss" name="emprunts.css" />
+			<h:outputScript library="js" name="emprunt.js" />
+			<ui:include src="/pages/emprunt/creer-un-emprunt.xhtml" />
+			<ui:include src="/pages/emprunt/editerOuRembourser.xhtml" />
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="vert-claire"></div>
+					<p>
+						<i> La somme empreuntée a été remise</i>
+					</p>
+					<div class="rouge-claire"></div>
+					<p>
+						<i> La somme empreuntée n´a pas été remise à temps</i>
+					</p>
+					<div class="bleu-claire"></div>
+					<p>
+						<i> La somme empreuntée est ouverte</i>
+					</p>
+				</div>
+				<div class="col-lg-6">
+					<p>Le fond de caisse actuel est de:
+						#{empruntBean.calculDuFondDeCaisse()}€</p>
+					<p>Le bénéfice attendu est de:
+						#{empruntBean.calculDuBenefice()}€</p>
+				</div>
 			</div>
-			<div class="col-lg-6">
-				<p>Le fond de caisse actuel est de:
-					#{empruntBean.calculDuFondDeCaisse()}€</p>
-				<p>Le bénéfice attendu est de:
-					#{empruntBean.calculDuBenefice()}€</p>
+			<div class="row">
+				<div class="modal-footer"></div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="modal-footer"></div>
-		</div>
-		<div class="row">
-			<div>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Nom</th>
-							<th>Somme</th>
-							<th>Empruntée le</th>
-							<th>Date de remboursement</th>
-							<th>Somme à rembourser</th>
-							<th></th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<ui:repeat var="emprunt" value="#{empruntBean.emprunts}">
-							<h:panelGroup rendered="#{emprunt.status.value == 'rembourse'}">
-								<tr class="success">
-									<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
-									<td>#{emprunt.sommeEmpruntee}€</td>
-									<td>#{emprunt.dateDeLemprunt}</td>
-									<td>#{emprunt.dateDeRemboursement}</td>
-									<td>#{empruntBean.calculDuRemboursement(emprunt)}€</td>
-									<td><h:commandButton class="fa fa-info" /></td>
-								</tr>
-							</h:panelGroup>
-							<h:panelGroup
-								rendered="#{emprunt.status.value == 'dateDepassee'}">
-								<tr class="danger">
-									<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
-									<td>#{emprunt.sommeEmpruntee}€</td>
-									<td>#{emprunt.dateDeLemprunt}</td>
-									<td>#{emprunt.dateDeRemboursement}</td>
-									<td>#{empruntBean.calculDuRemboursement(emprunt)}€</td>
-									<td></td>
-								</tr>
-							</h:panelGroup>
+			<div class="row">
+				<div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Nom</th>
+								<th>Somme</th>
+								<th>Empruntée le</th>
+								<th>Date de remboursement</th>
+								<th>Somme à rembourser</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<ui:repeat var="emprunt" value="#{empruntBean.emprunts}">
+								<h:panelGroup rendered="#{emprunt.status.value == 'rembourse'}">
+									<tr class="success">
+										<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
+										<td><h:inputText class="form-control"
+												value="#{emprunt.sommeEmpruntee}"
+												rendered="#{emprunt.editable}"
+												a:placeholder="Somme empruntée">
+											</h:inputText> <h:outputText value="#{emprunt.sommeEmpruntee} €"
+												rendered="#{not emprunt.editable}" /></td>
+										<td><h:outputText value="#{emprunt.dateDeLemprunt}">
+												<f:convertDateTime locale="fr" timeStyle="short" type="both"
+													dateStyle="full" />
+											</h:outputText></td>
+										<td><h:panelGroup rendered="#{emprunt.editable}">
+												<div class="input-group date">
+													<h:inputText class="form-control"
+														value="#{empruntBean.emprunt.dateDeRemboursement}"
+														a:placeholder="Date de remboursement">
+														<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a"
+															locale="us" />
+													</h:inputText>
+													<span class="input-group-addon"> <span
+														class="fa fa-calendar"></span>
+													</span>
+												</div>
 
-							<h:panelGroup rendered="#{emprunt.status.value == 'ouvert'}">
-								<tr class="info">
-									<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
-									<td>#{emprunt.sommeEmpruntee}</td>
-									<td><h:outputText value="#{emprunt.dateDeLemprunt}">
-											<f:convertDateTime locale="fr" timeStyle="short" type="both"
-												dateStyle="full" />
-										</h:outputText></td>
-									<td><h:outputText value="#{emprunt.dateDeRemboursement}">
-											<f:convertDateTime locale="fr" timeStyle="short" type="date"
-												dateStyle="full" />
-										</h:outputText></td>
-									<td>#{empruntBean.calculDuRemboursement(emprunt)}</td>
-									<td><a
-										style="font-size: 20px; margin-right: 10px; text-decoration: none;"
-										title="INFO" data-placement="bottom" data-html="true"
-										data-toggle="popover" data-trigger="hover"
-										data-content="La somme empruntée n´a pas encore été remmise. Mais le délai n´est pas dépassé donc NO STRESS ;)">
-											<i class="jaune fa fa-info-circle"></i>
-									</a> <h:commandLink styleClass="fa fa-edit" data-toggle="tooltip"
-											title="Editer ou effectuer le remboursement" action="#{empruntBean.editerOuRembourser(emprunt)}"
-											style="font-size: 20px; color:green; margin-right:10px;" >
-											<f:ajax execute="@this"/></h:commandLink>
+											</h:panelGroup> <h:outputText value="#{emprunt.dateDeRemboursement}"
+												rendered="#{not emprunt.editable}">
+												<f:convertDateTime locale="fr" timeStyle="short" type="date"
+													dateStyle="full" />
+											</h:outputText></td>
+										<td>#{empruntBean.calculDuRemboursement(emprunt)} €</td>
+										<td><a
+											style="font-size: 20px; margin-right: 10px; text-decoration: none;"
+											title="INFO" data-placement="bottom" data-html="true"
+											data-toggle="popover" data-trigger="hover"
+											data-content="La somme empruntée a été rembourser.">
+												<i class="jaune fa fa-info-circle"></i>
+										</a> <h:commandLink styleClass="fa fa-edit" data-toggle="tooltip"
+												title="Editer ou effectuer le remboursement"
+												action="#{empruntBean.setEmprunt(emprunt)}"
+												rendered="#{not emprunt.editable}"
+												onclick="$('#js_editerOuRembourserModal').modal('show');"
+												style="font-size: 20px; color:green; margin-right:10px;">
+												<f:ajax execute="@this"/>
+											</h:commandLink> <h:commandLink styleClass="fa fa-check"
+												data-toggle="tooltip" title="Sauvegarder l´edit"
+												rendered="#{emprunt.editable}"
+												action="#{empruntBean.sauvegarder()}"
+												style="font-size: 20px; color:green; margin-right:10px;">
+												<f:ajax execute="@all" render="@all" />
+											</h:commandLink> <h:commandLink styleClass="fa fa-archive"
+												data-toggle="tooltip" title="Archiver le remboursement"
+												style="font-size: 20px; color:#000; margin-right:10px;">
+											</h:commandLink> <h:commandLink styleClass="fa fa-remove"
+												data-toggle="tooltip" title="Suprimer le remboursement"
+												action="#{empruntBean.suprimerLeRemboursement(emprunt)}"
+												style="font-size: 20px; color:red; margin-right:10px;">
+												<f:ajax execute="@all" render="@all" />
+											</h:commandLink></td>
+									</tr>
+								</h:panelGroup>
+								<h:panelGroup
+									rendered="#{emprunt.status.value == 'dateDepassee'}">
+									<tr class="danger">
+										<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
+										<td><h:inputText class="form-control"
+												value="#{emprunt.sommeEmpruntee}"
+												rendered="#{emprunt.editable}"
+												a:placeholder="Somme empruntée">
+											</h:inputText> <h:outputText value="#{emprunt.sommeEmpruntee} €"
+												rendered="#{not emprunt.editable}" /></td>
 
-										<h:commandLink styleClass="fa fa-archive" 
-											data-toggle="tooltip" title="Archiver le remboursement"
-											style="font-size: 20px; color:#000; margin-right:10px;">
-										</h:commandLink> 
-										
-										<h:commandLink styleClass="fa fa-remove"
-											data-toggle="tooltip" title="Enlever le remboursement"
-											style="font-size: 20px; color:red; margin-right:10px;" /></td>
-									<td></td>
-								</tr>
-							</h:panelGroup>
-						</ui:repeat>
+										<td><h:outputText value="#{emprunt.dateDeLemprunt}">
+												<f:convertDateTime locale="fr" timeStyle="short" type="both"
+													dateStyle="full" />
+											</h:outputText></td>
 
-					</tbody>
-				</table>
+										<td><h:panelGroup rendered="#{emprunt.editable}">
+												<div class="input-group date">
+													<h:inputText class="form-control"
+														value="#{empruntBean.emprunt.dateDeRemboursement}"
+														a:placeholder="Date de remboursement">
+														<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a"
+															locale="us" />
+													</h:inputText>
+													<span class="input-group-addon"> <span
+														class="fa fa-calendar"></span>
+													</span>
+												</div>
+
+											</h:panelGroup> <h:outputText value="#{emprunt.dateDeRemboursement}"
+												rendered="#{not emprunt.editable}">
+												<f:convertDateTime locale="fr" timeStyle="short" type="date"
+													dateStyle="full" />
+											</h:outputText></td>
+
+										<td>#{empruntBean.calculDuRemboursement(emprunt)} €</td>
+
+										<td><a
+											style="font-size: 20px; margin-right: 10px; text-decoration: none;"
+											title="INFO" data-placement="bottom" data-html="true"
+											data-toggle="popover" data-trigger="hover"
+											data-content="le délai de remboursement est dépassé donc. Une amande à été enregistré et inclus dans la somme à rembourser;)">
+												<i class="jaune fa fa-info-circle"></i>
+
+										</a> <h:commandLink styleClass="fa fa-edit" data-toggle="tooltip"
+												title="Editer ou effectuer le remboursement"
+												action="#{empruntBean.setEmprunt(emprunt)}"
+												rendered="#{not emprunt.editable}"
+												onclick="$('#js_editerOuRembourserModal').modal('show');"
+												style="font-size: 20px; color:green; margin-right:10px;">
+												<f:ajax execute="@this"/>
+											</h:commandLink> <h:commandLink styleClass="fa fa-check"
+												data-toggle="tooltip" title="Sauvegarder l´edit"
+												rendered="#{emprunt.editable}"
+												action="#{empruntBean.sauvegarder()}"
+												style="font-size: 20px; color:green; margin-right:10px;">
+												<f:ajax execute="@all" render="@all" />
+											</h:commandLink> <h:commandLink styleClass="fa fa-archive"
+												data-toggle="tooltip" title="Archiver le remboursement"
+												style="font-size: 20px; color:#000; margin-right:10px;">
+											</h:commandLink> <h:commandLink styleClass="fa fa-remove"
+												data-toggle="tooltip" title="Suprimer le remboursement"
+												action="#{empruntBean.suprimerLeRemboursement(emprunt)}"
+												style="font-size: 20px; color:red; margin-right:10px;" >
+												<f:ajax execute="@all" render="@all" />
+											</h:commandLink></td>
+									</tr>
+								</h:panelGroup>
+
+								<h:panelGroup rendered="#{emprunt.status.value == 'ouvert'}">
+									<tr class="info">
+										<td>#{emprunt.membre.nom} #{emprunt.membre.prenom}</td>
+
+										<td><h:inputText class="form-control"
+												value="#{emprunt.sommeEmpruntee}"
+												rendered="#{emprunt.editable}"
+												a:placeholder="Somme empruntée">
+											</h:inputText> <h:outputText value="#{emprunt.sommeEmpruntee} €"
+												rendered="#{not emprunt.editable}" /></td>
+
+										<td><h:outputText value="#{emprunt.dateDeLemprunt}">
+												<f:convertDateTime locale="fr" timeStyle="short" type="both"
+													dateStyle="full" />
+											</h:outputText></td>
+
+										<td><h:panelGroup rendered="#{emprunt.editable}">
+												<div class="input-group date">
+													<h:inputText class="form-control"
+														value="#{empruntBean.emprunt.dateDeRemboursement}"
+														a:placeholder="Date de remboursement">
+														<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a"
+															locale="us" />
+													</h:inputText>
+													<span class="input-group-addon"> <span
+														class="fa fa-calendar"></span>
+													</span>
+												</div>
+
+											</h:panelGroup> <h:outputText value="#{emprunt.dateDeRemboursement}"
+												rendered="#{not emprunt.editable}">
+												<f:convertDateTime locale="fr" timeStyle="short" type="date"
+													dateStyle="full" />
+											</h:outputText></td>
+
+
+										<td>#{empruntBean.calculDuRemboursement(emprunt)} €</td>
+
+
+										<td><a
+											style="font-size: 20px; margin-right: 10px; text-decoration: none;"
+											title="INFO" data-placement="bottom" data-html="true"
+											data-toggle="popover" data-trigger="hover"
+											data-content="La somme empruntée n´a pas encore été remmise. Mais le délai n´est pas dépassé donc NO STRESS ;)">
+												<i class="jaune fa fa-info-circle"></i>
+										</a> <h:commandLink styleClass="fa fa-edit" data-toggle="tooltip"
+												title="Editer ou effectuer le remboursement"
+												action="#{empruntBean.setEmprunt(emprunt)}"
+												rendered="#{not emprunt.editable}"
+												onclick="$('#js_editerOuRembourserModal').modal('show');"
+												style="font-size: 20px; color:green; margin-right:10px;">
+												<f:ajax execute="@this"/>
+											</h:commandLink> <h:commandLink styleClass="fa fa-check"
+												data-toggle="tooltip" title="Sauvegarder l´edit"
+												rendered="#{emprunt.editable}"
+												action="#{empruntBean.sauvegarder()}"
+												style="font-size: 20px; color:green; margin-right:10px;">
+												<f:ajax execute="@all" render="@all" />
+											</h:commandLink> <h:commandLink styleClass="fa fa-archive"
+												data-toggle="tooltip" title="Archiver le remboursement"
+												style="font-size: 20px; color:#000; margin-right:10px;">
+											</h:commandLink> <h:commandLink styleClass="fa fa-remove"
+												data-toggle="tooltip" title="Suprimer le remboursement"
+												action="#{empruntBean.suprimerLeRemboursement(emprunt)}"
+												style="font-size: 20px; color:red; margin-right:10px;" >
+												<f:ajax execute="@all" render="@all" />
+											</h:commandLink></td>
+									</tr>
+								</h:panelGroup>
+							</ui:repeat>
+
+						</tbody>
+					</table>
+
+				</div>
 
 			</div>
-
-		</div>
 		</h:form>
 	</ui:define>
 

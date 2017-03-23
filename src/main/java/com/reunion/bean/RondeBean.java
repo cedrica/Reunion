@@ -35,7 +35,7 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 	private List<Membre> membresDelaNouvelleRonde;
 	private Ronde ronde;
 	private boolean rondeCreable;
-	
+
 	public void init() {
 		rondeService.startConversation();
 		rondes = rondeService.findAll();
@@ -54,6 +54,9 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 		this.ronde = ronde;
 	}
 
+	public void setMembreInserable(Membre membre) {
+		membre.setInserable(true);
+	}
 
 	public boolean getRondeCreable() {
 		return rondeCreable;
@@ -64,20 +67,44 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 		return Pages.RONDES;
 	}
 
-	public String enlever(Membre membre) {
+	public void creerUneRonde() {
+		ronde = new Ronde();
+		ronde.setMembres(new HashSet<Membre>());
+		for (Membre membre : membresDelaNouvelleRonde) {
+			membre.setInserable(false);
+		}
+		membresDelaNouvelleRonde.clear();
+	}
+
+	public void enlever(Membre membre) {
 		membresDelaNouvelleRonde.remove(membre);
 		membre.setInserable(false);
-		return Pages.RONDES;
 	}
 
-	public String ajouter(Membre membre) {
-		if (!membresDelaNouvelleRonde.contains(membre)) {
-			membresDelaNouvelleRonde.add(membre);
-			membre.setInserable(true);
+
+	public void ajouter() {
+		for (Membre membre : listeDesMembres) {
+			if (membre.getInserable()) {
+				if (!membresDelaNouvelleRonde.contains(membre))
+					membresDelaNouvelleRonde.add(membre);
+			}else{
+				membresDelaNouvelleRonde.remove(membre);
+			}
+
 		}
-		return Pages.RONDES;
 	}
 
+	public void ajouter(Membre membre) {
+		for (Membre membres : listeDesMembres) {
+			if (membres.getInserable()) {
+				if (!membresDelaNouvelleRonde.contains(membre))
+					membresDelaNouvelleRonde.add(membre);
+			}else{
+				membresDelaNouvelleRonde.remove(membre);
+			}
+
+		}
+	}
 	public List<Membre> getMembresDelaNouvelleRonde() {
 		return membresDelaNouvelleRonde;
 	}
@@ -106,27 +133,30 @@ public class RondeBean extends AbstractModalBean<Ronde> implements Serializable 
 
 		return false;
 	}
-	
-	public String convertToMonthYear (Date dt){
-		if(dt != null){
+
+	public String convertToMonthYear(Date dt) {
+		if (dt != null) {
 			return CalendarUtils.getMonthYear(dt);
 		}
 		return null;
 	}
 
 	public String sauvegarderLaRondeCreer() {
-//		if (ronde.getDebutDeLaRonde().after(ronde.getFinDeLaRonde())) {
-//			Helper.showError("La fin de la ronde doit venir après son début", "compareDate");
-//			return Pages.SELF;
-//		}
-//		int nombreDeparticipants = membresDelaNouvelleRonde.size();
-//		long ecartDeMois = CalendarUtils.monthsDifference(CalendarUtils.DateToLocalDate(ronde.getDebutDeLaRonde()),
-//				CalendarUtils.DateToLocalDate(ronde.getFinDeLaRonde()));
-//		if (nombreDeparticipants != ecartDeMois) {
-//			Helper.showError("Le nombre de participants doit correspondre au nombre de tour de la ronde",
-//					"compareDate");
-//			return Pages.SELF;
-//		}
+		// if (ronde.getDebutDeLaRonde().after(ronde.getFinDeLaRonde())) {
+		// Helper.showError("La fin de la ronde doit venir après son début",
+		// "compareDate");
+		// return Pages.SELF;
+		// }
+		// int nombreDeparticipants = membresDelaNouvelleRonde.size();
+		// long ecartDeMois =
+		// CalendarUtils.monthsDifference(CalendarUtils.DateToLocalDate(ronde.getDebutDeLaRonde()),
+		// CalendarUtils.DateToLocalDate(ronde.getFinDeLaRonde()));
+		// if (nombreDeparticipants != ecartDeMois) {
+		// Helper.showError("Le nombre de participants doit correspondre au
+		// nombre de tour de la ronde",
+		// "compareDate");
+		// return Pages.SELF;
+		// }
 		setRondeCreable(false);
 		ronde.setMembres((new HashSet<>(membresDelaNouvelleRonde)));
 		rondeService.createRonde(ronde);

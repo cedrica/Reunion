@@ -90,10 +90,13 @@
 								value="Créer un nouveau groupe" />
 						</c:when>
 						<c:when test="${pageTitle == 'Rondes'}">
-							<h:commandButton class="btn btn-primary pull-right"
-								action="#{rondeBean.setRondeCreable(true)}"
+							<h:commandLink class="btn btn-primary pull-right"
+								action="#{rondeBean.creerUneRonde()}"
+								onclick="$('#js_creerUneRondeModal').modal('show');"
+									immediate="true"
 								value="Créer une ronde">
-							</h:commandButton>
+								<f:ajax execute="@this" render=":creerUnEmpruntForm" />
+							</h:commandLink>
 						</c:when>
 						<c:when test="${pageTitle == 'Emprunts'}">
 							<h:commandLink value="Créer un emprunt"

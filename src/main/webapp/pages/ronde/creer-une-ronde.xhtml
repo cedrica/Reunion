@@ -19,24 +19,30 @@
 			<div class="col-md-6" style="overflow: scroll; height: 400px;">
 				<table>
 					<c:forEach var="membre" items="#{rondeBean.listeDesMembres}">
+
 						<tr>
 							<td><h:outputLabel style="margin-bottom:15px;"
 									value="#{membre.nom} #{membre.prenom}" /></td>
 							<td><h:inputText a:placeholder="cotisation"
 									class="form-control input-small" id="ip_#{membre.id}_membre_co"
-									required="true" requiredMessage="cotisation obligatiore"
 									style="margin-left:15px;margin-right:15px;margin-bottom:15px;"
 									value="#{membre.trafique.cotisation}" /> <h:message
 									for="ip_#{membre.id}_membre_co" style="color:red"
 									id="ip_#{membre.id}_membre_coOut" /></td>
-							<td><h:inputText a:placeholder="Date de bouffe"
-									id="ip_#{membre.id}_membre_dp"
-									requiredMessage="Date de Bouffe obligatoire"
-									class="form-control input-small" required="true"
-									value="#{membre.trafique.dateDeBouffe}"
-									style="margin-left:25px;margin-right:15px;margin-bottom:15px;">
-									<f:convertDateTime pattern="dd/mm/yyyy" />
-								</h:inputText> <h:message for="ip_#{membre.id}_membre_dp" style="color:red"
+							<td><div class="input-group date"
+									id="dateDeRemboursement_dp">
+									<h:inputText id="ip_#{membre.id}_membre_dp"
+										class="form-control input-small" required="true"
+										value="#{membre.trafique.dateDeBouffe}"
+										a:placeholder="Date de bouffe"
+										style="margin-left:25px;margin-right:15px;margin-bottom:15px;">
+										<f:convertDateTime pattern="MMM d, yyyy hh:mm:ss a"
+											locale="us" />
+									</h:inputText>
+									<span class="input-group-addon"> <span
+										class="fa fa-calendar"></span>
+									</span>
+								</div> <h:message for="ip_#{membre.id}_membre_dp" style="color:red"
 									id="ip_#{membre.id}_membre_dbOut" /></td>
 							<td>
 								<div class="btn-toolbar">

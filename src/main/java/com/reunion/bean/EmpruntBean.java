@@ -8,7 +8,6 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +16,11 @@ import com.reunion.business.MembreService;
 import com.reunion.business.RondeService;
 import com.reunion.common.Pages;
 import com.reunion.enums.StatusDeRemboursement;
+import com.reunion.helper.ModelInitializer;
 import com.reunion.model.Emprunt;
 import com.reunion.model.Membre;
 import com.reunion.model.Ronde;
+import com.reunion.util.CalendarUtils;
 
 @ConversationScoped
 @Named
@@ -34,9 +35,7 @@ public class EmpruntBean implements Serializable {
 	private List<Ronde> rondes;
 	private Emprunt emprunt;
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
-	private boolean editerOuRembourser;
-	private boolean empruntCreer;
-	
+
 	@Inject
 	private EmpruntService empruntService;
 	@Inject
@@ -49,18 +48,19 @@ public class EmpruntBean implements Serializable {
 		if (membres == null) {
 			membres = membreService.findAll();
 		}
-		if (emprunts == null || emprunts.isEmpty() || empruntCreer) {
-			emprunts = empruntService.toutLesEmprunts();
-			;
+		emprunts = empruntService.toutLesEmprunts();
+		for (Emprunt emprunt : emprunts) {
+			if(CalendarUtils.date1BeforeDate2(new Date(), emprunt.getDateDeRemboursement(),true)){
+				emprunt.setStatus(StatusDeRemboursement.DATE_DEPASSEE);
+			}
 		}
 		if (rondes == null) {
 			rondes = rondeService.findAll();
 		}
-		
-		//for editing case
-		if(emprunt == null){
-			emprunt = new Emprunt();
-			emprunt.setMembre(new Membre());
+
+		// for editing case
+		if (emprunt == null) {
+			emprunt = ModelInitializer.initEmprunt();
 		}
 	}
 
@@ -96,39 +96,39 @@ public class EmpruntBean implements Serializable {
 		this.membres = membres;
 	}
 
-	
-	public boolean getEditerOuRembourser() {
-		return editerOuRembourser;
-	}
-
-	public void setEditerOuRembourser(boolean editerOuRembourser) {
-		this.editerOuRembourser = editerOuRembourser;
+	public String goToEmprunt() {
+		return Pages.EMPRUNT;
 	}
 
 	public void creerUnEmprunt() {
-		empruntCreer = false;
-		setEditerOuRembourser(false);
-		emprunt = new Emprunt();
-		emprunt.setMembre(new Membre());
+		emprunt = ModelInitializer.initEmprunt();
+		emprunt.setStatus(StatusDeRemboursement.OUVERT);
 	}
-	
-	public void editerOuRembourser(Emprunt emprunt){
-		setEditerOuRembourser(true);
-		setEmprunt(emprunt);
-		// call modal window vie Request context in order to run javascript after Bean method
-		RequestContext.getCurrentInstance().execute("$('#js_creerEmpruntModal').modal('show');");
 
+	public String rembourser(boolean activer) {
+		StatusDeRemboursement statusDeRemboursement = (activer) ? StatusDeRemboursement.REMBOURSE
+				: StatusDeRemboursement.OUVERT;
+		Date dateDeRemboursement = (activer)? new Date():emprunt.getDateDeRemboursement();
+		this.emprunt.setDateDeRemboursement(dateDeRemboursement);
+		this.emprunt.setStatus(statusDeRemboursement);
+		sauve();
+		return Pages.EMPRUNT;
 	}
-	
-	public Float calculDuBenefice(){
+
+	public Float calculDuBenefice() {
 		return null;
+	}
+
+	public String empruntEditable(boolean editable) {
+		this.emprunt.setEditable(editable);
+		return Pages.EMPRUNT;
 	}
 
 	public Float calculDuFondDeCaisse() {
 		Float fondDeCaisse = 0f;
 		for (Membre membre : membres) {
-			if (membre.getTrafique() != null){
-				if(membre.getTrafique().getFondDeCaisse() != null){
+			if (membre.getTrafique() != null) {
+				if (membre.getTrafique().getFondDeCaisse() != null) {
 					fondDeCaisse += membre.getTrafique().getFondDeCaisse();
 				}
 			}
@@ -137,19 +137,27 @@ public class EmpruntBean implements Serializable {
 	}
 
 	public Float calculDuRemboursement(Emprunt emprunt) {
-		return (emprunt != null)? (emprunt.getSommeEmpruntee() + emprunt.getSommeEmpruntee()*0.02f):null;
+		return (emprunt != null) ? (emprunt.getSommeEmpruntee() + emprunt.getSommeEmpruntee() * 0.02f) : null;
+	}
+
+	public String suprimerLeRemboursement(Emprunt emprunt){
+		empruntService.delete(emprunt.getId());
+		return Pages.EMPRUNT;
 	}
 
 	public String sauvegarder() {
-		emprunt.setDateDeLemprunt(new Date());// aujourdhui
-		emprunt.setStatus(StatusDeRemboursement.OUVERT);
-		Emprunt create = empruntService.create(emprunt);
-		if (create != null) {
-			LOG.info("l´Eprunt " + create.toString() + " a été creer");
+		emprunt.setEditable(false); //toujours
+		if(emprunt.getStatus() == StatusDeRemboursement.OUVERT){
+			emprunt.setDateDeLemprunt(new Date());// aujourdhui
 		}
-		empruntCreer = true;	
-		emprunt = new Emprunt();
-		emprunt.setMembre(new Membre());
+		sauve();
 		return Pages.EMPRUNT;
+	}
+
+	private void sauve() {
+		Emprunt res = empruntService.create(emprunt);
+		if (res != null) {
+			LOG.info("l´Eprunt " + res.toString() + " a été creer");
+		}
 	}
 }

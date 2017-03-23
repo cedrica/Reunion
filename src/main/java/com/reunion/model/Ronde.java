@@ -36,7 +36,7 @@ public class Ronde implements Serializable {
 	@Column(name = "finDeLaRonde")
 	private Date finDeLaRonde;
 
-	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH })
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH })
 	private Set<Membre> membres = new HashSet<Membre>();
 
 	public Long getId() {

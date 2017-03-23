@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "Membre")
@@ -42,7 +41,7 @@ public class Membre implements Serializable {
 	private Contact contact;
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH, CascadeType.REMOVE})
+			CascadeType.REFRESH})
 	private Groupe groupe;
 
 	@Column(length = 50, name = "motDePass")

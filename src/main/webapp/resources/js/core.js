@@ -23,9 +23,14 @@ com.reunion.Page = function() {
 	}
 
 	var initDatePicker = function() {
-		$("div[id$='_dp']").each(function() {
+		$(".date").each(function() {
 			$(this).datetimepicker({
 				format : 'MMM D, YYYY hh:mm:ss a',
+			});
+		});
+		$("input[id$='_dp']").each(function() {
+			$(this).datepicker({
+				format : 'mm d, yyyy hh:mm:ss a',
 			});
 		});
 	}

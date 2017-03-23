@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<ui:param name="pageTitle" value="Emprunts" />
+
+
+	<ui:define name="main">
+		<h:form>
+			<h:outputStylesheet library="customcss" name="emprunts.css" />
+			<div class="row">
+				<div class="col-lg-6">
+				</div>
+				<div class="col-lg-6">
+									 <h:commandLink styleClass="fa fa-check" value="Retouner" action="#{empruntBean.goToEmprunt()}">
+									 <f:ajax execute="@this"/></h:commandLink>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
