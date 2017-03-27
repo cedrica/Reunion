@@ -137,13 +137,13 @@ public class EmpruntBean implements Serializable {
 
 	public Float calculDuFondDeCaisse() {
 		Float fondDeCaisse = 0f;
-		for (Membre membre : membres) {
-			if (membre.getTrafique() != null) {
-				if (membre.getTrafique().getFondDeCaisse() != null) {
-					fondDeCaisse += membre.getTrafique().getFondDeCaisse();
-				}
-			}
-		}
+//		for (Membre membre : membres) {
+//			if (membre.getTrafique() != null) {
+//				if (membre.getTrafique().getFondDeCaisse() != null) {
+//					fondDeCaisse += membre.getTrafique().getFondDeCaisse();
+//				}
+//			}
+//		}
 		return fondDeCaisse;
 	}
 

@@ -18,7 +18,6 @@ public class ModelInitializer {
 		Groupe groupe = new Groupe();
 		groupe.setMembres(new HashSet<Membre>());
 		membre.setGroupe(groupe);
-		membre.setTrafique(new Trafique());
 		return membre;
 	}
 	

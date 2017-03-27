@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
@@ -59,7 +60,6 @@ public class LoginBean implements Serializable {
 			membre.setNom("Leumaleu");
 			membre.setPrenom("Cedric");
 			
-			membre.setTrafique(new Trafique());
 			Adresse adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);
@@ -81,7 +81,6 @@ public class LoginBean implements Serializable {
 			membre.setNom("Kemoue");
 			membre.setPrenom("Silas");
 
-			membre.setTrafique(new Trafique());
 			adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);
@@ -103,7 +102,6 @@ public class LoginBean implements Serializable {
 			membre.setNom("Komge");
 			membre.setPrenom("marc");
 
-			membre.setTrafique(new Trafique());
 			adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);

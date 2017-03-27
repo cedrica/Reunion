@@ -12,6 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import com.reunion.model.Membre;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "Trafique")
@@ -44,6 +47,9 @@ public class Trafique implements Serializable {
 
 	@Column(length = 10, name = "rang")
 	private int rang;
+
+	@OneToOne(cascade = CascadeType.MERGE)
+	private Membre membre;
 
 	public Long getId() {
 		return this.id;
@@ -134,16 +140,19 @@ public class Trafique implements Serializable {
 		this.rang = rang;
 	}
 
+	public Membre getMembre() {
+		return membre;
+	}
+
+	public void setMembre(Membre membre) {
+		this.membre = membre;
+	}
+
 	@Override
 	public String toString() {
 		String result = getClass().getSimpleName() + " ";
-		if (id != null)
-			result += "id: " + id;
-		result += ", version: " + version;
 		if (fondDeCaisse != null)
-			result += ", fondDeCaisse: " + fondDeCaisse;
-		if (dateDeBouffe != null)
-			result += ", dateDeBouffe: " + dateDeBouffe;
+			result += "fondDeCaisse: " + fondDeCaisse;
 		if (ristourne != null)
 			result += ", ristourne: " + ristourne;
 		if (supplement != null)

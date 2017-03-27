@@ -6,6 +6,7 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.reunion.model.Membre;
@@ -24,4 +25,10 @@ public class StaticDAO {
 		List<Membre> results = query.getResultList();
 		return (results != null && !results.isEmpty())? results.get(0):null;
 	}
+	public <T> T executeCustomQuery(String customQuery, Class clazz) {
+		TypedQuery<T> query = entityManager.createQuery(customQuery,clazz);
+		List<T> results = query.getResultList();
+		return (results != null && !results.isEmpty())? results.get(0):null;
+	}
+	
 }

@@ -3,6 +3,7 @@ package com.reunion.common;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -10,7 +11,9 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
+import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
+import com.reunion.model.Trafique;
 
 public class Helper {
 
@@ -57,18 +60,26 @@ public class Helper {
 
 	}
 
-	public static boolean coherance(List<Membre> membresDelaNouvelleRonde, List<Integer> listeDesRangs) {
+	public static boolean coherance(List<Trafique> trafiquesDelaNouvelleRonde, List<Integer> listeDesRangs) {
 		List<Integer> helper = new ArrayList<>();
-		if (membresDelaNouvelleRonde == null || listeDesRangs == null || membresDelaNouvelleRonde.isEmpty()
+		if (trafiquesDelaNouvelleRonde == null || listeDesRangs == null || trafiquesDelaNouvelleRonde.isEmpty()
 				|| listeDesRangs.isEmpty())
 			return false;
-		for (Membre membre : membresDelaNouvelleRonde) {
-			if (!helper.contains(membre.getTrafique().getRang())) {
-				helper.add(membre.getTrafique().getRang());
+		for (Trafique trafique : trafiquesDelaNouvelleRonde) {
+			if (!helper.contains(trafique.getRang())) {
+				helper.add(trafique.getRang());
 			} else {
 				return false;
 			}
 		}
 		return true;
 	}
+
+	public static List<Membre> trouveLesMembreDuGroupe(List<Membre> listeDesMembres, Groupe groupe) {
+		listeDesMembres =  listeDesMembres.stream().filter(membre->{
+			return (membre.getGroupe() != null)?membre.getGroupe().getId() == groupe.getId():false;
+		}).collect(Collectors.toList());
+		return listeDesMembres;
+	}
+
 }

@@ -16,12 +16,17 @@ import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.reunion.business.GroupeService;
 import com.reunion.business.MembreService;
 import com.reunion.business.RondeService;
+import com.reunion.business.TrafiqueService;
 import com.reunion.common.Helper;
 import com.reunion.common.Pages;
+import com.reunion.dao.StaticDAO;
+import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
 import com.reunion.model.Ronde;
+import com.reunion.model.Trafique;
 import com.reunion.util.CalendarUtils;
 
 @Named
@@ -31,57 +36,77 @@ public class RondeBean implements Serializable {
 	@Inject
 	private RondeService rondeService;
 	@Inject
-	MembreService membreService;
+	private GroupeService groupeService;
+	@Inject
+	private StaticDAO staticDAO;
+	@Inject
+	private MembreService membreService;
+	@Inject 
+	private TrafiqueService trafiqueService;
 	private List<Ronde> rondes;
+	private List<Groupe> groupes;
 	private static final long serialVersionUID = 1L;
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
-	protected List<Membre> listeDesMembres;
-	private List<Membre> membresDelaNouvelleRonde;
+	private List<Trafique> trafiquesDelaNouvelleRonde;
+	
 	private Ronde ronde;
-	private Membre membreSelectionner;
+	private Groupe groupe;
 	private boolean isEditModus;
+	private Trafique trafique;
+	private List<Trafique> listeDesTrafiques;
+
+	private List<Membre> listeDesMembres;
 
 	public void init() {
 		rondeService.startConversation();
 		rondes = rondeService.findAll();
 		LOG.info("RondeBean a été initialiser" + rondes.size() + " rondes ont été télécharger");
 		listeDesMembres = membreService.findAll();
-		if (membresDelaNouvelleRonde == null)
-			membresDelaNouvelleRonde = new ArrayList<>();
+		if (trafiquesDelaNouvelleRonde == null)
+			trafiquesDelaNouvelleRonde = new ArrayList<>();
 		ronde = new Ronde();
+		groupes = groupeService.findAll(Groupe.class);
+
 	}
 
-	public Membre getMembreSelectionner() {
-		return membreSelectionner;
+	public List<Trafique> getTrafiquesDelaNouvelleRonde() {
+		return trafiquesDelaNouvelleRonde;
 	}
 
-	public void setMembreSelectionner(Membre membreSelectionner) {
-		this.membreSelectionner = membreSelectionner;
+	public List<Trafique> getListeDesTrafiques() {
+		return listeDesTrafiques;
+	}
+
+	public Trafique getTrafique() {
+		return trafique;
+	}
+
+	public void setTrafique(Trafique trafique) {
+		this.trafique = trafique;
+	}
+
+	public List<Groupe> getGroupes() {
+		return groupes;
+	}
+
+	public Groupe getGroupe() {
+
+		return groupe;
+	}
+
+	public void setGroupe(Groupe groupe) {
+		listeDesTrafiques = new ArrayList<Trafique>();
+		List<Membre> membres = Helper.trouveLesMembreDuGroupe(listeDesMembres, groupe);
+		for (Membre m : membres) {
+			trafique = new Trafique();
+			trafique.setMembre(m);
+			listeDesTrafiques.add(trafique);
+		}
+		this.groupe = groupe;
 	}
 
 	public Ronde getRonde() {
 		return ronde;
-	}
-
-	public String actualiserLeMembre(Ronde ronde) {
-		membreSelectionner.setEditable(false);
-		ronde.getMembres().add(membreSelectionner);// merge automatic because
-													// many to many relationship
-		rondeService.createRonde(ronde);
-		isEditModus = false;
-		return Pages.RONDES;
-	}
-
-	public String setEditable(Membre membre, boolean b) {
-		setMembreSelectionner(membre);
-		membreSelectionner.setEditable(b);
-		if (isEditModus) {
-			RequestContext.getCurrentInstance().execute(
-					"alert('Vous ne pouvez éditer deux objects en même temps. veuillez finir avec le premier avant d´attaquer le second');");
-			return Pages.SELF;
-		}
-		isEditModus = true;
-		return Pages.RONDES;
 	}
 
 	public void setRonde(Ronde ronde) {
@@ -90,66 +115,6 @@ public class RondeBean implements Serializable {
 
 	public void setMembreInserable(Membre membre) {
 		membre.setInserable(true);
-	}
-
-	public void creerUneRonde() {
-		ronde = new Ronde();
-		ronde.setMembres(new HashSet<Membre>());
-		membresDelaNouvelleRonde.clear();
-		RequestContext.getCurrentInstance().execute("$('#js_creerUneRondeModal').modal('show');");
-	}
-
-	public void enlever(Membre membre) {
-		membresDelaNouvelleRonde.remove(membre);
-		membre.setInserable(false);
-	}
-
-	public void ajouter() {
-		for (Membre membre : listeDesMembres) {
-			if (membre.getInserable()) {
-				if (!membresDelaNouvelleRonde.contains(membre))
-					membresDelaNouvelleRonde.add(membre);
-			} else {
-				membresDelaNouvelleRonde.remove(membre);
-			}
-
-		}
-	}
-
-	public String enleverDelaRonde(Ronde ronde, Membre membre) {
-
-		for (Ronde r : rondes) {
-			if (r.getId() == ronde.getId()) {
-				r.getMembres().remove(membre);
-				if (r.getMembres().size() == 0) {
-					rondeService.delete(r.getId());
-				}
-				break;
-			}
-		}
-		return Pages.RONDES;
-	}
-
-	public void ajouter(Membre membre) {
-		if (!membresDelaNouvelleRonde.contains(membre)) {
-			membresDelaNouvelleRonde.add(membre);
-		}
-	}
-
-	public List<Membre> getMembresDelaNouvelleRonde() {
-		return membresDelaNouvelleRonde;
-	}
-
-	public void setMembresDelaNouvelleRonde(List<Membre> membresDelaNouvelleRonde) {
-		this.membresDelaNouvelleRonde = membresDelaNouvelleRonde;
-	}
-
-	public List<Membre> getListeDesMembres() {
-		return listeDesMembres;
-	}
-
-	public void setListeDesMembres(List<Membre> listeDesMembres) {
-		this.listeDesMembres = listeDesMembres;
 	}
 
 	public List<Ronde> getRondes() {
@@ -172,41 +137,124 @@ public class RondeBean implements Serializable {
 		return null;
 	}
 
+	public boolean appartientARonde(Ronde ronde) {
+
+		return (this.ronde != null) ? this.ronde.getId() == ronde.getId() : false;
+	}
+
+	public float calculDeLaRistourne(Trafique trafique, Ronde ronde) {
+		if (trafique == null || ronde == null)
+			return 0;
+		List<Trafique> trafiquesDeLaRonde = new ArrayList<>(ronde.getTrafiques());
+		double somme = trafiquesDelaNouvelleRonde.stream().filter(t -> t != null && t.getCotisation() != null)
+				.mapToDouble(t -> t.getCotisation()).sum();
+
+		if (trafiquesDeLaRonde != null && !trafiquesDeLaRonde.isEmpty()) {
+			for (Trafique t : trafiquesDeLaRonde) {
+				if (t.getId() == trafique.getId())
+					continue;
+				if (t.getCotisation() != null && (t.getCotisation() > trafique.getCotisation())) {
+					somme -= (t.getCotisation() - trafique.getCotisation());
+				}
+			}
+		}
+		return (float) somme;
+	}
+
 	public String sauvegarderLaRondeCreer() {
 		LocalDate debut = CalendarUtils.DateToLocalDate(ronde.getDebutDeLaRonde());
 		LocalDate premierDuMoi = debut.with(TemporalAdjusters.firstDayOfMonth());
 		ronde.setDebutDeLaRonde(CalendarUtils.localDateToDate(premierDuMoi));
-		LocalDate fin = premierDuMoi.plusMonths(membresDelaNouvelleRonde.size() - 1);
+		LocalDate fin = premierDuMoi.plusMonths(trafiquesDelaNouvelleRonde.size() - 1);
 		ronde.setFinDeLaRonde(CalendarUtils.localDateToDate(fin));
-		if (membresDelaNouvelleRonde.isEmpty()) {
+		if (trafiquesDelaNouvelleRonde.isEmpty()) {
 			Helper.showError("Aucun membre n´a été ajouté", "compareDate");
 			return Pages.SELF;
 		}
 
-		if (!Helper.coherance(membresDelaNouvelleRonde, listeDesRangs())) {
+		if (!Helper.coherance(trafiquesDelaNouvelleRonde, listeDesRangs())) {
 			Helper.showError("L´attribution des rangs de bouffe aux membres n´est pas coherante. Veuillez recommencer",
 					"compareDate");
-			membresDelaNouvelleRonde.clear();
+			trafiquesDelaNouvelleRonde.clear();
 			return Pages.SELF;
 		}
-		membreService.startConversation();
-		for (Membre membre : membresDelaNouvelleRonde) {
-			membre.getTrafique().setDateDeBouffe(
-					CalendarUtils.localDateToDate(premierDuMoi.plusMonths(membre.getTrafique().getRang() - 1)));
-			membreService.createMembre(membre);// update
-
+		for (Trafique trafique : trafiquesDelaNouvelleRonde) {
+			trafique.setDateDeBouffe(CalendarUtils.localDateToDate(premierDuMoi.plusMonths(trafique.getRang() - 1)));
 		}
-		ronde.setMembres((new HashSet<>(membresDelaNouvelleRonde)));
+		
+		for(Trafique trafique : trafiquesDelaNouvelleRonde){
+			trafiqueService.create(trafique);
+		}
+		ronde.setTrafiques(new HashSet<Trafique>(trafiquesDelaNouvelleRonde));
 		rondeService.createRonde(ronde);
 		return Pages.RONDES;
 	}
 
+	public void creerUneRonde() {
+		ronde = new Ronde();
+		trafique = new Trafique();
+		ronde.setTrafiques(new HashSet<Trafique>());
+		trafiquesDelaNouvelleRonde.clear();
+		RequestContext.getCurrentInstance().execute("$('#js_creerUneRondeModal').modal('show');");
+	}
+
 	public List<Integer> listeDesRangs() {
 		List<Integer> result = new ArrayList<>();
-		for (int j = 1; j <= listeDesMembres.size(); j++) {
+		for (int j = 1; j <= listeDesTrafiques.size(); j++) {
 			result.add(j);
 		}
 		return result;
 	}
 
+	public String actualiserLeTrafique(Trafique trafique) {
+		ronde.getTrafiques().add(trafique);// merge automatic because
+		rondeService.createRonde(ronde);
+		isEditModus = false;
+		return Pages.RONDES;
+	}
+
+	public String setEditable(Ronde ronde, Membre membre) {
+		setRonde(ronde);
+		if (isEditModus) {
+			RequestContext.getCurrentInstance().execute(
+					"alert('Vous ne pouvez éditer deux objects en même temps. veuillez finir avec le premier avant d´attaquer le second');");
+			return Pages.SELF;
+		}
+		isEditModus = true;
+		return Pages.RONDES;
+	}
+
+	public void enleverTrafique(Trafique trafique) {
+		trafiquesDelaNouvelleRonde.remove(trafique);
+	}
+
+	public String enleverDelaRonde(Ronde ronde, Trafique trafique) {
+		for (Ronde r : rondes) {
+			if (r.getId() == ronde.getId()) {
+				r.getTrafiques().remove(trafique);
+				if (r.getTrafiques().size() == 0) {
+					rondeService.delete(r.getId());
+				} else {
+					rondeService.create(r);
+				}
+				break;
+			}
+		}
+		return Pages.RONDES;
+	}
+
+	public void ajouterTrafique(Trafique trafique) {
+		if (trafiquesDelaNouvelleRonde.size() < 1) {
+			trafiquesDelaNouvelleRonde.add(trafique);
+			return;
+		}
+		boolean present = false;
+		for (Trafique t : trafiquesDelaNouvelleRonde) {
+			if (t.getMembre().getId() == trafique.getMembre().getId()) {
+				present = true;
+			}
+		}
+		if (!present)
+			trafiquesDelaNouvelleRonde.add(trafique);
+	}
 }

@@ -25,42 +25,43 @@
 								<th>Membre</th>
 								<th>Cotisation</th>
 								<th>ristourne</th>
-								<th>Date de bouffe</th>
 								<th>Supplement</th>
+								<th>Date de bouffe</th>
+								
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
-							<ui:repeat var="membre" value="#{ronde.membres.toArray()}">
+							<ui:repeat var="trafique" value="#{ronde.trafiques.toArray()}">
 								<tr>
-									<td>#{membre.nom} #{membre.prenom}</td>
-									<td><h:panelGroup rendered="#{not membre.editable}">#{membre.trafique.cotisation}</h:panelGroup>
+									<td>#{trafique.membre.nom} #{trafique.membre.prenom}</td>
+									<td><h:panelGroup rendered="#{not membre.editable}">#{trafique.cotisation} €</h:panelGroup>
 										<h:panelGroup rendered="#{membre.editable}">
 											<h:inputText a:placeholder="cotisation" id="cotisation"
 												class="form-control input-small"
-												value="#{rondeBean.membreSelectionner.trafique.cotisation}" />
+												value="#{rondeBean.trafique.cotisation}" />
 										</h:panelGroup></td>
-									<td>#{membre.trafique.ristourne}</td>
-									<td><h:outputText value="#{membre.trafique.dateDeBouffe}">
+									<td>#{rondeBean.calculDeLaRistourne(trafique, ronde)} €</td>
+									<td>#{trafique.supplement}</td>
+									<td><h:outputText value="#{trafique.dateDeBouffe}">
 											<f:convertDateTime locale="fr" timeStyle="short" type="date"
 												dateStyle="full" />
 										</h:outputText></td>
-									<td>#{membre.trafique.supplement}</td>
 									<td><h:commandLink styleClass="fa fa-edit"
 											data-toggle="tooltip"
 											title="Editer ou effectuer le remboursement"
-											action="#{rondeBean.setEditable(membre,true)}"
+											action="#{rondeBean.setEditable(ronde,trafique,true)}"
 											rendered="#{not membre.editable}"
 											style="font-size: 20px; color:green; margin-right:10px;">
 											<f:ajax execute="@this" />
 										</h:commandLink> <h:commandLink styleClass="fa fa-check" data-toggle="tooltip"
-											title="Sauvegarder l´edit" rendered="#{membre.editable}"
-											action="#{rondeBean.actualiserLeMembre(ronde)}"
+											title="Sauvegarder l´edit" rendered="#{membre.editable and rondeBean.appartientARonde(ronde)}"
+											action="#{rondeBean.actualiserLeTrafique(trafique)}"
 											style="font-size: 20px; color:green; margin-right:10px;">
 											<f:ajax execute="@this cotisation" render="@all" />
 										</h:commandLink> <h:commandLink styleClass="fa fa-remove"
 											data-toggle="tooltip" title="Enlever ce membre de la ronde"
-											action="#{rondeBean.enleverDelaRonde(ronde, membre)}"
+											action="#{rondeBean.enleverDelaRonde(ronde, trafique)}"
 											style="font-size: 20px; color:red; margin-right:10px;">
 											<f:ajax execute="@this" render="@all" />
 										</h:commandLink></td>

@@ -76,6 +76,7 @@ public class GenericDAO<T> {
 		}
 	}
 	
+
 	public List<T> findAll(Class<T> clazz) {
 		CriteriaQuery<T> criteria = this.entityManager.getCriteriaBuilder().createQuery(clazz);
 		return this.entityManager.createQuery(criteria.select(criteria.from(clazz))).getResultList();

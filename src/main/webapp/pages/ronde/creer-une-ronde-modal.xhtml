@@ -24,6 +24,23 @@
 							<h:messages style="color:red" id="compareDate" />
 						</div>
 					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<h:selectOneMenu id="groupe" required="true"
+									requiredMessage="groupe obligatoire"
+									value="#{rondeBean.groupe}" class="form-control"
+									converter="#{groupeConverter}">
+									<f:selectItem itemLabel="-- choisir un groupe --" />
+									<f:selectItems value="#{rondeBean.groupes}" />
+									<f:ajax execute="@this" render="membres" />
+								</h:selectOneMenu>
+
+								<h:message for="groupe" style="color:red" id="groupeOut" />
+							</div>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -43,39 +60,44 @@
 									id="debutDeLaRonde_dpOut" />
 							</div>
 						</div>
-						<div class="col-md-6">
-						</div>
+						<div class="col-md-6"></div>
 					</div>
 					<div style="height: 20px;"></div>
 					<div class="row">
 						<div class="col-md-12">
-							<table>
-								<ui:repeat var="membre" value="#{rondeBean.listeDesMembres}">
-									<tr>
-										<td><h:outputText style="margin-bottom:15px;"
-												value="#{membre.nom} #{membre.prenom}" /></td>
-										<td><h:inputText a:placeholder="cotisation"
-												id="cotisation" class="form-control input-small"
-												style="margin-left:15px;margin-right:15px;margin-bottom:15px;"
-												value="#{membre.trafique.cotisation}" /> <h:message
-												style="color:red" for="cotisation" id="cotisationIdOut" /></td>
-										<td><h:selectOneMenu
-												style="margin-left: 25px; margin-right: 15px; margin-bottom: 15px;"
-												value="#{membre.trafique.rang}" id="rang"
-												class="form-control">
-												<f:selectItems value="#{rondeBean.listeDesRangs()}" />
-											</h:selectOneMenu></td>
-										<td><div class="input-group"
-												style="margin-left: 35px; margin-bottom: 15px;">
-												<h:commandLink value=" Ajouter"
-													class="btn btn-primary fa fa-plus"
-													action="#{rondeBean.ajouter(membre)}">
-													<f:ajax execute="@this cotisation dateDeBouffe rang" />
-												</h:commandLink>
-											</div></td>
-									</tr>
-								</ui:repeat>
-							</table>
+							<h:panelGroup id="membres">
+								<h:panelGroup rendered="#{rondeBean.groupe != null}">
+									<table>
+										<ui:repeat var="trafique" value="#{rondeBean.listeDesTrafiques}">
+											<tr>
+												<td><h:outputText style="margin-bottom:15px;"
+														value="#{trafique.membre.nom} #{trafique.membre.prenom}" /></td>
+												<td><h:inputText a:placeholder="cotisation"
+														id="cotisation" class="form-control input-small"
+														style="margin-left:15px;margin-right:15px;margin-bottom:15px;"
+														value="#{trafique.cotisation}" /> <h:message
+														style="color:red" for="cotisation" id="cotisationIdOut" /></td>
+												<td><h:selectOneMenu
+														style="margin-left: 25px; margin-right: 15px; margin-bottom: 15px;"
+														value="#{trafique.rang}" id="rang"
+														class="form-control">
+														<f:selectItems value="#{rondeBean.listeDesRangs()}" />
+													</h:selectOneMenu></td>
+												<td><div class="input-group"
+														style="margin-left: 35px; margin-bottom: 15px;">
+														<h:commandLink value=" Ajouter"
+															class="btn btn-primary fa fa-plus"
+															action="#{rondeBean.ajouterTrafique(trafique)}">
+															<f:ajax execute="@this cotisation dateDeBouffe rang" />
+														</h:commandLink>
+													</div></td>
+											</tr>
+										</ui:repeat>
+									</table>
+
+								</h:panelGroup>
+							</h:panelGroup>
+
 
 						</div>
 					</div>
@@ -92,12 +114,12 @@
 						<div class="col-md-8">
 							<h:panelGroup id="membresAjoutes">
 								<table>
-									<ui:repeat var="membre"
-										value="#{rondeBean.membresDelaNouvelleRonde}">
+									<ui:repeat var="trafique"
+										value="#{rondeBean.trafiquesDelaNouvelleRonde}">
 										<tr>
-											<td>#{membre.nom} #{membre.prenom}</td>
+											<td>#{trafique.membre.nom} #{trafique.membre.prenom}</td>
 											<td><h:commandLink style="margin-left:5px; color:red;"
-													action="#{rondeBean.enlever(membre)}"
+													action="#{rondeBean.enleverTrafique(trafique)}"
 													styleClass="fa fa-remove">
 													<f:ajax execute="@this" />
 												</h:commandLink></td>

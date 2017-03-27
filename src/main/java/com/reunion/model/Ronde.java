@@ -7,14 +7,20 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.reunion.util.CalendarUtils;
+import com.reunion.model.Trafique;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "Ronde")
@@ -35,8 +41,13 @@ public class Ronde implements Serializable {
 	@Column(name = "finDeLaRonde")
 	private Date finDeLaRonde;
 
-	@ManyToMany
-	private Set<Membre> membres = new HashSet<Membre>();
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(name = "Ronde_Membre", joinColumns = {@JoinColumn(name = "Ronde_ID")}, inverseJoinColumns = {@JoinColumn(name = "Membre_ID")})
+//	private Set<Membre> membres = new HashSet<Membre>();
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,
+			CascadeType.REMOVE, CascadeType.REFRESH})
+	private Set<Trafique> trafiques = new HashSet<Trafique>();
 
 	public Long getId() {
 		return this.id;
@@ -70,13 +81,13 @@ public class Ronde implements Serializable {
 		this.finDeLaRonde = finDeLaRonde;
 	}
 
-	public Set<Membre> getMembres() {
-		return this.membres;
-	}
-
-	public void setMembres(final Set<Membre> membres) {
-		this.membres = membres;
-	}
+//	public Set<Membre> getMembres() {
+//		return this.membres;
+//	}
+//
+//	public void setMembres(final Set<Membre> membres) {
+//		this.membres = membres;
+//	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -105,7 +116,16 @@ public class Ronde implements Serializable {
 
 	@Override
 	public String toString() {
-		return CalendarUtils.getShortDayMonthYear(debutDeLaRonde) + " - " + CalendarUtils.getShortDayMonthYear(finDeLaRonde);
+		return CalendarUtils.getShortDayMonthYear(debutDeLaRonde) + " - "
+				+ CalendarUtils.getShortDayMonthYear(finDeLaRonde);
+	}
+
+	public Set<Trafique> getTrafiques() {
+		return this.trafiques;
+	}
+
+	public void setTrafiques(final Set<Trafique> trafiques) {
+		this.trafiques = trafiques;
 	}
 
 }
