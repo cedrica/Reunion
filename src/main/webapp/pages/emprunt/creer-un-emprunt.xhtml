@@ -28,7 +28,7 @@
 								requiredMessage="Nom de l ´emprunteur obligatoire"
 								value="#{empruntBean.emprunt.membre}" class="form-control"
 								converter="#{membreConverter}">
-								<f:selectItem itemLabel="-- bitte wählen --" />
+								<f:selectItem itemLabel="-- choisir un membre --" />
 								<f:selectItems value="#{empruntBean.membres}" />
 							</h:selectOneMenu>
 
@@ -63,7 +63,7 @@
 							<h:selectOneMenu id="ronde" value="#{empruntBean.emprunt.ronde}"
 								required="true" requiredMessage="Nom de la ronde obligatoire"
 								class="form-control" converter="#{rondeConverter}">
-								<f:selectItem itemLabel="-- bitte wählen --" />
+								<f:selectItem itemLabel="-- choisir une ronde --" />
 								<f:selectItems value="#{empruntBean.rondes}" />
 							</h:selectOneMenu>
 
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<h:commandButton value="Close" class="btn btn-default"
+						<h:commandButton value="Fermer" class="btn btn-default"
 							data-dismiss="dialog" immediate="true" />
 						<h:commandButton value="Sauvegarder" class="btn btn-primary"
 							id="saveCreatedEmprunt" action="#{empruntBean.sauvegarder}">

@@ -81,30 +81,31 @@
 				<div class="col-sm-2 col-md-1 col-lg-2">
 					<c:choose>
 						<c:when test="${pageTitle == 'Membres'}">
-							<h:commandButton class="btn btn-primary pull-right"
-								value="Créer un nouveau membre"
-								action="#{membreBean.setShowModal(true)}" />
+							<h:commandLink class="btn btn-primary pull-right"
+								value="Créer un nouveau membre" action="#{membreBean.creerUnMembre()}">
+								<f:ajax execute="@this" />
+								</h:commandLink>
 						</c:when>
 						<c:when test="${pageTitle == 'Groupes'}">
-							<h:commandButton class="btn btn-primary pull-right"
-								value="Créer un nouveau groupe" />
+							<h:commandLink class="btn btn-primary pull-right"
+								value="Créer un nouveau groupe" immediate="true"
+								action="#{groupeBean.creerUnGroupe()}"
+								><f:ajax execute="@this"/></h:commandLink>
 						</c:when>
 						<c:when test="${pageTitle == 'Rondes'}">
 							<h:commandLink class="btn btn-primary pull-right"
 								action="#{rondeBean.creerUneRonde()}"
-								onclick="$('#js_creerUneRondeModal').modal('show');"
 									immediate="true"
 								value="Créer une ronde">
-								<f:ajax execute="@this" render=":creerUnEmpruntForm" />
+								<f:ajax execute="@this"/>
 							</h:commandLink>
 						</c:when>
 						<c:when test="${pageTitle == 'Emprunts'}">
 							<h:commandLink value="Créer un emprunt"
 								action="#{empruntBean.creerUnEmprunt()}"
 								class="btn btn-primary pull-right"
-								onclick="$('#js_creerEmpruntModal').modal('show');"
 								immediate="true">
-								<f:ajax execute="@this" render=":creerUnEmpruntForm" />
+								<f:ajax execute="@this" />
 							</h:commandLink>
 							
 						</c:when>
@@ -127,7 +128,7 @@
 						<h:link value="Rondes" class="list-group-item menu"
 							outcome="/pages/ronde/rondes" />
 						<h:link value="Membres" class="list-group-item menu"
-							outcome="/pages/membres" />
+							outcome="/pages/membre/membres" />
 						<h:link value="Emprunts" class="list-group-item menu"
 							outcome="/pages/emprunt/emprunt" />
 					</div>

@@ -20,7 +20,7 @@
 			<h:outputStylesheet library="customcss" name="emprunts.css" />
 			<h:outputScript library="js" name="emprunt.js" />
 			<ui:include src="/pages/emprunt/creer-un-emprunt.xhtml" />
-			<ui:include src="/pages/emprunt/editerOuRembourser.xhtml" />
+			<ui:include src="/pages/emprunt/editer-ou-rembourser.xhtml" />
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="vert-claire"></div>
@@ -103,7 +103,6 @@
 												title="Editer ou effectuer le remboursement"
 												action="#{empruntBean.setEmprunt(emprunt)}"
 												rendered="#{not emprunt.editable}"
-												onclick="$('#js_editerOuRembourserModal').modal('show');"
 												style="font-size: 20px; color:green; margin-right:10px;">
 												<f:ajax execute="@this"/>
 											</h:commandLink> <h:commandLink styleClass="fa fa-check"
@@ -111,7 +110,7 @@
 												rendered="#{emprunt.editable}"
 												action="#{empruntBean.sauvegarder()}"
 												style="font-size: 20px; color:green; margin-right:10px;">
-												<f:ajax execute="@all" render="@all" />
+												<f:ajax execute="@this" render="@all" />
 											</h:commandLink> <h:commandLink styleClass="fa fa-archive"
 												data-toggle="tooltip" title="Archiver le remboursement"
 												style="font-size: 20px; color:#000; margin-right:10px;">
@@ -171,7 +170,6 @@
 												title="Editer ou effectuer le remboursement"
 												action="#{empruntBean.setEmprunt(emprunt)}"
 												rendered="#{not emprunt.editable}"
-												onclick="$('#js_editerOuRembourserModal').modal('show');"
 												style="font-size: 20px; color:green; margin-right:10px;">
 												<f:ajax execute="@this"/>
 											</h:commandLink> <h:commandLink styleClass="fa fa-check"
@@ -241,7 +239,6 @@
 												title="Editer ou effectuer le remboursement"
 												action="#{empruntBean.setEmprunt(emprunt)}"
 												rendered="#{not emprunt.editable}"
-												onclick="$('#js_editerOuRembourserModal').modal('show');"
 												style="font-size: 20px; color:green; margin-right:10px;">
 												<f:ajax execute="@this"/>
 											</h:commandLink> <h:commandLink styleClass="fa fa-check"

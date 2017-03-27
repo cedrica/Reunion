@@ -42,6 +42,9 @@ public class Trafique implements Serializable {
 	@Column(length = 20, name = "cotisation")
 	private Float cotisation;
 
+	@Column(length = 10, name = "rang")
+	private int rang;
+
 	public Long getId() {
 		return this.id;
 	}
@@ -123,6 +126,14 @@ public class Trafique implements Serializable {
 		this.cotisation = cotisation;
 	}
 
+	public int getRang() {
+		return rang;
+	}
+
+	public void setRang(int rang) {
+		this.rang = rang;
+	}
+
 	@Override
 	public String toString() {
 		String result = getClass().getSimpleName() + " ";
@@ -139,6 +150,7 @@ public class Trafique implements Serializable {
 			result += ", supplement: " + supplement;
 		if (cotisation != null)
 			result += ", cotisation: " + cotisation;
+		result += ", rang: " + rang;
 		return result;
 	}
 }

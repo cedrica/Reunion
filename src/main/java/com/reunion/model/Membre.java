@@ -11,10 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import com.reunion.model.Ronde;
+import java.util.Set;
+import java.util.HashSet;
+import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
 
 @Entity
 @Table(name = "Membre")
-//@XmlRootElement(name = "membre")
+// @XmlRootElement(name = "membre")
 public class Membre implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,15 +37,15 @@ public class Membre implements Serializable {
 	@Column(length = 20, name = "prenom")
 	private String prenom;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+	@OneToOne(cascade = {CascadeType.MERGE,
 			CascadeType.REMOVE, CascadeType.REFRESH})
 	private Adresse adresse;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+	@OneToOne(cascade = {CascadeType.MERGE,
 			CascadeType.REMOVE, CascadeType.REFRESH})
 	private Contact contact;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+	@OneToOne(cascade = {CascadeType.MERGE,
 			CascadeType.REFRESH})
 	private Groupe groupe;
 
@@ -50,12 +55,19 @@ public class Membre implements Serializable {
 	@Column(name = "inserable")
 	private Boolean inserable = false;
 
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+	@OneToOne(cascade = {CascadeType.MERGE,
 			CascadeType.REMOVE, CascadeType.REFRESH})
 	private Trafique trafique;
 
 	@Column(length = 1, name = "activer")
 	private boolean activer;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<Ronde> rondes = new HashSet<Ronde>();
+
+	@Column(length = 1, name = "editable")
+	private boolean editable;
+
 
 	public Long getId() {
 		return this.id;
@@ -170,9 +182,24 @@ public class Membre implements Serializable {
 		this.activer = activer;
 	}
 
+	public Set<Ronde> getRondes() {
+		return this.rondes;
+	}
+
+	public void setRondes(final Set<Ronde> rondes) {
+		this.rondes = rondes;
+	}
+
+	public boolean getEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
 	@Override
 	public String toString() {
-		
 		return nom+" "+prenom;
 	}
 

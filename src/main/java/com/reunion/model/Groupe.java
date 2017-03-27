@@ -31,8 +31,7 @@ public class Groupe implements Serializable {
 	@Column(length = 50, name = "nom")
 	private String nom;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
-			CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
 	private Set<Membre> membres = new HashSet<Membre>();
 
 	public Long getId() {
@@ -86,13 +85,7 @@ public class Groupe implements Serializable {
 
 	@Override
 	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (id != null)
-			result += "id: " + id;
-		result += ", version: " + version;
-		if (nom != null && !nom.trim().isEmpty())
-			result += ", nom: " + nom;
-		return result;
+		return nom;
 	}
 
 	public Set<Membre> getMembres() {

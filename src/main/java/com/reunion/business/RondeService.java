@@ -1,6 +1,7 @@
 package com.reunion.business;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateful;
@@ -49,6 +50,8 @@ public class RondeService extends GenericDAO<Ronde> implements Serializable {
 	}
 
 	public List<Ronde> findAll() {
-		return findAll(Ronde.class);
+		List<Ronde> rondes = findAll(Ronde.class);
+		List<Ronde> result = new ArrayList<>();
+		return rondes;
 	}
 }

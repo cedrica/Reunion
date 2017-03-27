@@ -5,13 +5,12 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -36,7 +35,7 @@ public class Ronde implements Serializable {
 	@Column(name = "finDeLaRonde")
 	private Date finDeLaRonde;
 
-	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH })
+	@ManyToMany
 	private Set<Membre> membres = new HashSet<Membre>();
 
 	public Long getId() {
@@ -60,11 +59,7 @@ public class Ronde implements Serializable {
 	}
 
 	public void setDebutDeLaRonde(Date debutDeLaRonde) {
-		if (debutDeLaRonde != null) {
-			this.debutDeLaRonde = new Date(debutDeLaRonde.getTime());
-		} else {
-			this.debutDeLaRonde = null;
-		}
+		this.debutDeLaRonde = debutDeLaRonde;
 	}
 
 	public Date getFinDeLaRonde() {
@@ -72,11 +67,7 @@ public class Ronde implements Serializable {
 	}
 
 	public void setFinDeLaRonde(Date finDeLaRonde) {
-		if (finDeLaRonde != null) {
-			this.finDeLaRonde = new Date(finDeLaRonde.getTime());
-		} else {
-			this.finDeLaRonde = null;
-		}
+		this.finDeLaRonde = finDeLaRonde;
 	}
 
 	public Set<Membre> getMembres() {
@@ -114,7 +105,7 @@ public class Ronde implements Serializable {
 
 	@Override
 	public String toString() {
-		return CalendarUtils.getMonthYear(debutDeLaRonde) + " - " + CalendarUtils.getMonthYear(finDeLaRonde);
+		return CalendarUtils.getShortDayMonthYear(debutDeLaRonde) + " - " + CalendarUtils.getShortDayMonthYear(finDeLaRonde);
 	}
 
 }

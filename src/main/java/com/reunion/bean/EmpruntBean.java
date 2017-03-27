@@ -8,6 +8,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,7 @@ public class EmpruntBean implements Serializable {
 	private MembreService membreService;
 	@Inject
 	private RondeService rondeService;
+	private boolean isEditable;
 
 	public void init() {
 		empruntService.startConversation();
@@ -85,7 +87,15 @@ public class EmpruntBean implements Serializable {
 	}
 
 	public void setEmprunt(Emprunt emprunt) {
+		if(isEditable){
+			RequestContext.getCurrentInstance().execute("alert('Veuillez d´abord finir avec l´edition d´un emprunt avant de commencer un autre.');");
+			return;
+		}else{
+			
+		isEditable = true;
 		this.emprunt = emprunt;
+		RequestContext.getCurrentInstance().execute("$('#js_editerOuRembourserModal').modal('show');");
+		}
 	}
 
 	public List<Membre> getMembres() {
@@ -103,6 +113,7 @@ public class EmpruntBean implements Serializable {
 	public void creerUnEmprunt() {
 		emprunt = ModelInitializer.initEmprunt();
 		emprunt.setStatus(StatusDeRemboursement.OUVERT);
+		RequestContext.getCurrentInstance().execute("$('#js_creerEmpruntModal').modal('show');");
 	}
 
 	public String rembourser(boolean activer) {
@@ -146,6 +157,7 @@ public class EmpruntBean implements Serializable {
 	}
 
 	public String sauvegarder() {
+		isEditable = false;
 		emprunt.setEditable(false); //toujours
 		if(emprunt.getStatus() == StatusDeRemboursement.OUVERT){
 			emprunt.setDateDeLemprunt(new Date());// aujourdhui

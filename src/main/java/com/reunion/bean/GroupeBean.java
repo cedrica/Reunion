@@ -7,28 +7,34 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.context.RequestContext;
+
 import com.reunion.business.GroupeService;
 import com.reunion.model.Groupe;
 
 @Named("groupeBean")
 @ConversationScoped
-public class GroupeBean implements Serializable{
+public class GroupeBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private GroupeService groupeService;
 	private Groupe groupe;
 	private List<Groupe> tousLesGroupes;
 
-	
-	public void init(){
+	public void init() {
 		groupeService.startConversation();
 		groupe = new Groupe();
-	}
-	
-	public List<Groupe> getTousLesGroupes() {
 		tousLesGroupes = groupeService.toutLesGroupes();
+	}
+
+	public void creerUnGroupe() {
+		groupe = new Groupe();
+		RequestContext.getCurrentInstance().execute("$('#js_creerUnGroupeModal').modal('show');");
+	}
+
+	public List<Groupe> getTousLesGroupes() {
 		return tousLesGroupes;
 	}
 
@@ -44,9 +50,8 @@ public class GroupeBean implements Serializable{
 		this.groupe = groupe;
 	}
 
-	public String creerUnGroupe(){
+	public String sauvegarder() {
 		return groupeService.createGroupe(groupe);
 	}
-	
 
 }

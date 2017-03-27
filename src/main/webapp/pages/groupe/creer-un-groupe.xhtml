@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	<f:metadata>
+		<f:event type="preRenderView" listener='#{groupeBean.init}' />
+	</f:metadata>
+	<div class="modal fade" tabindex="-1" role="dialog"
+		aria-labelledby="js_creerUnGroupeModal" id="js_creerUnGroupeModal">
+
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="gridSystemModalLabel">Créer un
+						nouveau groupe</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-3">Nom du groupe:</div>
+							<div class="col-md-9">
+								<h:inputText id="nomDuGroupe" class="form-control"
+									required="true"
+									requiredMessage="Le nom du groupe est obliguatoire"
+									value="#{groupeBean.groupe.nom}" />
+								<h:message for="nomDuGroupe" style="color:red"
+									id="nomDuGoupeOut" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<h:commandButton value="Fermer" class="btn btn-default"
+						data-dismiss="dialog" immediate="true" />
+					<h:commandLink  value="Sauvegarder" class="btn btn-primary"
+						action="#{groupeBean.sauvegarder()}">
+						<f:ajax execute="nomDuGroupe" render="nomDuGoupeOut" />
+					</h:commandLink>
+				</div>
+			</div>
+		</div>
+	</div>
+</ui:composition>

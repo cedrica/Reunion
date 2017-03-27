@@ -18,16 +18,10 @@
 
 	<ui:define name="main">
 		<h:outputStylesheet library="customcss" name="rondes.css" />
-		
 		<h:form id="rondes">
-		<h:outputScript library="js" name="ronde.js" />
-		<ui:include src="/pages/ronde/creer-une-ronde-modal.xhtml" />
-		<ui:include src="/pages/ronde/liste-des-rondes.xhtml" />
-<!-- 		
-			<h:panelGroup rendered="#{rondeBean.rondeCreable}">
-			</h:panelGroup>
-			<h:panelGroup rendered="#{!rondeBean.rondeCreable}">
-				</h:panelGroup> -->
+			<h:outputScript library="js" name="ronde.js" />
+			<ui:include src="/pages/ronde/creer-une-ronde-modal.xhtml" />
+			<ui:include src="/pages/ronde/liste-des-rondes.xhtml" />
 		</h:form>
 
 	</ui:define>

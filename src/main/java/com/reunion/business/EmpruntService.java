@@ -12,7 +12,7 @@ import com.reunion.dao.GenericDAO;
 import com.reunion.model.Emprunt;
 
 @Stateful
-public class EmpruntService extends GenericDAO<Emprunt> implements Serializable{
+public class EmpruntService extends GenericDAO<Emprunt> implements Serializable {
 	/**
 	 * 
 	 */
@@ -27,19 +27,22 @@ public class EmpruntService extends GenericDAO<Emprunt> implements Serializable{
 	}
 
 	public String update(Long id) {
-		conversation.end();
+		if (conversation.isTransient())
+			conversation.end();
 		update(id, Emprunt.class);
 		return Pages.EMPRUNT;
 	}
 
 	public String delete(long id) {
-		conversation.end();
+		if (conversation.isTransient())
+			conversation.end();
 		delete(id, Emprunt.class);
 		return Pages.EMPRUNT;
 	}
 
 	public Emprunt findById(Long id) {
-		conversation.end();
+		if (conversation.isTransient())
+			conversation.end();
 		return findById(id, Emprunt.class);
 	}
 
