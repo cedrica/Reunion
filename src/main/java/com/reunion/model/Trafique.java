@@ -51,6 +51,9 @@ public class Trafique implements Serializable {
 	@OneToOne(cascade = CascadeType.MERGE)
 	private Membre membre;
 
+	@Column(length = 1, name = "editable")
+	private boolean editable;
+
 	public Long getId() {
 		return this.id;
 	}
@@ -148,11 +151,24 @@ public class Trafique implements Serializable {
 		this.membre = membre;
 	}
 
+	public boolean getEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
 	@Override
 	public String toString() {
 		String result = getClass().getSimpleName() + " ";
+		if (id != null)
+			result += "id: " + id;
+		result += ", version: " + version;
 		if (fondDeCaisse != null)
-			result += "fondDeCaisse: " + fondDeCaisse;
+			result += ", fondDeCaisse: " + fondDeCaisse;
+		if (dateDeBouffe != null)
+			result += ", dateDeBouffe: " + dateDeBouffe;
 		if (ristourne != null)
 			result += ", ristourne: " + ristourne;
 		if (supplement != null)
@@ -160,6 +176,10 @@ public class Trafique implements Serializable {
 		if (cotisation != null)
 			result += ", cotisation: " + cotisation;
 		result += ", rang: " + rang;
+		if (membre != null)
+			result += ", membre: " + membre;
+		result += ", editable: " + editable;
 		return result;
 	}
+
 }

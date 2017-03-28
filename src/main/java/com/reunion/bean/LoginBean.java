@@ -20,12 +20,14 @@ import javax.xml.bind.Unmarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.reunion.business.GroupeService;
 import com.reunion.business.LoginService;
 import com.reunion.business.MembreService;
 import com.reunion.common.Pages;
 import com.reunion.helper.Data;
 import com.reunion.model.Adresse;
 import com.reunion.model.Contact;
+import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
 import com.reunion.model.Trafique;
 
@@ -41,6 +43,8 @@ public class LoginBean implements Serializable {
 	private LoginService loginService;
 	@Inject
 	private MembreService membreService;
+	@Inject
+	private GroupeService groupeService;
 	
 	private String email;
 	private String motDepass;
@@ -51,6 +55,7 @@ public class LoginBean implements Serializable {
 	public void init() {
 		loginService.startConversation();
 		membreService.startConversation();
+		groupeService.startConversation();
 		LOG.info("Coversation déclachée");
 		List<Membre> membres = membreService.findAll();
 		if(membres == null || membres.isEmpty()){
@@ -72,8 +77,14 @@ public class LoginBean implements Serializable {
 			contact.setTelephone("017663112957");
 			membre.setContact(contact);
 			
-			membreService.createMembre(membre);
+			Groupe groupe = new Groupe();
+			groupe.setNom("Erlangen");
+			groupe = groupeService.createGroupe(groupe);
+			
 			membreService.startConversation();
+			membre.setGroupe(groupe);
+			membre = membreService.createMembre(membre);
+			
 			
 			membre = new Membre();
 			membre.setActiver(true);
@@ -92,8 +103,9 @@ public class LoginBean implements Serializable {
 			contact.setEmail("silas@yahoo.fr");
 			contact.setTelephone("017663113357");
 			membre.setContact(contact);
-			
-			membreService.createMembre(membre);
+
+			membre.setGroupe(groupe);
+			membre = membreService.createMembre(membre);
 			membreService.startConversation();
 			
 			membre = new Membre();
@@ -101,6 +113,7 @@ public class LoginBean implements Serializable {
 			membre.setMotDePass("c");
 			membre.setNom("Komge");
 			membre.setPrenom("marc");
+
 
 			adresse = new Adresse();
 			adresse.setNumero("127");
@@ -113,9 +126,10 @@ public class LoginBean implements Serializable {
 			contact.setEmail("marc@yahoo.fr");
 			contact.setTelephone("017345113357");
 			membre.setContact(contact);
-			
-			membreService.createMembre(membre);
-			membreService.startConversation();
+
+			membre.setGroupe(groupe);
+			membre = membreService.createMembre(membre);
+			groupe.getMembres().add(membre);
 		}
 
 			

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.Conversation;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import com.reunion.common.Pages;
@@ -20,37 +21,40 @@ public class GroupeService extends GenericDAO<Groupe> implements Serializable{
 	@Inject
 	Conversation conversation;
 
-	public String createGroupe(Groupe entity) {
-		conversation.end();
-		super.create(entity);
-		return Pages.GROUPES;
+	public Groupe createGroupe(Groupe entity) {
+		return super.create(entity);
 	}
 
 	public String update(Long id) {
-		conversation.end();
 		update(id, Groupe.class);
 		return Pages.GROUPES;
 	}
 
 	public String delete(long id) {
-		conversation.end();
 		delete(id, Groupe.class);
 		return Pages.GROUPES;
 	}
 
 	public Groupe findById(Long id) {
-		conversation.end();
 		return findById(id, Groupe.class);
 	}
 
 	public void startConversation() {
+		if (FacesContext.getCurrentInstance().isPostback()) {
+			return;
+		}
 		if (this.conversation.isTransient()) {
 			this.conversation.begin();
+			this.conversation.setTimeout(1800000L);
 		}
 	}
 
 	public List<Groupe> toutLesGroupes() {
 		return findAll(Groupe.class);
+	}
+
+	public void endConversation() {
+		conversation.end();
 	}
 
 }

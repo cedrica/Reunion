@@ -22,7 +22,6 @@ import com.reunion.business.RondeService;
 import com.reunion.business.TrafiqueService;
 import com.reunion.common.Helper;
 import com.reunion.common.Pages;
-import com.reunion.dao.StaticDAO;
 import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
 import com.reunion.model.Ronde;
@@ -38,17 +37,15 @@ public class RondeBean implements Serializable {
 	@Inject
 	private GroupeService groupeService;
 	@Inject
-	private StaticDAO staticDAO;
-	@Inject
 	private MembreService membreService;
-	@Inject 
+	@Inject
 	private TrafiqueService trafiqueService;
 	private List<Ronde> rondes;
 	private List<Groupe> groupes;
 	private static final long serialVersionUID = 1L;
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 	private List<Trafique> trafiquesDelaNouvelleRonde;
-	
+
 	private Ronde ronde;
 	private Groupe groupe;
 	private boolean isEditModus;
@@ -59,6 +56,7 @@ public class RondeBean implements Serializable {
 
 	public void init() {
 		rondeService.startConversation();
+		trafiqueService.startConversation();
 		rondes = rondeService.findAll();
 		LOG.info("RondeBean a été initialiser" + rondes.size() + " rondes ont été télécharger");
 		listeDesMembres = membreService.findAll();
@@ -138,15 +136,14 @@ public class RondeBean implements Serializable {
 	}
 
 	public boolean appartientARonde(Ronde ronde) {
-
-		return (this.ronde != null) ? this.ronde.getId() == ronde.getId() : false;
+		return (this.ronde != null) ? ronde.getTrafiques().contains(this.trafique) : false;
 	}
 
-	public float calculDeLaRistourne(Trafique trafique, Ronde ronde) {
-		if (trafique == null || ronde == null)
+	public float calculDeLaRistourne(Ronde ronde, Trafique trafique) {
+		if (trafique == null || trafique.getCotisation() == null || ronde == null)
 			return 0;
 		List<Trafique> trafiquesDeLaRonde = new ArrayList<>(ronde.getTrafiques());
-		double somme = trafiquesDelaNouvelleRonde.stream().filter(t -> t != null && t.getCotisation() != null)
+		double somme = trafiquesDeLaRonde.stream().filter(t -> t != null && t.getCotisation() != null)
 				.mapToDouble(t -> t.getCotisation()).sum();
 
 		if (trafiquesDeLaRonde != null && !trafiquesDeLaRonde.isEmpty()) {
@@ -159,6 +156,24 @@ public class RondeBean implements Serializable {
 			}
 		}
 		return (float) somme;
+	}
+
+	public float calculDuSupplement(Ronde ronde, Trafique trafique) {
+		if (trafique == null || trafique.getCotisation() == null || ronde == null)
+			return 0;
+		List<Trafique> trafiquesDeLaRonde = new ArrayList<>(ronde.getTrafiques());
+		double supplement = 0;
+
+		if (trafiquesDeLaRonde != null && !trafiquesDeLaRonde.isEmpty()) {
+			for (Trafique t : trafiquesDeLaRonde) {
+				if (t.getId() == trafique.getId())
+					continue;
+				if (t.getCotisation() != null && (trafique.getCotisation() > t.getCotisation())) {
+					supplement += (trafique.getCotisation()-t.getCotisation());
+				}
+			}
+		}
+		return (float) supplement;
 	}
 
 	public String sauvegarderLaRondeCreer() {
@@ -181,11 +196,12 @@ public class RondeBean implements Serializable {
 		for (Trafique trafique : trafiquesDelaNouvelleRonde) {
 			trafique.setDateDeBouffe(CalendarUtils.localDateToDate(premierDuMoi.plusMonths(trafique.getRang() - 1)));
 		}
-		
-		for(Trafique trafique : trafiquesDelaNouvelleRonde){
-			trafiqueService.create(trafique);
+
+		for (Trafique trafique : trafiquesDelaNouvelleRonde) {
+			trafique = trafiqueService.createTrafique(trafique);
+			ronde.getTrafiques().add(trafique);
 		}
-		ronde.setTrafiques(new HashSet<Trafique>(trafiquesDelaNouvelleRonde));
+		trafiqueService.endConversation();
 		rondeService.createRonde(ronde);
 		return Pages.RONDES;
 	}
@@ -207,14 +223,17 @@ public class RondeBean implements Serializable {
 	}
 
 	public String actualiserLeTrafique(Trafique trafique) {
-		ronde.getTrafiques().add(trafique);// merge automatic because
-		rondeService.createRonde(ronde);
+		trafique.setEditable(false);
+		trafique = trafiqueService.create(trafique);
+		trafiqueService.endConversation();
 		isEditModus = false;
 		return Pages.RONDES;
 	}
 
-	public String setEditable(Ronde ronde, Membre membre) {
+	public String setEditable(Ronde ronde, Trafique trafique) {
 		setRonde(ronde);
+		setTrafique(trafique);
+		this.trafique.setEditable(true);
 		if (isEditModus) {
 			RequestContext.getCurrentInstance().execute(
 					"alert('Vous ne pouvez éditer deux objects en même temps. veuillez finir avec le premier avant d´attaquer le second');");

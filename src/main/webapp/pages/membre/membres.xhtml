@@ -17,59 +17,60 @@
 		<h:outputScript library="js" name="membre.js" />
 		<ui:include src="/pages/membre/creer-un-nouveau-membre.xhtml" />
 		<div class="row">
-				<div class="col-lg-12">
-					<div class="dropdown pull-right">
-						<button class="btn btn-default" type="button" id="dropdownMenu1"
-							data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							<i class="fa fa-bars" style="font-size: 20px; color: #fff;"></i>
-						</button>
-						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1"
-							style="padding: 5px; width: 200px;">
-							<li><h:selectBooleanCheckbox /> Membres</li>
-							<li><h:selectBooleanCheckbox /> Cautisation</li>
-							<li><h:selectBooleanCheckbox /> Date de bouffe</li>
-							<li style="width: 200px;"><h:selectBooleanCheckbox />
-								Montant du bénéficiaire</li>
-							<li><h:selectBooleanCheckbox /> Supplement</li>
-						</ul>
-					</div>
+			<div class="col-lg-12">
+				<div class="dropdown pull-right">
+					<button class="btn btn-default" type="button" id="dropdownMenu1"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<i class="fa fa-bars" style="font-size: 20px; color: #fff;"></i>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1"
+						style="padding: 5px; width: 200px;">
+						<li><h:selectBooleanCheckbox /> Membres</li>
+						<li><h:selectBooleanCheckbox /> Cautisation</li>
+						<li><h:selectBooleanCheckbox /> Date de bouffe</li>
+						<li style="width: 200px;"><h:selectBooleanCheckbox />
+							Montant du bénéficiaire</li>
+						<li><h:selectBooleanCheckbox /> Supplement</li>
+					</ul>
 				</div>
-				<div style="width: 100%;">
-					<table class="table table-striped">
-						<thead>
+			</div>
+			<div style="width: 100%;">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Rue</th>
+							<th>Ville</th>
+							<th>Nr. de telefon</th>
+							<th>E-Mail</th>
+							<th>Groupe</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<ui:repeat var="membre" value="#{membreBean.allMembers}">
 							<tr>
-								<th>Nom</th>
-								<th>Rue</th>
-								<th>Ville</th>
-								<th>Nr. de telefon</th>
-								<th>E-Mail</th>
-								<th></th>
+								<td>#{membre.nom} #{membre.prenom}</td>
+								<td>#{membre.adresse.rue} #{membre.adresse.numero}</td>
+								<td>#{membre.adresse.ville}</td>
+								<td>#{membre.contact.telephone}</td>
+								<td>#{membre.contact.email}</td>
+								<td>#{membre.groupe.nom}</td>
+								<td><h:commandLink styleClass="fa fa-remove"
+										data-toggle="tooltip" title="Suprimer le membre"
+										action="#{membreBean.delete(membre.id)}"
+										style="font-size: 20px; color:red; margin-right:10px;" /></td>
 							</tr>
-						</thead>
-						<tbody>
-							<ui:repeat var="membre" value="#{membreBean.allMembers}">
-								<tr>
-									<td>#{membre.nom} #{membre.prenom}</td>
-									<td>#{membre.adresse.rue} #{membre.adresse.numero}</td>
-									<td>#{membre.adresse.ville}</td>
-									<td>#{membre.contact.telephone}</td>
-									<td>#{membre.contact.email}</td>
+						</ui:repeat>
 
-									<td><h:commandLink styleClass="fa fa-remove"
-											data-toggle="tooltip" title="Suprimer le membre"
-											action="#{membreBean.delete(membre.id)}"
-											style="font-size: 20px; color:red; margin-right:10px;" /></td>
-								</tr>
-							</ui:repeat>
+					</tbody>
+				</table>
 
-						</tbody>
-					</table>
-
-				</div>
-				<h:outputScript library="js" name="footer.js" />
-				<div class="col-sm-4 col-md-4 col-lg-4"></div>
-				<div class="col-sm-4 col-md-4 col-lg-4"></div>
-				<div class="col-sm-4 col-md-4 col-lg-4"></div>
+			</div>
+			<h:outputScript library="js" name="footer.js" />
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
 		</div>
 
 	</ui:define>

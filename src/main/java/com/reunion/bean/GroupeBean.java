@@ -10,6 +10,7 @@ import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
 import com.reunion.business.GroupeService;
+import com.reunion.common.Pages;
 import com.reunion.model.Groupe;
 
 @Named("groupeBean")
@@ -51,7 +52,9 @@ public class GroupeBean implements Serializable {
 	}
 
 	public String sauvegarder() {
-		return groupeService.createGroupe(groupe);
+		groupeService.createGroupe(groupe);
+		groupeService.endConversation();
+		return Pages.GROUPES;
 	}
 
 }

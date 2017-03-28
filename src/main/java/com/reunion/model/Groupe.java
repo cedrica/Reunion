@@ -1,19 +1,21 @@
 package com.reunion.model;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.Version;
-import com.reunion.model.Membre;
-import java.util.Set;
-import java.util.HashSet;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "Groupe")
@@ -31,7 +33,8 @@ public class Groupe implements Serializable {
 	@Column(length = 50, name = "nom")
 	private String nom;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,
+			CascadeType.REFRESH,CascadeType.REMOVE}, mappedBy="groupe")
 	private Set<Membre> membres = new HashSet<Membre>();
 
 	public Long getId() {

@@ -1,7 +1,6 @@
 package com.reunion.business;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateful;
@@ -30,28 +29,27 @@ public class RondeService extends GenericDAO<Ronde> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Ronde createRonde(Ronde entity) {
-		this.conversation.end();
 		return super.create(entity);
 	}
 
 	public void update(Long id) {
-		this.conversation.end();
 		update(id, Ronde.class);
 	}
 
 	public void delete(long id) {
-		this.conversation.end();
 		delete(id, Ronde.class);
 	}
 
 	public Ronde findById(Long id) {
-		this.conversation.end();
 		return findById(id, Ronde.class);
 	}
 
 	public List<Ronde> findAll() {
 		List<Ronde> rondes = findAll(Ronde.class);
-		List<Ronde> result = new ArrayList<>();
 		return rondes;
+	}
+
+	public void endConversation() {
+		this.conversation.end();
 	}
 }
