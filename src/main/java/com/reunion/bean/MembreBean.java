@@ -1,13 +1,18 @@
 package com.reunion.bean;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.bind.DatatypeConverter;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +42,7 @@ public class MembreBean implements Serializable {
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 	private String motDePassConfirm;
 	private boolean editMode;
+	private StreamedContent monImage;
 
 	public void init() {
 		membreService.startConversation();
@@ -99,13 +105,19 @@ public class MembreBean implements Serializable {
 		this.file = file;
 	}
 
-	// public void upload(FileUploadEvent event) {
-	// UploadedFile uploadedFile = event.getFile();
-	// String fileName = uploadedFile.getFileName();
-	// String contentType = uploadedFile.getContentType();
-	// byte[] contents = uploadedFile.getContents(); // Or getInputStream()
-	// // ... Save it, now!
-	// }
+	public void ajusterLeFondDeCaisse() {
+
+	}
+
+	public StreamedContent getMonImage() {
+		if (membre.getMonImage() != null)
+			monImage = new DefaultStreamedContent(new ByteArrayInputStream(membre.getMonImage()), "image/png");
+		return this.monImage;
+	}
+
+	public void setMonImage(StreamedContent monImage) {
+		this.monImage = monImage;
+	}
 
 	public String montreLeMembre(Membre membre) {
 		setMembre(membre);
@@ -153,6 +165,18 @@ public class MembreBean implements Serializable {
 		this.membre = null;
 		setEditMode(false);
 		return Pages.MEMBRES;
+	}
+
+	// this function is called from javascript
+	public void uploadFile() {
+		String data = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("data");
+		if (data != null && data.length() > 1 && data.startsWith("data:image/")) {
+			String monImageStr = data.split(",")[1];
+			byte[] imageBytes = DatatypeConverter.parseBase64Binary(monImageStr);
+			this.membre.setMonImage(imageBytes);
+			membreService.createMembre(this.membre);
+			monImage = new DefaultStreamedContent(new ByteArrayInputStream(imageBytes), "image/png");
+		}
 	}
 
 	public String delete(Long id) {

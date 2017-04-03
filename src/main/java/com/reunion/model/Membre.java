@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -56,6 +57,10 @@ public class Membre implements Serializable {
 
 	@Column(length = 2, name = "fondDeCaisse")
 	private double fondDeCaisse;
+
+	@Column(name = "monImage")
+	@Lob
+	private byte[] monImage;
 
 	public Long getId() {
 		return this.id;
@@ -121,7 +126,6 @@ public class Membre implements Serializable {
 		this.motDePass = motDePass;
 	}
 
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -171,9 +175,17 @@ public class Membre implements Serializable {
 		this.fondDeCaisse = fondDeCaisse;
 	}
 
+	public byte[] getMonImage() {
+		return monImage;
+	}
+
+	public void setMonImage(byte[] monImage) {
+		this.monImage = monImage;
+	}
+
 	@Override
 	public String toString() {
-		return nom +" "+prenom;
+		return nom+" "+prenom;
 	}
 
 }

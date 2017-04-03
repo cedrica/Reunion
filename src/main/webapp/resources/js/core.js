@@ -14,6 +14,7 @@ com.reunion.Page = function() {
 		
 	};
 
+
 	var initTable = function() {
 		$('table').DataTable();
 	}
