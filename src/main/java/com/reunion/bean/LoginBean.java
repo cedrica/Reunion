@@ -1,21 +1,14 @@
 package com.reunion.bean;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +17,11 @@ import com.reunion.business.GroupeService;
 import com.reunion.business.LoginService;
 import com.reunion.business.MembreService;
 import com.reunion.common.Pages;
-import com.reunion.helper.Data;
 import com.reunion.model.Adresse;
 import com.reunion.model.Contact;
 import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
-import com.reunion.model.Trafique;
+import com.reunion.util.SessionUtil;
 
 @Named
 @ConversationScoped
@@ -48,10 +40,9 @@ public class LoginBean implements Serializable {
 	
 	private String email;
 	private String motDepass;
-	private ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
-	private boolean registered;
-	
+	private Groupe groupe;
+	private Membre membreActuel;
 	public void init() {
 		loginService.startConversation();
 		membreService.startConversation();
@@ -60,11 +51,11 @@ public class LoginBean implements Serializable {
 		List<Membre> membres = membreService.findAll();
 		if(membres == null || membres.isEmpty()){
 			Membre membre = new Membre();
-			membre.setActiver(true);
 			membre.setMotDePass("a");
 			membre.setNom("Leumaleu");
 			membre.setPrenom("Cedric");
-			
+
+			membre.setFondDeCaisse(100);
 			Adresse adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);
@@ -87,11 +78,11 @@ public class LoginBean implements Serializable {
 			
 			
 			membre = new Membre();
-			membre.setActiver(true);
 			membre.setMotDePass("b");
 			membre.setNom("Kemoue");
 			membre.setPrenom("Silas");
 
+			membre.setFondDeCaisse(100);
 			adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);
@@ -109,11 +100,10 @@ public class LoginBean implements Serializable {
 			membreService.startConversation();
 			
 			membre = new Membre();
-			membre.setActiver(true);
 			membre.setMotDePass("c");
 			membre.setNom("Komge");
 			membre.setPrenom("marc");
-
+			membre.setFondDeCaisse(100);
 
 			adresse = new Adresse();
 			adresse.setNumero("127");
@@ -134,21 +124,15 @@ public class LoginBean implements Serializable {
 
 			
 	}
-
-	
-	
-	public boolean isRegistered() {
-		return registered;
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
 	}
 
 
 
-	public void setRegistered(boolean registered) {
-		this.registered = registered;
+	public Groupe getGroupe() {
+		return this.groupe;
 	}
-
-
-
 	public String getEmail() {
 		return email;
 	}
@@ -169,36 +153,45 @@ public class LoginBean implements Serializable {
 		return serialVersionUID;
 	}
 
-	public String verificationDePermission() throws IOException {
-		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-		if (externalContext.getSessionMap().get("email") == null || request.getSession(false) == null) {
-			// Session has been invalidated during the previous request.
-			setRegistered(false);
-			return Pages.INDEX;
-		}
-		return "";
+	
+	public Membre getMembreActuel() {
+		return membreActuel;
 	}
-
+	
+	public void setMembreActuel(Membre membreActuel) {
+		this.membreActuel = membreActuel;
+	}
+	
 	public String seConnecter() throws IOException {
 		loginService.stopperLaConversation();
-		Membre membre = loginService.findMembreByEmail(email.trim());
-		if (membre != null && membre.getMotDePass().equals(motDepass)) {
-			externalContext.getSessionMap().put("email", email);
-			externalContext.getSessionMap().put("motDepass", motDepass);
-//			response.sendRedirect("/Reunion/faces/reglement-interieur.xhtml");
-//			externalContext.redirect(externalContext.getRequestContextPath() + "/reglement-interieur.xhtml");
-			setRegistered(true);
+		membreActuel = loginService.findMembreByEmail(email.trim());
+		if (membreActuel != null && membreActuel.getMotDePass().equals(motDepass)) {
+			HttpSession session = SessionUtil.getSession();
+			session.setAttribute(SessionUtil.MEMBRE_ACTUEL, membreActuel);
+			setGroupe(membreActuel.getGroupe());
 			return Pages.REGLEMENT_INTERIEUR;
 		}
-		setRegistered(false);
 		return Pages.INDEX;
 	}
 
 	public String logout() throws IOException {
-		externalContext.getSessionMap().remove("email", email);
-		externalContext.invalidateSession();
-		setRegistered(false);
-	    externalContext.redirect(externalContext.getRequestContextPath() + "/index.xhtml");
+		HttpSession session = SessionUtil.getSession();
+		session.removeAttribute(SessionUtil.MEMBRE_ACTUEL);
+		session.invalidate();
+	    FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
 	    return Pages.INDEX;
 	}
+
+	
+	public String ouvreProfile() throws IOException{
+		FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/profile.xhtml");
+		return Pages.PROFILE;
+	}
+	
+	public String nomDuMembre(){
+		HttpSession session = SessionUtil.getSession();
+		membreActuel = (Membre) session.getAttribute(SessionUtil.MEMBRE_ACTUEL);
+		return membreActuel.getPrenom()+" "+membreActuel.getNom();
+	}
+
 }

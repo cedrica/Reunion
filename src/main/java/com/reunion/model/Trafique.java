@@ -29,9 +29,6 @@ public class Trafique implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	@Column(length = 10, name = "fondDeCaisse")
-	private Float fondDeCaisse;
-
 	@Column(length = 20, name = "dateDeBouffe")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateDeBouffe;
@@ -95,13 +92,6 @@ public class Trafique implements Serializable {
 		return result;
 	}
 
-	public Float getFondDeCaisse() {
-		return fondDeCaisse;
-	}
-
-	public void setFondDeCaisse(Float fondDeCaisse) {
-		this.fondDeCaisse = fondDeCaisse;
-	}
 
 	public Date getDateDeBouffe() {
 		return dateDeBouffe;
@@ -165,8 +155,6 @@ public class Trafique implements Serializable {
 		if (id != null)
 			result += "id: " + id;
 		result += ", version: " + version;
-		if (fondDeCaisse != null)
-			result += ", fondDeCaisse: " + fondDeCaisse;
 		if (dateDeBouffe != null)
 			result += ", dateDeBouffe: " + dateDeBouffe;
 		if (ristourne != null)

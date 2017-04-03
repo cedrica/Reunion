@@ -3,7 +3,6 @@ package com.reunion.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -12,12 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
-
-import com.reunion.enums.StatusDeRemboursement;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
+
+import com.reunion.enums.StatusDeRemboursement;
 
 @Entity
 @Table(name = "Emprunt")
@@ -32,7 +31,7 @@ public class Emprunt implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	@OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+	@OneToOne
 	private Membre membre;
 
 	@Column(length = 20, name = "sommeEmpruntee")
@@ -44,7 +43,7 @@ public class Emprunt implements Serializable {
 	@Column(name = "dateDeLemprunt")
 	private Date dateDeLemprunt;
 
-	@OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+	@OneToOne
 	private Ronde ronde;
 
 	@Enumerated

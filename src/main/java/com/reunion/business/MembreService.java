@@ -2,7 +2,6 @@ package com.reunion.business;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateful;
@@ -42,10 +41,10 @@ public class MembreService extends GenericDAO<Membre> implements Serializable {
 		update(id, Membre.class);
 	}
 
-	public void delete(long id) {
+	public boolean delete(long id) {
 		if (conversation.isTransient())
 			this.conversation.end();
-		delete(id, Membre.class);
+		return delete(id, Membre.class);
 	}
 
 	public void setMembreActiv(long id, boolean activation) {
@@ -61,14 +60,18 @@ public class MembreService extends GenericDAO<Membre> implements Serializable {
 		return findById(id, Membre.class);
 	}
 
+	public Membre findByEmail(String email) {
+		List<Membre> membres = findAll(Membre.class);
+		if(membres == null)
+			return null;
+		membres = membres.stream().filter(m -> {
+			return m.getContact() != null && m.getContact().getEmail().equals(email);
+		}).collect(Collectors.toList());
+		return (!membres.isEmpty())? membres.get(0):null;
+	}
+
 	public List<Membre> findAll() {
 		List<Membre> membres = findAll(Membre.class);
-		membres = membres.stream().filter(new Predicate<Membre>() {
-			@Override
-			public boolean test(Membre t) {
-				return t.getActiver();// juste les membres actif
-			}
-		}).collect(Collectors.toList());
 		return membres;
 	}
 

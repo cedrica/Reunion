@@ -15,9 +15,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.reunion.common.Helper;
+
 public class GenericDAO<T> {
 	@PersistenceContext(unitName = "Reunion-persistence-unit", type = PersistenceContextType.EXTENDED)
-	private EntityManager entityManager;
+	protected EntityManager entityManager;
 	private static Logger LOG = LoggerFactory.getLogger(GenericDAO.class);
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -47,7 +49,7 @@ public class GenericDAO<T> {
 		}
 	}
 
-	public void delete(long id, Class<T> clazz) {
+	public boolean  delete(long id, Class<T> clazz) {
 		
 		try {
 			T deletableEntity = findById(id, clazz);
@@ -55,7 +57,9 @@ public class GenericDAO<T> {
 			this.entityManager.flush();
 		} catch (Exception e) {
 			LOG.info(e.getMessage());
+			return false;
 		}
+		return true;
 	}
 
 	public T findById(Long id, Class<T> clazz) {
@@ -81,5 +85,7 @@ public class GenericDAO<T> {
 		CriteriaQuery<T> criteria = this.entityManager.getCriteriaBuilder().createQuery(clazz);
 		return this.entityManager.createQuery(criteria.select(criteria.from(clazz))).getResultList();
 	}
+	
+	
 
 }

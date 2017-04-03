@@ -138,9 +138,10 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<h:commandButton value="Interrompre" class="btn btn-default"
-						data-dismiss="dialog" action="#{rondeBean.creerUneRonde()}"
-						immediate="true" />
+					<h:commandLink value="Interrompre" class="btn btn-default"
+						data-dismiss="dialog" action="#{rondeBean.close()}"
+						 ><f:ajax execute="@this" />
+							</h:commandLink>
 					<h:commandLink value="Sauvegarder" class="btn btn-primary"
 						action="#{rondeBean.sauvegarderLaRondeCreer()}">
 						<f:ajax execute="debutDeLaRonde_dp finDeLaRonde_dp"

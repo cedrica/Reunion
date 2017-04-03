@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +36,7 @@ public class MembreBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 	private String motDePassConfirm;
+	private boolean editMode;
 
 	public void init() {
 		membreService.startConversation();
@@ -45,37 +47,13 @@ public class MembreBean implements Serializable {
 		groupes = groupeService.findAll(Groupe.class);
 	}
 
-	// this function is execute after the user has setted a field and press the
-	// enter button
-	// public String validatePassword(ComponentSystemEvent event) {
-	// FacesContext fc = FacesContext.getCurrentInstance();
-	// UIComponent components = event.getComponent();
-	// // get password
-	// UIInput uiInputPassword = (UIInput)
-	// components.findComponent("motDePass");
-	// String password = uiInputPassword.getLocalValue() == null ? "" :
-	// uiInputPassword.getLocalValue().toString();
-	// String passwordId = uiInputPassword.getClientId();
-	//
-	// // get confirm password
-	// UIInput uiInputConfirmPassword = (UIInput)
-	// components.findComponent("confirmerMotDepass");
-	// String confirmPassword = uiInputConfirmPassword.getLocalValue() == null ?
-	// ""
-	// : uiInputConfirmPassword.getLocalValue().toString();
-	//
-	// // Let required="true" do its job.
-	// if (password.isEmpty() || confirmPassword.isEmpty()) {
-	// return Pages.SELF;
-	// }
-	//
-	// if (!password.equals(confirmPassword)) {
-	// Helper.showError("le mot de passe doit correspondre à sa confirmation",
-	// "confirmerMotDepassOut");
-	// return Pages.SELF;
-	// }
-	// return Pages.SELF;
-	// }
+	public boolean getEditMode() {
+		return editMode;
+	}
+
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
+	}
 
 	public List<Groupe> getGroupes() {
 		return groupes;
@@ -87,10 +65,6 @@ public class MembreBean implements Serializable {
 
 	public void setMotDePassConfirm(String motDePassConfirm) {
 		this.motDePassConfirm = motDePassConfirm;
-	}
-
-	public String close() {
-		return Pages.MEMBRES;
 	}
 
 	public Membre getMembre() {
@@ -108,9 +82,44 @@ public class MembreBean implements Serializable {
 	public void setAllMembers(List<Membre> allMembers) {
 		this.allMembers = allMembers;
 	}
-	
-	public void creerUnMembre(){
+
+	public String close() {
+		this.membre = null;
+		setEditMode(false);
+		return Pages.MEMBRES;
+	}
+
+	private UploadedFile file;
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	// public void upload(FileUploadEvent event) {
+	// UploadedFile uploadedFile = event.getFile();
+	// String fileName = uploadedFile.getFileName();
+	// String contentType = uploadedFile.getContentType();
+	// byte[] contents = uploadedFile.getContents(); // Or getInputStream()
+	// // ... Save it, now!
+	// }
+
+	public String montreLeMembre(Membre membre) {
+		setMembre(membre);
+		return Pages.MEMBRE;
+	}
+
+	public void creerUnMembre() {
 		membre = ModelInitializer.initMembre();
+		RequestContext.getCurrentInstance().execute("$('#js_creerMembreModal').modal('show');");
+	}
+
+	public void editer(Membre membre) {
+		this.membre = membre;
+		setEditMode(true);
 		RequestContext.getCurrentInstance().execute("$('#js_creerMembreModal').modal('show');");
 	}
 
@@ -119,16 +128,40 @@ public class MembreBean implements Serializable {
 			Helper.showError("le mot de passe doit correspondre à sa confirmation", "reste");
 			return Pages.SELF;
 		}
-		membre.setActiver(true);
+		Membre exite = membreService.findByEmail(membre.getContact().getEmail());
+		if (exite != null) {
+			Helper.showError("Un membre avec l´email donnée existe deja", "reste");
+			return Pages.SELF;
+		}
 		Membre m = membreService.createMembre(membre);
 		if (m != null) {
 			LOG.debug("Le membre " + m.getNom() + " " + m.getPrenom() + " a été creer");
 		}
+
+		return Pages.MEMBRES;
+	}
+
+	public String sauverEdit() {
+		if (!motDePassConfirm.equals(membre.getMotDePass())) {
+			Helper.showError("le mot de passe doit correspondre à sa confirmation", "reste");
+			return Pages.SELF;
+		}
+		Membre m = membreService.createMembre(membre);
+		if (m != null) {
+			LOG.debug("Le membre " + m.getNom() + " " + m.getPrenom() + " a été creer");
+		}
+		this.membre = null;
+		setEditMode(false);
 		return Pages.MEMBRES;
 	}
 
 	public String delete(Long id) {
-		membreService.setMembreActiv(id, false);
+		if (!membreService.delete(id)) {
+			Helper.showError(
+					"Le membre que vous voulez supprimer appartient à une ronde. Faudra d´abord l´oter de la ronde avant de procéder à sa suppression",
+					"membresErrors");
+			return Pages.SELF;
+		}
 		return Pages.MEMBRES;
 	}
 }

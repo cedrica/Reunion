@@ -1,23 +1,17 @@
 package com.reunion.model;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import java.io.Serializable;
+import javax.persistence.Table;
+import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "Groupe")
-public class Groupe implements Serializable {
+@Table(name = "DonneesBanquaire")
+public class DonneesBanquaire implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -28,11 +22,11 @@ public class Groupe implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	@Column(length = 50, name = "nom")
-	private String nom;
+	@Column(length = 30, name = "iban")
+	private String iban;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH,CascadeType.REMOVE}, mappedBy="groupe")
-	private Set<Membre> membres = new HashSet<Membre>();
+	@Column(length = 20, name = "bic")
+	private String bic;
 
 	public Long getId() {
 		return this.id;
@@ -55,10 +49,10 @@ public class Groupe implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Groupe)) {
+		if (!(obj instanceof DonneesBanquaire)) {
 			return false;
 		}
-		Groupe other = (Groupe) obj;
+		DonneesBanquaire other = (DonneesBanquaire) obj;
 		if (id != null) {
 			if (!id.equals(other.id)) {
 				return false;
@@ -75,24 +69,32 @@ public class Groupe implements Serializable {
 		return result;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getIban() {
+		return iban;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setIban(String iban) {
+		this.iban = iban;
+	}
+
+	public String getBic() {
+		return bic;
+	}
+
+	public void setBic(String bic) {
+		this.bic = bic;
 	}
 
 	@Override
 	public String toString() {
-		return nom;
-	}
-
-	public Set<Membre> getMembres() {
-		return this.membres;
-	}
-
-	public void setMembres(final Set<Membre> membres) {
-		this.membres = membres;
+		String result = getClass().getSimpleName() + " ";
+		if (id != null)
+			result += "id: " + id;
+		result += ", version: " + version;
+		if (iban != null && !iban.trim().isEmpty())
+			result += ", iban: " + iban;
+		if (bic != null && !bic.trim().isEmpty())
+			result += ", bic: " + bic;
+		return result;
 	}
 }

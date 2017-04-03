@@ -3,9 +3,7 @@ package com.reunion.helper;
 import java.io.File;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;

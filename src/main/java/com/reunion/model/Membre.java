@@ -8,12 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import com.reunion.model.DonneesBanquaire;
 
 @Entity
 @Table(name = "Membre")
@@ -34,34 +33,29 @@ public class Membre implements Serializable {
 	@Column(length = 20, name = "prenom")
 	private String prenom;
 
-	@OneToOne(cascade = {CascadeType.MERGE,
-			CascadeType.REMOVE, CascadeType.REFRESH})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
+			CascadeType.REFRESH})
 	private Adresse adresse;
 
-	@OneToOne(cascade = {CascadeType.MERGE,
-			CascadeType.REMOVE, CascadeType.REFRESH})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
+			CascadeType.REFRESH})
 	private Contact contact;
 
-	@ManyToOne(cascade = {CascadeType.MERGE,
-			CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.REFRESH})
 	private Groupe groupe;
 
 	@Column(length = 50, name = "motDePass")
 	private String motDePass;
 
-	@Column(name = "inserable")
-	private Boolean inserable = false;
-
-	@Column(length = 1, name = "activer")
-	private boolean activer;
-
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(name = "Ronde_Membre", joinColumns = { @JoinColumn(name = "Membre_ID") }, inverseJoinColumns = { @JoinColumn(name = "Ronde_ID") })
-//	private Set<Ronde> rondes = new HashSet<Ronde>();
-
 	@Column(length = 1, name = "editable")
 	private boolean editable;
 
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE,
+			CascadeType.REFRESH})
+	private DonneesBanquaire donneesBanquaire;
+
+	@Column(length = 2, name = "fondDeCaisse")
+	private double fondDeCaisse;
 
 	public Long getId() {
 		return this.id;
@@ -127,14 +121,6 @@ public class Membre implements Serializable {
 		this.motDePass = motDePass;
 	}
 
-	public Boolean getInserable() {
-		return inserable;
-	}
-
-	public void setInserable(Boolean inserable) {
-		this.inserable = inserable;
-	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -161,22 +147,6 @@ public class Membre implements Serializable {
 		return result;
 	}
 
-	public boolean getActiver() {
-		return activer;
-	}
-
-	public void setActiver(boolean activer) {
-		this.activer = activer;
-	}
-
-//	public Set<Ronde> getRondes() {
-//		return this.rondes;
-//	}
-//
-//	public void setRondes(final Set<Ronde> rondes) {
-//		this.rondes = rondes;
-//	}
-
 	public boolean getEditable() {
 		return editable;
 	}
@@ -185,9 +155,25 @@ public class Membre implements Serializable {
 		this.editable = editable;
 	}
 
+	public DonneesBanquaire getDonneesBanquaire() {
+		return donneesBanquaire;
+	}
+
+	public void setDonneesBanquaire(DonneesBanquaire donneesBanquaire) {
+		this.donneesBanquaire = donneesBanquaire;
+	}
+
+	public double getFondDeCaisse() {
+		return fondDeCaisse;
+	}
+
+	public void setFondDeCaisse(double fondDeCaisse) {
+		this.fondDeCaisse = fondDeCaisse;
+	}
+
 	@Override
 	public String toString() {
-		return nom+" "+prenom;
+		return nom +" "+prenom;
 	}
 
 }

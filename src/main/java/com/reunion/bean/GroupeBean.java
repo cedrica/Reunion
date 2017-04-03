@@ -56,5 +56,4 @@ public class GroupeBean implements Serializable {
 		groupeService.endConversation();
 		return Pages.GROUPES;
 	}
-
 }

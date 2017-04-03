@@ -16,14 +16,15 @@
 				<div class="modal-content">
 					<div class="modal-body">Que voulez vous faire?</div>
 					<div class="modal-footer">
-						<h:commandButton value="Rien" class="btn btn-default"
-							data-dismiss="dialog" immediate="true" />
+						<h:commandButton value="Rien" class="btn btn-default" action="#{empruntBean.empruntEditable(false)}">
+							<f:ajax execute="@this" />
+						</h:commandButton>
 						<h:commandButton value="Editer" class="btn btn-primary"
 							action="#{empruntBean.empruntEditable(true)}">
 							<f:ajax execute="@this" />
 						</h:commandButton>
 						<h:commandButton value="rembourser" class="btn btn-primary"
-							rendered="#{not (empruntBean.emprunt.status.value == 'rembourse')}"
+							rendered="#{empruntBean.emprunt.status.value != 'rembourse'}"
 							action="#{empruntBean.rembourser(true)}" ><f:ajax execute="@this" />
 						</h:commandButton>
 						<h:commandButton value="reactiver le remboursement"

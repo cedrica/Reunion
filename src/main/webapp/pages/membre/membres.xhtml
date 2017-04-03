@@ -14,65 +14,78 @@
 	</ui:define>
 
 	<ui:define name="main">
-		<h:outputScript library="js" name="membre.js" />
-		<ui:include src="/pages/membre/creer-un-nouveau-membre.xhtml" />
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="dropdown pull-right">
-					<button class="btn btn-default" type="button" id="dropdownMenu1"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						<i class="fa fa-bars" style="font-size: 20px; color: #fff;"></i>
-					</button>
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1"
-						style="padding: 5px; width: 200px;">
-						<li><h:selectBooleanCheckbox /> Membres</li>
-						<li><h:selectBooleanCheckbox /> Cautisation</li>
-						<li><h:selectBooleanCheckbox /> Date de bouffe</li>
-						<li style="width: 200px;"><h:selectBooleanCheckbox />
-							Montant du bénéficiaire</li>
-						<li><h:selectBooleanCheckbox /> Supplement</li>
-					</ul>
+		<h:form>
+			<h:outputStylesheet library="customcss" name="membres.css" />
+			<h:outputScript library="js" name="membre.js" />
+			<ui:include src="/pages/membre/creer-un-nouveau-membre.xhtml" />
+			<div class="row">
+			<h:messages  id="membresErrors" style="color:red"/>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="dropdown pull-right">
+						<button class="btn btn-default" type="button" id="dropdownMenu1"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							<i class="fa fa-bars" style="font-size: 20px; color: #fff;"></i>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1"
+							style="padding: 5px; width: 200px;">
+							<li><h:selectBooleanCheckbox /> Membres</li>
+							<li><h:selectBooleanCheckbox /> Cautisation</li>
+							<li><h:selectBooleanCheckbox /> Date de bouffe</li>
+							<li style="width: 200px;"><h:selectBooleanCheckbox />
+								Montant du bénéficiaire</li>
+							<li><h:selectBooleanCheckbox /> Supplement</li>
+						</ul>
+					</div>
 				</div>
-			</div>
-			<div style="width: 100%;">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Nom</th>
-							<th>Rue</th>
-							<th>Ville</th>
-							<th>Nr. de telefon</th>
-							<th>E-Mail</th>
-							<th>Groupe</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<ui:repeat var="membre" value="#{membreBean.allMembers}">
+				<div style="width: 100%;">
+					<table class="table table-striped">
+						<thead>
 							<tr>
-								<td>#{membre.nom} #{membre.prenom}</td>
-								<td>#{membre.adresse.rue} #{membre.adresse.numero}</td>
-								<td>#{membre.adresse.ville}</td>
-								<td>#{membre.contact.telephone}</td>
-								<td>#{membre.contact.email}</td>
-								<td>#{membre.groupe.nom}</td>
-								<td><h:commandLink styleClass="fa fa-remove"
-										data-toggle="tooltip" title="Suprimer le membre"
-										action="#{membreBean.delete(membre.id)}"
-										style="font-size: 20px; color:red; margin-right:10px;" /></td>
+								<th>Nom</th>
+								<th>Rue</th>
+								<th>Ville</th>
+								<th>Nr. de telefon</th>
+								<th>E-Mail</th>
+								<th>Groupe</th>
+								<th></th>
 							</tr>
-						</ui:repeat>
+						</thead>
+						<tbody>
+							<ui:repeat var="membre" value="#{membreBean.allMembers}">
+								<tr>
+									<td><h:commandLink value=" #{membre.nom} #{membre.prenom}" action="#{membreBean.montreLeMembre(membre)}" >
+									<f:ajax execute="@this"/></h:commandLink></td>
+									<td>#{membre.adresse.rue} #{membre.adresse.numero}</td>
+									<td>#{membre.adresse.ville}</td>
+									<td>#{membre.contact.telephone}</td>
+									<td>#{membre.contact.email}</td>
+									<td>#{membre.groupe.nom}</td>
+									<td><h:commandLink styleClass="fa fa-edit"
+											data-toggle="tooltip" title="Editer le membre"
+											action="#{membreBean.editer(membre)}"
+											style="font-size: 20px; color:green; margin-right:10px;">
+											<f:ajax execute="@this" render="@form" />
+										</h:commandLink> <h:commandLink styleClass="fa fa-remove"
+											data-toggle="tooltip" title="Suprimer le membre"
+											action="#{membreBean.delete(membre.id)}"
+											style="font-size: 20px; color:red; margin-right:10px;">
+											<f:ajax execute="@this" render="@form membresErrors" />
+										</h:commandLink></td>
+								</tr>
+							</ui:repeat>
 
-					</tbody>
-				</table>
+						</tbody>
+					</table>
 
+				</div>
+				<h:outputScript library="js" name="footer.js" />
+				<div class="col-sm-4 col-md-4 col-lg-4"></div>
+				<div class="col-sm-4 col-md-4 col-lg-4"></div>
+				<div class="col-sm-4 col-md-4 col-lg-4"></div>
 			</div>
-			<h:outputScript library="js" name="footer.js" />
-			<div class="col-sm-4 col-md-4 col-lg-4"></div>
-			<div class="col-sm-4 col-md-4 col-lg-4"></div>
-			<div class="col-sm-4 col-md-4 col-lg-4"></div>
-		</div>
-
+		</h:form>
 	</ui:define>
 
 </ui:composition>

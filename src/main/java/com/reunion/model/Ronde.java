@@ -5,22 +5,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.reunion.util.CalendarUtils;
-import com.reunion.model.Trafique;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "Ronde")
@@ -40,10 +36,6 @@ public class Ronde implements Serializable {
 
 	@Column(name = "finDeLaRonde")
 	private Date finDeLaRonde;
-
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(name = "Ronde_Membre", joinColumns = {@JoinColumn(name = "Ronde_ID")}, inverseJoinColumns = {@JoinColumn(name = "Membre_ID")})
-//	private Set<Membre> membres = new HashSet<Membre>();
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,
 			CascadeType.REMOVE, CascadeType.REFRESH})
@@ -80,14 +72,6 @@ public class Ronde implements Serializable {
 	public void setFinDeLaRonde(Date finDeLaRonde) {
 		this.finDeLaRonde = finDeLaRonde;
 	}
-
-//	public Set<Membre> getMembres() {
-//		return this.membres;
-//	}
-//
-//	public void setMembres(final Set<Membre> membres) {
-//		this.membres = membres;
-//	}
 
 	@Override
 	public boolean equals(Object obj) {

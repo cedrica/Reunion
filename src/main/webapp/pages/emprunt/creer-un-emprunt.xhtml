@@ -19,10 +19,13 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title" id="gridSystemModalLabel" style="text-align: center;">Créer un
-							emprunt</h4>
+						<h4 class="modal-title" id="gridSystemModalLabel"
+							style="text-align: center;">Créer un emprunt</h4>
 					</div>
 					<div class="modal-body">
+					<div class="row">
+						<h:messages id="errors" style="color:red;"/>
+					</div>
 						<div class="form-group">
 							<h:selectOneMenu id="emprunteur" required="true"
 								requiredMessage="Nom de l ´emprunteur obligatoire"
@@ -72,12 +75,14 @@
 					</div>
 					<div class="modal-footer">
 						<h:commandButton value="Fermer" class="btn btn-default"
-							data-dismiss="dialog" immediate="true" />
+							data-dismiss="dialog" action="#{empruntBean.close()}">
+							<f:ajax execute="@this" />
+						</h:commandButton>
 						<h:commandButton value="Sauvegarder" class="btn btn-primary"
 							id="saveCreatedEmprunt" action="#{empruntBean.sauvegarder}">
 							<f:ajax
 								execute="dateDeRemboursement sommeEmpruntee emprunteur ronde"
-								render="dateDeRemboursementOut sommeEmprunteeOut emprunteurOut rondeOut" />
+								render="dateDeRemboursementOut sommeEmprunteeOut emprunteurOut rondeOut errors" />
 						</h:commandButton>
 					</div>
 				</div>

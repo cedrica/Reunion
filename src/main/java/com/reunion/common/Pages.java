@@ -15,4 +15,8 @@ public static final String RONDES = "rondes?faces-redirect=true";
 
 public static final String EMPRUNT = "emprunt?faces-redirect=true";
 public static final String SUCCESS = "success?faces-redirect=true";
+
+public static final String MEMBRE = "membre?faces-redirect=true";
+
+public static final String PROFILE = "profile?faces-redirect=true";;
 }

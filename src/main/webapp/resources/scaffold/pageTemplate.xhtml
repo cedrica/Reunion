@@ -19,17 +19,18 @@
 	<h:outputScript library="js" name="bootstrap.datetimepicker.js" />
 	<link type="text/css" rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-		  
+
 	<h:outputStylesheet library="bootstrap" name="css/bootstrap.css" />
 	<h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 	<h:outputStylesheet library="customcss" name="template.css" />
 	<!-- bootstrap-datetimepicker.css for date picker -->
-	<h:outputStylesheet library="customcss" name="bootstrap-datetimepicker.css" />
+	<h:outputStylesheet library="customcss"
+		name="bootstrap-datetimepicker.css" />
 
 
 </h:head>
 
- 
+
 <h:body>
 
 	<ui:debug
@@ -37,35 +38,35 @@
 	<h:form id="templateForm">
 		<div class="parent">
 			<div class="row" style="line-height: 50px;">
-				<div class="col-sm-1 col-md-1 col-lg-1">
+				<div class="col-md-9">
 					<div class="pull-left">
 						<h:graphicImage value='#{resource["images/logo.PNG"]}' border="0"
 							style="height:100px;" />
 					</div>
 				</div>
-				<div class="col-sm-7 col-md-10 col-lg-10">
-					<div class="pull-right" style="vertical-align: middle;">Hallo
-						Cedric L.</div>
-				</div>
 
-				<div class="col-sm-12 col-md-1 col-lg-1">
-					<div class="btn-group  pull-right">
-						<div style="float: left;">
-							<h:graphicImage value='#{resource["images/moi.png"]}' border="0"
-								style="border-radius:50.0px; with:40px; height:40px;" id="moi" />
+				<div class="col-md-3">
+						<div style="vertical-align: middle; float: left; margin-right: 10px">Salut
+							<i>#{loginBean.nomDuMembre()}</i></div>
+						<div class="btn-group">
+							<div style="float: left;">
+								<h:graphicImage value='#{resource["images/moi.png"]}' border="0"
+									style="border-radius:50.0px; with:40px; height:40px;" id="moi" />
+							</div>
+							<div class="dropdown-toggle" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false"
+								style="text-align: center; float: left;">
+								<span class="caret"></span>
+							</div>
+							<ul class="dropdown-menu">
+								<li><h:commandLink action="#{loginBean.ouvreProfile()}"
+										value="Profile" /></li>
+								<li role="separator" class="divider"></li>
+								<li><h:commandLink action="#{loginBean.logout()}"
+										immediate="true">Déconnecter</h:commandLink></li>
+							</ul>
 						</div>
-						<div class="dropdown-toggle" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false"
-							style="text-align: center; float: left;">
-							<span class="caret"></span>
-						</div>
-						<ul class="dropdown-menu">
-							<li><h:commandLink>Profile</h:commandLink></li>
-							<li role="separator" class="divider"></li>
-							<li><h:commandLink action="#{loginBean.logout()}"
-									immediate="true">Déconnecter</h:commandLink></li>
-						</ul>
-					</div>
+
 				</div>
 
 			</div>
@@ -82,32 +83,32 @@
 					<c:choose>
 						<c:when test="${pageTitle == 'Membres'}">
 							<h:commandLink class="btn btn-primary pull-right"
-								value="Créer un nouveau membre" action="#{membreBean.creerUnMembre()}">
+								value="Créer un nouveau membre"
+								action="#{membreBean.creerUnMembre()}">
 								<f:ajax execute="@this" />
-								</h:commandLink>
+							</h:commandLink>
 						</c:when>
 						<c:when test="${pageTitle == 'Groupes'}">
 							<h:commandLink class="btn btn-primary pull-right"
 								value="Créer un nouveau groupe" immediate="true"
-								action="#{groupeBean.creerUnGroupe()}"
-								><f:ajax execute="@this"/></h:commandLink>
+								action="#{groupeBean.creerUnGroupe()}">
+								<f:ajax execute="@this" />
+							</h:commandLink>
 						</c:when>
 						<c:when test="${pageTitle == 'Rondes'}">
 							<h:commandLink class="btn btn-primary pull-right"
-								action="#{rondeBean.creerUneRonde()}"
-									immediate="true"
+								action="#{rondeBean.creerUneRonde()}" immediate="true"
 								value="Créer une ronde">
-								<f:ajax execute="@this"/>
+								<f:ajax execute="@this" />
 							</h:commandLink>
 						</c:when>
 						<c:when test="${pageTitle == 'Emprunts'}">
 							<h:commandLink value="Créer un emprunt"
 								action="#{empruntBean.creerUnEmprunt()}"
-								class="btn btn-primary pull-right"
-								immediate="true">
+								class="btn btn-primary pull-right" immediate="true">
 								<f:ajax execute="@this" />
 							</h:commandLink>
-							
+
 						</c:when>
 					</c:choose>
 

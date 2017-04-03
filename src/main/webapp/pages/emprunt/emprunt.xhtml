@@ -20,29 +20,36 @@
 			<h:outputStylesheet library="customcss" name="emprunts.css" />
 			<h:outputScript library="js" name="emprunt.js" />
 			<ui:include src="/pages/emprunt/creer-un-emprunt.xhtml" />
-			<ui:include src="/pages/emprunt/editer-ou-rembourser.xhtml" />
+			<ui:include src="/pages/emprunt/editer-ou-rembourser.xhtml" />			
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-4  well">
+				<p>Le fond de caisse actuel est de:
+						#{empruntBean.calculDuFondDeCaisse()} €</p>
+					<p>Le bénéfice attendu est de:
+						#{empruntBean.calculDuBenefice()} €</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
 					<div class="vert-claire"></div>
 					<p>
 						<i> La somme empreuntée a été remise</i>
 					</p>
+				</div>
+				<div class="col-lg-4">
 					<div class="rouge-claire"></div>
 					<p>
 						<i> La somme empreuntée n´a pas été remise à temps</i>
 					</p>
+				</div>
+				<div class="col-lg-4">
 					<div class="bleu-claire"></div>
 					<p>
 						<i> La somme empreuntée est ouverte</i>
 					</p>
 				</div>
-				<div class="col-lg-6">
-					<p>Le fond de caisse actuel est de:
-						#{empruntBean.calculDuFondDeCaisse()}€</p>
-					<p>Le bénéfice attendu est de:
-						#{empruntBean.calculDuBenefice()}€</p>
-				</div>
 			</div>
+
 			<div class="row">
 				<div class="modal-footer"></div>
 			</div>
@@ -97,20 +104,20 @@
 											style="font-size: 20px; margin-right: 10px; text-decoration: none;"
 											title="INFO" data-placement="bottom" data-html="true"
 											data-toggle="popover" data-trigger="hover"
-											data-content="La somme empruntée a été rembourser.">
-												<i class="jaune fa fa-info-circle"></i>
+											data-content="La somme empruntée a été rembourser."> <i
+												class="jaune fa fa-info-circle"></i>
 										</a> <h:commandLink styleClass="fa fa-edit" data-toggle="tooltip"
 												title="Editer ou effectuer le remboursement"
 												action="#{empruntBean.setEmprunt(emprunt)}"
 												rendered="#{not emprunt.editable}"
 												style="font-size: 20px; color:green; margin-right:10px;">
-												<f:ajax execute="@this"/>
+												<f:ajax execute="@this" />
 											</h:commandLink> <h:commandLink styleClass="fa fa-check"
 												data-toggle="tooltip" title="Sauvegarder l´edit"
 												rendered="#{emprunt.editable}"
 												action="#{empruntBean.sauvegarder()}"
 												style="font-size: 20px; color:green; margin-right:10px;">
-												<f:ajax execute="@this" render="@all" />
+												<f:ajax execute="@this @all" />
 											</h:commandLink> <h:commandLink styleClass="fa fa-archive"
 												data-toggle="tooltip" title="Archiver le remboursement"
 												style="font-size: 20px; color:#000; margin-right:10px;">
@@ -118,7 +125,7 @@
 												data-toggle="tooltip" title="Suprimer le remboursement"
 												action="#{empruntBean.suprimerLeRemboursement(emprunt)}"
 												style="font-size: 20px; color:red; margin-right:10px;">
-												<f:ajax execute="@all" render="@all" />
+												<f:ajax execute="@this" />
 											</h:commandLink></td>
 									</tr>
 								</h:panelGroup>
@@ -171,21 +178,21 @@
 												action="#{empruntBean.setEmprunt(emprunt)}"
 												rendered="#{not emprunt.editable}"
 												style="font-size: 20px; color:green; margin-right:10px;">
-												<f:ajax execute="@this"/>
+												<f:ajax execute="@this" />
 											</h:commandLink> <h:commandLink styleClass="fa fa-check"
 												data-toggle="tooltip" title="Sauvegarder l´edit"
 												rendered="#{emprunt.editable}"
 												action="#{empruntBean.sauvegarder()}"
 												style="font-size: 20px; color:green; margin-right:10px;">
-												<f:ajax execute="@all" render="@all" />
+												<f:ajax execute="@this @all" />
 											</h:commandLink> <h:commandLink styleClass="fa fa-archive"
 												data-toggle="tooltip" title="Archiver le remboursement"
 												style="font-size: 20px; color:#000; margin-right:10px;">
 											</h:commandLink> <h:commandLink styleClass="fa fa-remove"
 												data-toggle="tooltip" title="Suprimer le remboursement"
 												action="#{empruntBean.suprimerLeRemboursement(emprunt)}"
-												style="font-size: 20px; color:red; margin-right:10px;" >
-												<f:ajax execute="@all" render="@all" />
+												style="font-size: 20px; color:red; margin-right:10px;">
+												<f:ajax execute="@this" />
 											</h:commandLink></td>
 									</tr>
 								</h:panelGroup>
@@ -240,21 +247,21 @@
 												action="#{empruntBean.setEmprunt(emprunt)}"
 												rendered="#{not emprunt.editable}"
 												style="font-size: 20px; color:green; margin-right:10px;">
-												<f:ajax execute="@this"/>
+												<f:ajax execute="@this" />
 											</h:commandLink> <h:commandLink styleClass="fa fa-check"
 												data-toggle="tooltip" title="Sauvegarder l´edit"
 												rendered="#{emprunt.editable}"
 												action="#{empruntBean.sauvegarder()}"
 												style="font-size: 20px; color:green; margin-right:10px;">
-												<f:ajax execute="@all" render="@all" />
+												<f:ajax execute="@this @all" />
 											</h:commandLink> <h:commandLink styleClass="fa fa-archive"
 												data-toggle="tooltip" title="Archiver le remboursement"
 												style="font-size: 20px; color:#000; margin-right:10px;">
 											</h:commandLink> <h:commandLink styleClass="fa fa-remove"
 												data-toggle="tooltip" title="Suprimer le remboursement"
 												action="#{empruntBean.suprimerLeRemboursement(emprunt)}"
-												style="font-size: 20px; color:red; margin-right:10px;" >
-												<f:ajax execute="@all" render="@all" />
+												style="font-size: 20px; color:red; margin-right:10px;">
+												<f:ajax execute="@this" />
 											</h:commandLink></td>
 									</tr>
 								</h:panelGroup>

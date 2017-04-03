@@ -92,17 +92,6 @@ public class RondeBean implements Serializable {
 		return groupe;
 	}
 
-	public void setGroupe(Groupe groupe) {
-		listeDesTrafiques = new ArrayList<Trafique>();
-		List<Membre> membres = Helper.trouveLesMembreDuGroupe(listeDesMembres, groupe);
-		for (Membre m : membres) {
-			trafique = new Trafique();
-			trafique.setMembre(m);
-			listeDesTrafiques.add(trafique);
-		}
-		this.groupe = groupe;
-	}
-
 	public Ronde getRonde() {
 		return ronde;
 	}
@@ -111,9 +100,6 @@ public class RondeBean implements Serializable {
 		this.ronde = ronde;
 	}
 
-	public void setMembreInserable(Membre membre) {
-		membre.setInserable(true);
-	}
 
 	public List<Ronde> getRondes() {
 		return rondes;
@@ -126,6 +112,17 @@ public class RondeBean implements Serializable {
 	public boolean sauvegardable() {
 
 		return false;
+	}
+
+	public void setGroupe(Groupe groupe) {
+		listeDesTrafiques = new ArrayList<Trafique>();
+		List<Membre> membres = Helper.trouveLesMembreDuGroupe(listeDesMembres, groupe);
+		for (Membre m : membres) {
+			trafique = new Trafique();
+			trafique.setMembre(m);
+			listeDesTrafiques.add(trafique);
+		}
+		this.groupe = groupe;
 	}
 
 	public String convertToMonthYear(Date dt) {
@@ -169,7 +166,7 @@ public class RondeBean implements Serializable {
 				if (t.getId() == trafique.getId())
 					continue;
 				if (t.getCotisation() != null && (trafique.getCotisation() > t.getCotisation())) {
-					supplement += (trafique.getCotisation()-t.getCotisation());
+					supplement += (trafique.getCotisation() - t.getCotisation());
 				}
 			}
 		}
@@ -231,16 +228,18 @@ public class RondeBean implements Serializable {
 	}
 
 	public String setEditable(Ronde ronde, Trafique trafique) {
-		setRonde(ronde);
-		setTrafique(trafique);
-		this.trafique.setEditable(true);
 		if (isEditModus) {
 			RequestContext.getCurrentInstance().execute(
 					"alert('Vous ne pouvez éditer deux objects en même temps. veuillez finir avec le premier avant d´attaquer le second');");
 			return Pages.SELF;
+		} else {
+			setRonde(ronde);
+			setTrafique(trafique);
+			this.trafique.setEditable(true);
+			isEditModus = true;
+			return Pages.RONDES;
 		}
-		isEditModus = true;
-		return Pages.RONDES;
+
 	}
 
 	public void enleverTrafique(Trafique trafique) {
@@ -256,9 +255,11 @@ public class RondeBean implements Serializable {
 				} else {
 					rondeService.create(r);
 				}
+				trafiqueService.delete(trafique.getId());
 				break;
 			}
 		}
+		
 		return Pages.RONDES;
 	}
 
@@ -275,5 +276,10 @@ public class RondeBean implements Serializable {
 		}
 		if (!present)
 			trafiquesDelaNouvelleRonde.add(trafique);
+	}
+	
+	public String close(){
+		this.ronde = null;
+		return Pages.RONDES;
 	}
 }

@@ -7,7 +7,6 @@ import javax.ejb.Stateful;
 import javax.enterprise.context.Conversation;
 import javax.inject.Inject;
 
-import com.reunion.common.Pages;
 import com.reunion.dao.GenericDAO;
 import com.reunion.model.Emprunt;
 
@@ -20,24 +19,21 @@ public class EmpruntService extends GenericDAO<Emprunt> implements Serializable 
 	@Inject
 	Conversation conversation;
 
-	public String createEmprunt(Emprunt entity) {
+	public Emprunt createEmprunt(Emprunt entity) {
 		conversation.end();
-		super.create(entity);
-		return Pages.EMPRUNT;
+		return super.create(entity);
 	}
 
-	public String update(Long id) {
+	public void update(Long id) {
 		if (conversation.isTransient())
 			conversation.end();
 		update(id, Emprunt.class);
-		return Pages.EMPRUNT;
 	}
 
-	public String delete(long id) {
+	public void delete(long id) {
 		if (conversation.isTransient())
 			conversation.end();
 		delete(id, Emprunt.class);
-		return Pages.EMPRUNT;
 	}
 
 	public Emprunt findById(Long id) {

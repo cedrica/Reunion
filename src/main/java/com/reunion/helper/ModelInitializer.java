@@ -7,7 +7,6 @@ import com.reunion.model.Contact;
 import com.reunion.model.Emprunt;
 import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
-import com.reunion.model.Trafique;
 
 public class ModelInitializer {
 	
