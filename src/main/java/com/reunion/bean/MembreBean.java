@@ -13,7 +13,6 @@ import javax.xml.bind.DatatypeConverter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +41,6 @@ public class MembreBean implements Serializable {
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 	private String motDePassConfirm;
 	private boolean editMode;
-	private StreamedContent monImage;
 
 	public void init() {
 		membreService.startConversation();
@@ -52,6 +50,9 @@ public class MembreBean implements Serializable {
 		allMembers = membreService.findAll();
 		groupes = groupeService.findAll(Groupe.class);
 	}
+
+	
+
 
 	public boolean getEditMode() {
 		return editMode;
@@ -95,28 +96,9 @@ public class MembreBean implements Serializable {
 		return Pages.MEMBRES;
 	}
 
-	private UploadedFile file;
-
-	public UploadedFile getFile() {
-		return file;
-	}
-
-	public void setFile(UploadedFile file) {
-		this.file = file;
-	}
 
 	public void ajusterLeFondDeCaisse() {
 
-	}
-
-	public StreamedContent getMonImage() {
-		if (membre.getMonImage() != null)
-			monImage = new DefaultStreamedContent(new ByteArrayInputStream(membre.getMonImage()), "image/png");
-		return this.monImage;
-	}
-
-	public void setMonImage(StreamedContent monImage) {
-		this.monImage = monImage;
 	}
 
 	public String montreLeMembre(Membre membre) {
@@ -167,17 +149,7 @@ public class MembreBean implements Serializable {
 		return Pages.MEMBRES;
 	}
 
-	// this function is called from javascript
-	public void uploadFile() {
-		String data = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("data");
-		if (data != null && data.length() > 1 && data.startsWith("data:image/")) {
-			String monImageStr = data.split(",")[1];
-			byte[] imageBytes = DatatypeConverter.parseBase64Binary(monImageStr);
-			this.membre.setMonImage(imageBytes);
-			membreService.createMembre(this.membre);
-			monImage = new DefaultStreamedContent(new ByteArrayInputStream(imageBytes), "image/png");
-		}
-	}
+
 
 	public String delete(Long id) {
 		if (!membreService.delete(id)) {
@@ -188,4 +160,5 @@ public class MembreBean implements Serializable {
 		}
 		return Pages.MEMBRES;
 	}
+
 }

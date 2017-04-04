@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import com.reunion.model.Adresse;
 import com.reunion.model.Contact;
+import com.reunion.model.DonneesBanquaire;
 import com.reunion.model.Emprunt;
 import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
@@ -16,6 +17,7 @@ public class ModelInitializer {
 		membre.setContact(new Contact());
 		Groupe groupe = new Groupe();
 		groupe.setMembres(new HashSet<Membre>());
+		membre.setDonneesBanquaire(new DonneesBanquaire());
 		membre.setGroupe(groupe);
 		return membre;
 	}

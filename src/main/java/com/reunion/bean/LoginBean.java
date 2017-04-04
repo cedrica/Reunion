@@ -1,5 +1,6 @@
 package com.reunion.bean;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -9,7 +10,10 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
 
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +38,7 @@ public class LoginBean implements Serializable {
 	@Inject
 	private LoginService loginService;
 	@Inject
-	private MembreService membreService;
+	private MembreService membreActuelService;
 	@Inject
 	private GroupeService groupeService;
 	
@@ -43,92 +47,103 @@ public class LoginBean implements Serializable {
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 	private Groupe groupe;
 	private Membre membreActuel;
+	private boolean profilEditable;
+	private StreamedContent monImage;
+	
 	public void init() {
 		loginService.startConversation();
-		membreService.startConversation();
+		membreActuelService.startConversation();
 		groupeService.startConversation();
 		LOG.info("Coversation déclachée");
-		List<Membre> membres = membreService.findAll();
-		if(membres == null || membres.isEmpty()){
-			Membre membre = new Membre();
-			membre.setMotDePass("a");
-			membre.setNom("Leumaleu");
-			membre.setPrenom("Cedric");
+		List<Membre> membreActuels = membreActuelService.findAll();
+		if(membreActuels == null || membreActuels.isEmpty()){
+			Membre membreActuel = new Membre();
+			membreActuel.setMotDePass("a");
+			membreActuel.setNom("Leumaleu");
+			membreActuel.setPrenom("Cedric");
 
-			membre.setFondDeCaisse(100);
+			membreActuel.setFondDeCaisse(100);
 			Adresse adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);
 			adresse.setRue("Schweinauer Hauptstrasse");
 			adresse.setVille("Nürnberg");
-			membre.setAdresse(adresse);
+			membreActuel.setAdresse(adresse);
 			
 			Contact contact = new Contact();
 			contact.setEmail("djikeussi2001@yahoo.fr");
 			contact.setTelephone("017663112957");
-			membre.setContact(contact);
+			membreActuel.setContact(contact);
 			
 			Groupe groupe = new Groupe();
 			groupe.setNom("Erlangen");
 			groupe = groupeService.createGroupe(groupe);
 			
-			membreService.startConversation();
-			membre.setGroupe(groupe);
-			membre = membreService.createMembre(membre);
+			membreActuelService.startConversation();
+			membreActuel.setGroupe(groupe);
+			membreActuel = membreActuelService.createMembre(membreActuel);
 			
 			
-			membre = new Membre();
-			membre.setMotDePass("b");
-			membre.setNom("Kemoue");
-			membre.setPrenom("Silas");
+			membreActuel = new Membre();
+			membreActuel.setMotDePass("b");
+			membreActuel.setNom("Kemoue");
+			membreActuel.setPrenom("Silas");
 
-			membre.setFondDeCaisse(100);
+			membreActuel.setFondDeCaisse(100);
 			adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);
 			adresse.setRue("Bissingerstrasse");
 			adresse.setVille("Erlangen");
-			membre.setAdresse(adresse);
+			membreActuel.setAdresse(adresse);
 			
 			contact = new Contact();
 			contact.setEmail("silas@yahoo.fr");
 			contact.setTelephone("017663113357");
-			membre.setContact(contact);
+			membreActuel.setContact(contact);
 
-			membre.setGroupe(groupe);
-			membre = membreService.createMembre(membre);
-			membreService.startConversation();
+			membreActuel.setGroupe(groupe);
+			membreActuel = membreActuelService.createMembre(membreActuel);
+			membreActuelService.startConversation();
 			
-			membre = new Membre();
-			membre.setMotDePass("c");
-			membre.setNom("Komge");
-			membre.setPrenom("marc");
-			membre.setFondDeCaisse(100);
+			membreActuel = new Membre();
+			membreActuel.setMotDePass("c");
+			membreActuel.setNom("Komge");
+			membreActuel.setPrenom("marc");
+			membreActuel.setFondDeCaisse(100);
 
 			adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);
 			adresse.setRue("Manfredstrasse");
 			adresse.setVille("Erlangen");
-			membre.setAdresse(adresse);
+			membreActuel.setAdresse(adresse);
 			
 			contact = new Contact();
 			contact.setEmail("marc@yahoo.fr");
 			contact.setTelephone("017345113357");
-			membre.setContact(contact);
+			membreActuel.setContact(contact);
 
-			membre.setGroupe(groupe);
-			membre = membreService.createMembre(membre);
-			groupe.getMembres().add(membre);
+			membreActuel.setGroupe(groupe);
+			membreActuel = membreActuelService.createMembre(membreActuel);
+			groupe.getMembres().add(membreActuel);
 		}
 
 			
 	}
-	public void setGroupe(Groupe groupe) {
-		this.groupe = groupe;
+
+	public boolean getProfilEditable() {
+		return profilEditable;
 	}
 
 
+	public void setProfilEditable(boolean profilEditable) {
+		this.profilEditable = profilEditable;
+	}
+
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
 
 	public Groupe getGroupe() {
 		return this.groupe;
@@ -154,14 +169,14 @@ public class LoginBean implements Serializable {
 	}
 
 	
-	public Membre getMembreActuel() {
+	public Membre getmembreActuel() {
 		return membreActuel;
 	}
 	
-	public void setMembreActuel(Membre membreActuel) {
+	public void setmembreActuel(Membre membreActuel) {
 		this.membreActuel = membreActuel;
 	}
-	
+
 	public String seConnecter() throws IOException {
 		loginService.stopperLaConversation();
 		membreActuel = loginService.findMembreByEmail(email.trim());
@@ -183,15 +198,45 @@ public class LoginBean implements Serializable {
 	}
 
 	
-	public String ouvreProfile() throws IOException{
-		FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/profile.xhtml");
-		return Pages.PROFILE;
-	}
-	
 	public String nomDuMembre(){
 		HttpSession session = SessionUtil.getSession();
 		membreActuel = (Membre) session.getAttribute(SessionUtil.MEMBRE_ACTUEL);
 		return membreActuel.getPrenom()+" "+membreActuel.getNom();
+	}
+
+
+	
+	public StreamedContent getMonImage() {
+		if (membreActuel.getMonImage() != null)
+			monImage = new DefaultStreamedContent(new ByteArrayInputStream(membreActuel.getMonImage()), "image/png");
+		return this.monImage;
+	}
+
+	public void setMonImage(StreamedContent monImage) {
+		this.monImage = monImage;
+	}
+	
+	public String editerLeProfil() {
+		this.profilEditable = true;
+		return Pages.PROFILE;
+	}
+	
+	public String sauvegarderProfil() {
+		this.profilEditable = false;
+		membreActuelService.create(membreActuel);
+		return Pages.PROFILE;
+	}
+	
+	// this function is called from javascript
+	public void uploadFile() {
+		String data = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("data");
+		if (data != null && data.length() > 1 && data.startsWith("data:image/")) {
+			String monImageStr = data.split(",")[1];
+			byte[] imageBytes = DatatypeConverter.parseBase64Binary(monImageStr);
+			this.membreActuel.setMonImage(imageBytes);
+			membreActuelService.createMembre(this.membreActuel);
+			monImage = new DefaultStreamedContent(new ByteArrayInputStream(imageBytes), "image/png");
+		}
 	}
 
 }

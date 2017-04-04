@@ -3,3 +3,11 @@
 }
 
 #blah { display:none }
+
+.user-icon{
+    margin: 0 auto; 
+	text-align:center;
+	border-radius: 100px;
+	background-color:white;
+	border: 1px solid white;
+}

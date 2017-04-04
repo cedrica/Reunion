@@ -19,10 +19,13 @@
 			<h:outputStylesheet library="customcss" name="membres.css" />
 			<h:outputScript library="js" name="membre.js" />
 			<div class="row">
-				<div class="col-lg-12"></div>
+				<!-- <div class="col-lg-12"></div> -->
 				<div class="media">
-					<div class="media-left media-middle col-md-2">
-					<p:graphicImage value="#{membreBean.monImage}" id="monimage"/>
+					<div class="media-left media-middle col-md-2" >
+							<img id="preview" width="200px" height="200px">
+							<span class="fa fa-user-circle" style="font-size: 200px;"
+							aria-hidden="true"></span>
+							</img>	
 					</div>
 					<div class="media-body">
 						<div class="well col-md-4" style="margin-right:50px">
@@ -52,19 +55,12 @@
 							<h4><u>Fond de caisse</u></h4>
 							<p>mon fond de caisse actuel est de #{membreBean.membre.fondDeCaisse} €</p>
 							<i><h:commandLink action="#{membreBean.ajusterLeFondDeCaisse()}" value="Ajuster mon fond de caisse" /></i>
-							
-							<h4><u>Telecharger une photo</u></h4>
-							<input type="file" onchange="uploadFile()" /><br /> 
-							<img id="preview"></img>
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</h:form>
-		<h:form>
-		<p:remoteCommand name="passToJSFManagedBean"
-							id="passToJSFManagedBeancmd" action="#{membreBean.uploadFile}" process="@this" partialSubmit="true" />
-							</h:form>
 	</ui:define>
 
 </ui:composition>

@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<ui:param name="pageTitle" value="Profil" />
+
+	<ui:define name="subheader">
+		<b>Mon profil</b>
+	</ui:define>
+
+	<ui:define name="main">
+		<h:form id="profile">
+			<h:outputStylesheet library="customcss" name="membres.css" />
+			<h:outputScript library="js" name="membre.js" />
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-4">
+
+					<div class="well">
+						<h4>Moi</h4>
+						<h:panelGroup rendered="#{!loginBean.profilEditable}">
+							<p>
+								<b>Nom:</b> #{loginBean.membreActuel.nom}
+								#{loginBean.membreActuel.prenom}
+							</p>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{loginBean.profilEditable}">
+							<div class="form-group">
+								<h:inputText class="form-control input-xxlarge" id="nom"
+									value="#{loginBean.membreActuel.nom}" a:placeholder="Nom">
+								</h:inputText>
+								<h:message for="nom" style="color:red" id="nomOut" />
+							</div>
+							<div class="form-group">
+								<h:inputText class="form-control input-xxlarge" id="prenom"
+									value="#{loginBean.membreActuel.prenom}" a:placeholder="Prenom">
+								</h:inputText>
+								<h:message for="prenom" style="color:red" id="prenomOut" />
+							</div>
+						</h:panelGroup>
+
+
+						<h:panelGroup rendered="#{!loginBean.profilEditable}">
+							<p>
+								<b>Mot de pass:</b> #{loginBean.membreActuel.motDePass}
+							</p>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{loginBean.profilEditable}">
+							<div class="form-group">
+								<h:inputText class="form-control input-xxlarge" id="motDePass"
+									value="#{loginBean.membreActuel.motDePass}"
+									a:placeholder="Mot de pass">
+								</h:inputText>
+								<h:message for="motDePass" style="color:red" id="motDePassOut" />
+							</div>
+							<div class="form-group">
+								<h:inputSecret required="true"
+									requiredMessage="confirmation obligatoire" value=""
+									class="form-control input-xxlarge" id="confirmerMotDepass"
+									a:placeholder="confirmer le mot de pass">
+								</h:inputSecret>
+								<h:message for="confirmerMotDepass" style="color:red"
+									id="confirmerMotDepassOut" />
+							</div>
+						</h:panelGroup>
+					</div>
+					<div class="well">
+						<h4>Adresse</h4>
+						<p>
+							<h:panelGroup rendered="#{!loginBean.profilEditable}">
+								<b>Rue:</b> #{loginBean.membreActuel.adresse.rue} #{loginBean.membreActuel.adresse.numero}
+							</h:panelGroup>
+							<h:panelGroup rendered="#{loginBean.profilEditable}">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-10">
+											<h:inputText class="form-control input-xxlarge"
+												value="#{loginBean.membreActuel.adresse.rue}"
+												a:placeholder="Rue" />
+										</div>
+										<div class="col-md-2">
+											<h:inputText class="form-control " a:placeholder="Nr."
+												value="#{loginBean.membreActuel.adresse.numero}" />
+										</div>
+									</div>
+								</div>
+							</h:panelGroup>
+						</p>
+						<p>
+							<h:panelGroup rendered="#{!loginBean.profilEditable}">
+								<b>BP Ville:</b> #{loginBean.membreActuel.adresse.plz} #{loginBean.membreActuel.adresse.ville}
+						</h:panelGroup>
+							<h:panelGroup rendered="#{loginBean.profilEditable}">
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-2">
+											<h:inputText class="form-control " a:placeholder="BP"
+												value="#{loginBean.membreActuel.adresse.plz}" />
+										</div>
+										<div class="col-md-10">
+											<h:inputText class="form-control input-xxlarge"
+												value="#{loginBean.membreActuel.adresse.ville}"
+												a:placeholder="Ville" />
+										</div>
+									</div>
+								</div>
+							</h:panelGroup>
+
+						</p>
+					</div>
+					<div class="well">
+						<h4>Contact</h4>
+						<p>
+							<h:panelGroup rendered="#{!loginBean.profilEditable}">
+								<b>E-Mail:</b> #{loginBean.membreActuel.contact.email}
+							</h:panelGroup>
+							<h:panelGroup rendered="#{loginBean.profilEditable}">
+								<div class="form-group">
+									<h:inputText class="form-control input-xxlarge" id="email"
+										value="#{loginBean.membreActuel.contact.email}"
+										a:placeholder="e-mail">
+									</h:inputText>
+									<h:message for="email" style="color:red" id="emailOut" />
+								</div>
+							</h:panelGroup>
+						</p>
+						<p>
+							<h:panelGroup rendered="#{!loginBean.profilEditable}">
+								<b>Telefon:</b> #{loginBean.membreActuel.contact.telephone}
+							</h:panelGroup>
+
+							<h:panelGroup rendered="#{loginBean.profilEditable}">
+								<div class="form-group">
+									<h:inputText class="form-control input-xxlarge" id="telefon"
+										value="#{loginBean.membreActuel.contact.telephone}"
+										a:placeholder="telefon">
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</p>
+					</div>
+
+				</div>
+				<div class="col-md-1"></div>
+				<div class="col-md-4">
+					<div class="well">
+						<h4>Données banquaire</h4>
+						<h:panelGroup rendered="#{!loginBean.profilEditable}">
+							<p>
+								<b>IBAN:</b> #{loginBean.membreActuel.donneesBanquaire.iban}
+							</p>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{loginBean.profilEditable}">
+							<div class="form-group">
+								<h:inputText class="form-control input-xxlarge" id="iban"
+									value="#{loginBean.membreActuel.donneesBanquaire.iban}"
+									a:placeholder="IBAN">
+								</h:inputText>
+							</div>
+						</h:panelGroup>
+
+						<p>
+							<h:panelGroup rendered="#{!loginBean.profilEditable}">
+								<b>BIC:</b> #{loginBean.membreActuel.donneesBanquaire.bic}
+						</h:panelGroup>
+							<h:panelGroup rendered="#{loginBean.profilEditable}">
+								<div class="form-group">
+									<h:inputText class="form-control input-xxlarge" id="bic"
+										value="#{loginBean.membreActuel.donneesBanquaire.bic}"
+										a:placeholder="BIC">
+									</h:inputText>
+								</div>
+							</h:panelGroup>
+						</p>
+					</div>
+					<div class="well">
+						<h4>Groupe et trafique</h4>
+						<p>
+							<h:panelGroup rendered="#{!loginBean.profilEditable}">
+								<b>Groupe:</b> #{loginBean.membreActuel.groupe}
+						</h:panelGroup>
+							<h:panelGroup rendered="#{loginBean.profilEditable}" >
+								<div class="form-group">
+									<h:inputText class="form-control input-xxlarge" id="groupe"
+										value="#{loginBean.membreActuel.groupe}"
+										a:placeholder="Groupe">
+									</h:inputText>
+									<h:message for="groupe" style="color:red" id="groupeOut" />
+								</div>
+							</h:panelGroup>
+
+						</p>
+						<p>
+							<b>Mon fond de caisse actuel:</b>
+							#{loginBean.membreActuel.fondDeCaisse} €
+						</p>
+					</div>
+					<h:panelGroup rendered="#{loginBean.profilEditable}">
+						<div class="well">
+							<h4>Changer mon avatar</h4>
+							<input type="file" onchange="uploadFile()"/><br/>
+							<img src="" height="200"></img>
+						</div>
+					</h:panelGroup>
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-11">
+					<h:commandButton value="Editer mon profil" class="btn btn-primary"
+						id="btnEdit" rendered="#{!loginBean.profilEditable}"
+						action="#{loginBean.editerLeProfil()}">
+						<f:ajax render="profile" />
+					</h:commandButton>
+
+					<h:commandButton value="Sauvegarder" class="btn btn-primary"
+						id="btnSave" rendered="#{loginBean.profilEditable}"
+						action="#{loginBean.sauvegarderProfil()}">
+						<f:ajax execute="nom prenom email motDePass confirmerMotDepass"
+							render="nomOut prenomOut emailOut motDePassOut confirmerMotDepassOut btnEdit" />
+					</h:commandButton>
+				</div>
+
+			</div>
+		</h:form>
+		<h:form>
+			<p:remoteCommand id="passToJSFManagedBean"
+				action="#{loginBean.uploadFile()}" name="passToJSFManagedBean"
+				update="@this" partialSubmit="true" />
+		</h:form>
+	</ui:define>
+
+</ui:composition>
