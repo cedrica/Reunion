@@ -1,18 +1,13 @@
 package com.reunion.bean;
 
-import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.xml.bind.DatatypeConverter;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

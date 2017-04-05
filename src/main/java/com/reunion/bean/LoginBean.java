@@ -1,6 +1,5 @@
 package com.reunion.bean;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -10,10 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
-import javax.xml.bind.DatatypeConverter;
 
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +34,7 @@ public class LoginBean implements Serializable {
 	@Inject
 	private LoginService loginService;
 	@Inject
-	private MembreService membreActuelService;
+	private MembreService membreService;
 	@Inject
 	private GroupeService groupeService;
 	
@@ -47,15 +43,13 @@ public class LoginBean implements Serializable {
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 	private Groupe groupe;
 	private Membre membreActuel;
-	private boolean profilEditable;
-	private StreamedContent monImage;
-	
+
 	public void init() {
 		loginService.startConversation();
-		membreActuelService.startConversation();
+		membreService.startConversation();
 		groupeService.startConversation();
 		LOG.info("Coversation déclachée");
-		List<Membre> membreActuels = membreActuelService.findAll();
+		List<Membre> membreActuels = membreService.findAll();
 		if(membreActuels == null || membreActuels.isEmpty()){
 			Membre membreActuel = new Membre();
 			membreActuel.setMotDePass("a");
@@ -64,7 +58,7 @@ public class LoginBean implements Serializable {
 
 			membreActuel.setFondDeCaisse(100);
 			Adresse adresse = new Adresse();
-			adresse.setNumero("127");
+			adresse.setNumero("129");
 			adresse.setPlz(90441);
 			adresse.setRue("Schweinauer Hauptstrasse");
 			adresse.setVille("Nürnberg");
@@ -79,9 +73,9 @@ public class LoginBean implements Serializable {
 			groupe.setNom("Erlangen");
 			groupe = groupeService.createGroupe(groupe);
 			
-			membreActuelService.startConversation();
+			membreService.startConversation();
 			membreActuel.setGroupe(groupe);
-			membreActuel = membreActuelService.createMembre(membreActuel);
+			membreActuel = membreService.createMembre(membreActuel);
 			
 			
 			membreActuel = new Membre();
@@ -103,8 +97,8 @@ public class LoginBean implements Serializable {
 			membreActuel.setContact(contact);
 
 			membreActuel.setGroupe(groupe);
-			membreActuel = membreActuelService.createMembre(membreActuel);
-			membreActuelService.startConversation();
+			membreActuel = membreService.createMembre(membreActuel);
+			membreService.startConversation();
 			
 			membreActuel = new Membre();
 			membreActuel.setMotDePass("c");
@@ -125,20 +119,9 @@ public class LoginBean implements Serializable {
 			membreActuel.setContact(contact);
 
 			membreActuel.setGroupe(groupe);
-			membreActuel = membreActuelService.createMembre(membreActuel);
+			membreActuel = membreService.createMembre(membreActuel);
 			groupe.getMembres().add(membreActuel);
 		}
-
-			
-	}
-
-	public boolean getProfilEditable() {
-		return profilEditable;
-	}
-
-
-	public void setProfilEditable(boolean profilEditable) {
-		this.profilEditable = profilEditable;
 	}
 
 	public void setGroupe(Groupe groupe) {
@@ -176,7 +159,12 @@ public class LoginBean implements Serializable {
 	public void setmembreActuel(Membre membreActuel) {
 		this.membreActuel = membreActuel;
 	}
-
+	public String nomDuMembre(){
+		HttpSession session = SessionUtil.getSession();
+		membreActuel = (Membre) session.getAttribute(SessionUtil.MEMBRE_ACTUEL);
+		return membreActuel.getPrenom()+" "+membreActuel.getNom();
+	}
+	
 	public String seConnecter() throws IOException {
 		loginService.stopperLaConversation();
 		membreActuel = loginService.findMembreByEmail(email.trim());
@@ -198,45 +186,5 @@ public class LoginBean implements Serializable {
 	}
 
 	
-	public String nomDuMembre(){
-		HttpSession session = SessionUtil.getSession();
-		membreActuel = (Membre) session.getAttribute(SessionUtil.MEMBRE_ACTUEL);
-		return membreActuel.getPrenom()+" "+membreActuel.getNom();
-	}
-
-
-	
-	public StreamedContent getMonImage() {
-		if (membreActuel.getMonImage() != null)
-			monImage = new DefaultStreamedContent(new ByteArrayInputStream(membreActuel.getMonImage()), "image/png");
-		return this.monImage;
-	}
-
-	public void setMonImage(StreamedContent monImage) {
-		this.monImage = monImage;
-	}
-	
-	public String editerLeProfil() {
-		this.profilEditable = true;
-		return Pages.PROFILE;
-	}
-	
-	public String sauvegarderProfil() {
-		this.profilEditable = false;
-		membreActuelService.create(membreActuel);
-		return Pages.PROFILE;
-	}
-	
-	// this function is called from javascript
-	public void uploadFile() {
-		String data = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("data");
-		if (data != null && data.length() > 1 && data.startsWith("data:image/")) {
-			String monImageStr = data.split(",")[1];
-			byte[] imageBytes = DatatypeConverter.parseBase64Binary(monImageStr);
-			this.membreActuel.setMonImage(imageBytes);
-			membreActuelService.createMembre(this.membreActuel);
-			monImage = new DefaultStreamedContent(new ByteArrayInputStream(imageBytes), "image/png");
-		}
-	}
 
 }
