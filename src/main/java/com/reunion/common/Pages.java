@@ -18,5 +18,6 @@ public static final String SUCCESS = "success?faces-redirect=true";
 
 public static final String MEMBRE = "membre?faces-redirect=true";
 
-public static final String PROFILE = "profile?faces-redirect=true";;
+public static final String PROFILE = "profile?faces-redirect=true";
+public static final String PROFILE_EDITOR = "profile-editor?faces-redirect=true";
 }

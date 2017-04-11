@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:hh="http://xmlns.jcp.org/jsf/html"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<ui:param name="pageTitle" value="Profil" />
+
+	<f:metadata>
+		<f:event type="preRenderView" listener='#{profilBean.init}' />
+	</f:metadata>
+	<ui:define name="subheader">
+		<b>Mon profil</b>
+	</ui:define>
+
+	<ui:define name="main">
+		<h:form>
+			<h:outputStylesheet library="customcss" name="membres.css" />
+			<h:outputScript library="js" name="membre.js" />
+
+			<div class="row">
+				<div class="col-md-1">
+					
+				</div>
+				<div class="col-md-4">
+
+					<div class="well">
+						<h4>Moi</h4>
+						<div class="form-group">
+							<h:inputText class="form-control input-xxlarge" id="nom"
+								requiredMessage="Nom obliguatoire"
+								value="#{profilBean.membreActuel.nom}" a:placeholder="Nom">
+							</h:inputText>
+							<h:message for="nom" style="color:red" id="nomOut" />
+						</div>
+						<div class="form-group">
+							<h:inputText class="form-control input-xxlarge" id="prenom"
+								requiredMessage="Prenom obliguatoire"
+								value="#{profilBean.membreActuel.prenom}" a:placeholder="Prenom">
+							</h:inputText>
+							<h:message for="prenom" style="color:red" id="prenomOut" />
+						</div>
+
+						<div class="form-group">
+							<h:inputText class="form-control input-xxlarge" id="motDePass"
+								value="#{profilBean.membreActuel.motDePass}"
+								requiredMessage="Mot de pass obliguatoire"
+								a:placeholder="Mot de pass">
+							</h:inputText>
+							<h:message for="motDePass" style="color:red" id="motDePassOut" />
+						</div>
+						<div class="form-group">
+							<h:inputSecret requiredMessage="Confirmation obligatoire"
+								value="#{profilBean.motDePassConfirm}"
+								class="form-control input-xxlarge" id="confirmerMotDepass"
+								a:placeholder="confirmer le mot de pass">
+							</h:inputSecret>
+							<h:message for="confirmerMotDepass" style="color:red"
+								id="confirmerMotDepassOut" />
+						</div>
+
+					</div>
+					<div class="well">
+						<h4>Adresse</h4>
+						<p>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-10">
+									<h:inputText class="form-control input-xxlarge" id="rue"
+										value="#{profilBean.membreActuel.adresse.rue}"
+										a:placeholder="Rue" />
+								</div>
+								<div class="col-md-2">
+									<h:inputText class="form-control " a:placeholder="Nr." id="nr"
+										value="#{profilBean.membreActuel.adresse.numero}" />
+								</div>
+							</div>
+						</div>
+
+						</p>
+						<p>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-2">
+									<h:inputText class="form-control " a:placeholder="BP" id="plz"
+										value="#{profilBean.membreActuel.adresse.plz}" />
+								</div>
+								<div class="col-md-10">
+									<h:inputText class="form-control input-xxlarge" id="ville"
+										value="#{profilBean.membreActuel.adresse.ville}"
+										a:placeholder="Ville" />
+								</div>
+							</div>
+						</div>
+
+						</p>
+					</div>
+					<div class="well">
+						<h4>Contact</h4>
+						<p>
+						<div class="form-group">
+							<h:inputText class="form-control input-xxlarge" id="email"
+								value="#{profilBean.membreActuel.contact.email}"
+								a:placeholder="e-mail">
+							</h:inputText>
+							<h:message for="email" style="color:red" id="emailOut" />
+						</div>
+
+						</p>
+						<p>
+						<div class="form-group">
+							<h:inputText class="form-control input-xxlarge" id="telefon"
+								value="#{profilBean.membreActuel.contact.telephone}"
+								a:placeholder="telefon">
+							</h:inputText>
+						</div>
+
+						</p>
+					</div>
+
+				</div>
+				<div class="col-md-1"></div>
+				<div class="col-md-4">
+					<div class="well">
+						<h4>Données banquaire</h4>
+						<div class="form-group">
+							<h:inputText class="form-control input-xxlarge" id="iban"
+								value="#{profilBean.membreActuel.donneesBanquaire.iban}"
+								a:placeholder="IBAN">
+							</h:inputText>
+						</div>
+
+
+						<p>
+						<div class="form-group">
+							<h:inputText class="form-control input-xxlarge" id="bic"
+								value="#{profilBean.membreActuel.donneesBanquaire.bic}"
+								a:placeholder="BIC">
+							</h:inputText>
+						</div>
+
+						</p>
+					</div>
+					<div class="well">
+						<h4>Groupe et trafique</h4>
+						<p>
+						<div class="form-group">
+							<h:selectOneMenu id="groupe" requiredMessage="groupe obligatoire"
+								value="#{profilBean.membreActuel.groupe}" class="form-control"
+								converter="#{groupeConverter}">
+								<f:selectItem itemLabel="-- choisir un groupe --" />
+								<f:selectItems value="#{profilBean.tousLesGroupes()}" />
+							</h:selectOneMenu>
+
+							<h:message for="groupe" style="color:red" id="groupeOut" />
+						</div>
+
+
+
+						</p>
+					</div>
+
+					<div class="well">
+						<h4>Changer mon avatar</h4>
+						<input type="file" onchange="uploadFile()" /><br /> <img
+							id="preview" height="100"></img>
+					</div>
+					<div><h:messages style="color:red" id="profilError" /></div>
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+			<div class="row modal-footer"></div>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-11">
+
+					<h:commandLink value="Interompre" class="btn btn-primary"
+						style="margin-right:10px" 
+						action="#{profilBean.setProfilEditable(false)}">
+						<f:ajax execute="@this"/>
+					</h:commandLink>
+
+					<h:commandLink value="Sauvegarder" class="btn btn-primary"
+						action="#{profilBean.sauvegarderProfil()}">
+						<f:ajax execute="@this nom prenom motDePass confirmerMotDepass email groupe rue nr ville plz"
+							render="nomOut prenomOut motDePassOut confirmerMotDepassOut emailOut groupeOut profilError" />
+					</h:commandLink>
+				</div>
+
+			</div>
+			<div class="row" style="height: 100px"></div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,5 +1,8 @@
 package com.reunion.common;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,4 +61,21 @@ public class Helper {
 		return listeDesMembres;
 	}
 
+	public static void saveImageLocaly(byte[] image, String imageName) {
+		try {
+			File file = new File(System.getProperty("user.dir") +  "/images");
+			if(!file.exists()){
+				file.mkdirs();
+			}
+			String path = System.getProperty("user.dir") +  "/images/" +  imageName;
+			path.replace("\\", "/");
+			System.out.println("path Save: "+path);
+			FileOutputStream fos = new FileOutputStream(path);
+			fos.write(image);
+			fos.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
