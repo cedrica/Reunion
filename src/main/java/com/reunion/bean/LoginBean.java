@@ -17,6 +17,7 @@ import com.reunion.business.GroupeService;
 import com.reunion.business.LoginService;
 import com.reunion.business.MembreService;
 import com.reunion.common.Pages;
+import com.reunion.enums.RoleType;
 import com.reunion.model.Adresse;
 import com.reunion.model.Contact;
 import com.reunion.model.Groupe;
@@ -112,6 +113,7 @@ public class LoginBean implements Serializable {
 			adresse.setRue("Manfredstrasse");
 			adresse.setVille("Erlangen");
 			membreActuel.setAdresse(adresse);
+			membreActuel.setRole(RoleType.ADMIN);
 			
 			contact = new Contact();
 			contact.setEmail("marc@yahoo.fr");

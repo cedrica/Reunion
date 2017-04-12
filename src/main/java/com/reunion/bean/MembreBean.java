@@ -1,6 +1,7 @@
 package com.reunion.bean;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
@@ -15,6 +16,7 @@ import com.reunion.business.GroupeService;
 import com.reunion.business.MembreService;
 import com.reunion.common.Helper;
 import com.reunion.common.Pages;
+import com.reunion.enums.RoleType;
 import com.reunion.helper.ModelInitializer;
 import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
@@ -156,4 +158,7 @@ public class MembreBean implements Serializable {
 		return Pages.MEMBRES;
 	}
 
+	public List<RoleType> getRoles(){
+		return Arrays.asList(RoleType.values());
+	}
 }

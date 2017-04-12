@@ -14,6 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import com.reunion.model.DonneesBanquaire;
+import com.reunion.enums.RoleType;
+import javax.persistence.Enumerated;
 
 @Entity
 @Table(name = "Membre")
@@ -61,6 +63,10 @@ public class Membre implements Serializable {
 	@Column(name = "monImage")
 	@Lob
 	private byte[] monImage;
+
+	@Enumerated
+	@Column(name = "role")
+	private RoleType role;
 
 	public Long getId() {
 		return this.id;
@@ -182,6 +188,15 @@ public class Membre implements Serializable {
 	public void setMonImage(byte[] monImage) {
 		this.monImage = monImage;
 	}
+
+	public RoleType getRole() {
+		return role;
+	}
+
+	public void setRole(RoleType role) {
+		this.role = role;
+	}
+
 
 	@Override
 	public String toString() {
