@@ -15,8 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.reunion.common.Helper;
-
 public class GenericDAO<T> {
 	@PersistenceContext(unitName = "Reunion-persistence-unit", type = PersistenceContextType.EXTENDED)
 	protected EntityManager entityManager;

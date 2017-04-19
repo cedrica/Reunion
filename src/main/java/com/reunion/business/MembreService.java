@@ -30,8 +30,6 @@ public class MembreService extends GenericDAO<Membre> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Membre createMembre(Membre entity) {
-		if (conversation.isTransient())
-			this.conversation.end();
 		return super.create(entity);
 	}
 

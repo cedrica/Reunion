@@ -98,18 +98,6 @@
 			</div>
 			<div class="row" style="height: 100px"></div>
 		</h:form>
-		<h:form enctype="multipart/form-data">
-			<hh:inputFile value="#{profilBean.file}" />
-			<h:commandButton value="Ajax Upload">
-				<f:ajax listener="#{profilBean.uploadFile()}" execute="@form"
-					render="outPut" />
-			</h:commandButton>
-		</h:form>
-		<h:form>
-			<p:remoteCommand id="passToJSFManagedBeanCmd"
-				action="#{profilBean.uploadFile()}" name="passToJSFManagedBean"
-				process="@this" />
-		</h:form>
 	</ui:define>
 
 </ui:composition>
