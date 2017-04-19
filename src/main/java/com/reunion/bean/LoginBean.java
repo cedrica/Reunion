@@ -1,7 +1,10 @@
 package com.reunion.bean;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
@@ -38,7 +41,7 @@ public class LoginBean implements Serializable {
 	private MembreService membreService;
 	@Inject
 	private GroupeService groupeService;
-	
+
 	private String email;
 	private String motDepass;
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -51,7 +54,7 @@ public class LoginBean implements Serializable {
 		groupeService.startConversation();
 		LOG.info("Coversation déclachée");
 		List<Membre> membreActuels = membreService.findAll();
-		if(membreActuels == null || membreActuels.isEmpty()){
+		if (membreActuels == null || membreActuels.isEmpty()) {
 			Membre membreActuel = new Membre();
 			membreActuel.setMotDePass("a");
 			membreActuel.setNom("Leumaleu");
@@ -64,21 +67,20 @@ public class LoginBean implements Serializable {
 			adresse.setRue("Schweinauer Hauptstrasse");
 			adresse.setVille("Nürnberg");
 			membreActuel.setAdresse(adresse);
-			
+
 			Contact contact = new Contact();
 			contact.setEmail("djikeussi2001@yahoo.fr");
 			contact.setTelephone("017663112957");
 			membreActuel.setContact(contact);
-			
+
 			Groupe groupe = new Groupe();
 			groupe.setNom("Erlangen");
 			groupe = groupeService.createGroupe(groupe);
-			
+
 			membreService.startConversation();
 			membreActuel.setGroupe(groupe);
 			membreActuel = membreService.createMembre(membreActuel);
-			
-			
+
 			membreActuel = new Membre();
 			membreActuel.setMotDePass("b");
 			membreActuel.setNom("Kemoue");
@@ -91,7 +93,7 @@ public class LoginBean implements Serializable {
 			adresse.setRue("Bissingerstrasse");
 			adresse.setVille("Erlangen");
 			membreActuel.setAdresse(adresse);
-			
+
 			contact = new Contact();
 			contact.setEmail("silas@yahoo.fr");
 			contact.setTelephone("017663113357");
@@ -100,7 +102,7 @@ public class LoginBean implements Serializable {
 			membreActuel.setGroupe(groupe);
 			membreActuel = membreService.createMembre(membreActuel);
 			membreService.startConversation();
-			
+
 			membreActuel = new Membre();
 			membreActuel.setMotDePass("c");
 			membreActuel.setNom("Komge");
@@ -114,7 +116,7 @@ public class LoginBean implements Serializable {
 			adresse.setVille("Erlangen");
 			membreActuel.setAdresse(adresse);
 			membreActuel.setRole(RoleType.ADMIN);
-			
+
 			contact = new Contact();
 			contact.setEmail("marc@yahoo.fr");
 			contact.setTelephone("017345113357");
@@ -133,6 +135,7 @@ public class LoginBean implements Serializable {
 	public Groupe getGroupe() {
 		return this.groupe;
 	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -153,20 +156,20 @@ public class LoginBean implements Serializable {
 		return serialVersionUID;
 	}
 
-	
 	public Membre getmembreActuel() {
 		return membreActuel;
 	}
-	
+
 	public void setmembreActuel(Membre membreActuel) {
 		this.membreActuel = membreActuel;
 	}
-	public String nomDuMembre(){
+
+	public String nomDuMembre() {
 		HttpSession session = SessionUtil.getSession();
 		membreActuel = (Membre) session.getAttribute(SessionUtil.MEMBRE_ACTUEL);
-		return membreActuel.getPrenom()+" "+membreActuel.getNom();
+		return membreActuel.getPrenom() + " " + membreActuel.getNom();
 	}
-	
+
 	public String seConnecter() throws IOException {
 		loginService.stopperLaConversation();
 		membreActuel = loginService.findMembreByEmail(email.trim());
@@ -183,10 +186,18 @@ public class LoginBean implements Serializable {
 		HttpSession session = SessionUtil.getSession();
 		session.removeAttribute(SessionUtil.MEMBRE_ACTUEL);
 		session.invalidate();
-	    FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
-	    return Pages.INDEX;
+		FacesContext.getCurrentInstance().getExternalContext().redirect(
+				FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
+		return Pages.INDEX;
 	}
 
-	
+	public String monAvatar() {
+		System.out.println("bytes = " + convertFileToBase64(membreActuel.getMonImage()));
+		return "data:image/png;base64,"+convertFileToBase64(membreActuel.getMonImage());
+	}
+
+	public static String convertFileToBase64(byte[] bytes) {
+		return (bytes != null) ? Base64.getEncoder().encodeToString(bytes) : null;
+	}
 
 }
