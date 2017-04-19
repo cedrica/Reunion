@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -146,7 +148,11 @@ public class MembreBean implements Serializable {
 		return Pages.MEMBRES;
 	}
 
-
+	public void changeListener(ValueChangeEvent  event) {
+	    Object oldValue = event.getOldValue();
+	    Object newValue = event.getNewValue();
+		System.out.println("yes");
+	}
 
 	public String delete(Long id) {
 		if (!membreService.delete(id)) {

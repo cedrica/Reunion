@@ -11,7 +11,9 @@
 	<ui:param name="pageTitle" value="Membre" />
 
 	<ui:define name="subheader">
-		<b style=""> #{membreBean.membre.nom} #{membreBean.membre.prenom}</b>
+		<b style=""> #{membreBean.membre.nom} #{membreBean.membre.prenom}
+			<i style="color: orange;">(#{membreBean.membre.role})</i>
+		</b>
 	</ui:define>
 
 	<ui:define name="main">
@@ -20,14 +22,13 @@
 			<h:outputScript library="js" name="membre.js" />
 			<div class="row">
 				<div class="media">
-					<div class="media-left media-middle col-md-2" >
-							 <img id="preview" width="200px" height="200px">
-							<span class="fa fa-user-circle" style="font-size: 200px;"
-							aria-hidden="true"></span>
-							</img>	
+					<div class="media-left media-middle col-md-2">
+						<img id="preview" width="200px" height="200px"><span
+							class="fa fa-user-circle" style="font-size: 200px;"
+							aria-hidden="true"></span> </img>
 					</div>
 					<div class="media-body">
-						<div class="well col-md-4" style="margin-right:50px">
+						<div class="well col-md-4" style="margin-right: 20px">
 							<h4 class="media-heading">
 								<u>Adresse</u>
 							</h4>
@@ -50,11 +51,31 @@
 								<b>Telefon:</b> #{membreBean.membre.contact.telephone}
 							</p>
 						</div>
-						<div class="well col-md-4" >
-							<h4><u>Fond de caisse</u></h4>
-							<p>mon fond de caisse actuel est de #{membreBean.membre.fondDeCaisse} €</p>
-							<i><h:commandLink action="#{membreBean.ajusterLeFondDeCaisse()}" value="Ajuster mon fond de caisse" /></i>
+						<div class="col-md-4">
+							<div class="well">
+								<h4>
+									<u>Fond de caisse</u>
+								</h4>
+								<p>mon fond de caisse actuel est de
+									#{membreBean.membre.fondDeCaisse} €</p>
+								<i><h:commandLink
+										action="#{membreBean.ajusterLeFondDeCaisse()}"
+										value="Ajuster mon fond de caisse" /></i>
+							</div>
+							<div class="well">
+								<h4>
+									<u>Role</u>
+								</h4>
+								<div class="form-group">
+									<h:selectOneMenu id="role" required="true" 
+										value="#{membreBean.membre.role}" class="form-control" valueChangeListener="#{membreBean.changeListener}"
+										converter="#{groupeConverter}">
+										<f:selectItem itemLabel="-- choisir un role --" />
+										<f:selectItems value="#{membreBean.roles}" />
+									</h:selectOneMenu>
 
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
