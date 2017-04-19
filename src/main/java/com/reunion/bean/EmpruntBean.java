@@ -56,7 +56,7 @@ public class EmpruntBean implements Serializable {
 		}
 		emprunts = empruntService.toutLesEmprunts();
 		for (Emprunt emprunt : emprunts) {
-			if (CalendarUtils.date1BeforeDate2(new Date(), emprunt.getDateDeRemboursement(), true)) {
+			if (CalendarUtils.date1BeforeDate2(emprunt.getDateDeRemboursement(), new Date(), true)) {
 				emprunt.setStatus(StatusDeRemboursement.DATE_DEPASSEE);
 			}
 		}
@@ -180,6 +180,18 @@ public class EmpruntBean implements Serializable {
 
 	}
 
+	public String sauvegarderEdit() {
+		if (fondDeCaisse < emprunt.getSommeEmpruntee()) {
+			Helper.showError("La somme que vous voulez emprunter est au dessus du capital disponible", "errors");
+			return Pages.SELF;
+		} else {
+			isEditable = false;
+			emprunt.setEditable(false); // toujours
+			return sauve();
+		}
+
+	}
+	
 	private String sauve() {
 		Emprunt res = empruntService.createEmprunt(emprunt);
 		if (res != null) {
