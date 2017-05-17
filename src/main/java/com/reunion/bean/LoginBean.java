@@ -1,10 +1,11 @@
 package com.reunion.bean;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
@@ -23,8 +24,10 @@ import com.reunion.common.Pages;
 import com.reunion.enums.RoleType;
 import com.reunion.model.Adresse;
 import com.reunion.model.Contact;
+import com.reunion.model.FondDeCaisseParAnnee;
 import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
+import com.reunion.util.CalendarUtils;
 import com.reunion.util.SessionUtil;
 
 @Named
@@ -60,7 +63,19 @@ public class LoginBean implements Serializable {
 			membreActuel.setNom("Leumaleu");
 			membreActuel.setPrenom("Cedric");
 
-			membreActuel.setFondDeCaisse(100);
+			FondDeCaisseParAnnee fondDeCaisseParAnnee1 = new FondDeCaisseParAnnee();
+			fondDeCaisseParAnnee1.setAnnee(CalendarUtils.localDateToDate(LocalDate.of(2100, 3, 2)));
+			fondDeCaisseParAnnee1.setFondDeCaisse(200.f);
+
+			FondDeCaisseParAnnee fondDeCaisseParAnnee2 = new FondDeCaisseParAnnee();
+			fondDeCaisseParAnnee2.setAnnee(CalendarUtils.localDateToDate(LocalDate.of(2000, 2, 1)));
+			fondDeCaisseParAnnee2.setFondDeCaisse(20.f);
+
+			List<FondDeCaisseParAnnee> hsFondDeCaisseParAnnee = new ArrayList<>();
+			hsFondDeCaisseParAnnee.add(fondDeCaisseParAnnee1);
+			hsFondDeCaisseParAnnee.add(fondDeCaisseParAnnee2);
+
+			membreActuel.setFondDeCaissParAnnee(hsFondDeCaisseParAnnee);
 			Adresse adresse = new Adresse();
 			adresse.setNumero("129");
 			adresse.setPlz(90441);
@@ -86,7 +101,19 @@ public class LoginBean implements Serializable {
 			membreActuel.setNom("Kemoue");
 			membreActuel.setPrenom("Silas");
 
-			membreActuel.setFondDeCaisse(100);
+			fondDeCaisseParAnnee1 = new FondDeCaisseParAnnee();
+			fondDeCaisseParAnnee1.setAnnee(CalendarUtils.localDateToDate(LocalDate.of(2100, 3, 2)));
+			fondDeCaisseParAnnee1.setFondDeCaisse(200.f);
+
+			fondDeCaisseParAnnee2 = new FondDeCaisseParAnnee();
+			fondDeCaisseParAnnee2.setAnnee(CalendarUtils.localDateToDate(LocalDate.of(2000, 2, 1)));
+			fondDeCaisseParAnnee2.setFondDeCaisse(20.f);
+
+			hsFondDeCaisseParAnnee = new ArrayList<>();
+			hsFondDeCaisseParAnnee.add(fondDeCaisseParAnnee1);
+			hsFondDeCaisseParAnnee.add(fondDeCaisseParAnnee2);
+
+			membreActuel.setFondDeCaissParAnnee(hsFondDeCaisseParAnnee);
 			adresse = new Adresse();
 			adresse.setNumero("127");
 			adresse.setPlz(90441);
@@ -107,7 +134,20 @@ public class LoginBean implements Serializable {
 			membreActuel.setMotDePass("c");
 			membreActuel.setNom("Komge");
 			membreActuel.setPrenom("marc");
-			membreActuel.setFondDeCaisse(100);
+
+			fondDeCaisseParAnnee1 = new FondDeCaisseParAnnee();
+			fondDeCaisseParAnnee1.setAnnee(CalendarUtils.localDateToDate(LocalDate.of(2100, 3, 2)));
+			fondDeCaisseParAnnee1.setFondDeCaisse(200.f);
+
+			fondDeCaisseParAnnee2 = new FondDeCaisseParAnnee();
+			fondDeCaisseParAnnee2.setAnnee(CalendarUtils.localDateToDate(LocalDate.of(2000, 2, 1)));
+			fondDeCaisseParAnnee2.setFondDeCaisse(20.f);
+
+			hsFondDeCaisseParAnnee = new ArrayList<>();
+			hsFondDeCaisseParAnnee.add(fondDeCaisseParAnnee1);
+			hsFondDeCaisseParAnnee.add(fondDeCaisseParAnnee2);
+
+			membreActuel.setFondDeCaissParAnnee(hsFondDeCaisseParAnnee);
 
 			adresse = new Adresse();
 			adresse.setNumero("127");
@@ -193,7 +233,7 @@ public class LoginBean implements Serializable {
 
 	public String monAvatar() {
 		System.out.println("bytes = " + convertFileToBase64(membreActuel.getMonImage()));
-		return "data:image/png;base64,"+convertFileToBase64(membreActuel.getMonImage());
+		return "data:image/png;base64," + convertFileToBase64(membreActuel.getMonImage());
 	}
 
 	public static String convertFileToBase64(byte[] bytes) {

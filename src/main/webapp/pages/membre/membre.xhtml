@@ -19,7 +19,6 @@
 	<ui:define name="main">
 		<h:form id="main">
 			<h:outputStylesheet library="customcss" name="membres.css" />
-			<h:outputScript library="js" name="membre.js" />
 			<div class="row">
 				<div class="media">
 					<div class="media-left media-middle col-md-2">
@@ -56,20 +55,39 @@
 								<h4>
 									<u>Fond de caisse</u>
 								</h4>
-								<p>mon fond de caisse actuel est de
-									#{membreBean.membre.fondDeCaisse} €</p>
-								<i><h:commandLink
-										action="#{membreBean.ajusterLeFondDeCaisse()}"
-										value="Ajuster mon fond de caisse" /></i>
+								<table>
+									<thead>
+										<tr>
+											<th>année</th>
+											<th>fond de caisse</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat var="fondDeCaisseParAnnee"
+											value="#{membreBean.membre.fondDeCaissParAnnee}">
+											<tr>
+												<td>#{membreBean.retireLannnee(fondDeCaisseParAnnee.annee)}</td>
+												<td style="text-align: right;">#{fondDeCaisseParAnnee.fondDeCaisse}€</td>
+												<td style="text-align: right;"><h:commandLink styleClass="fa fa-edit"
+														data-toggle="tooltip" title="Editer le membre"
+														style="font-size: 20px; color:green; margin-right:10px;">
+														<f:ajax execute="@this" render="@form" />
+													</h:commandLink></td>
+											</tr>
+										</ui:repeat>
+
+									</tbody>
+								</table>
 							</div>
 							<div class="well">
 								<h4>
 									<u>Role</u>
 								</h4>
 								<div class="form-group">
-									<h:selectOneMenu id="role" required="true" 
-										value="#{membreBean.membre.role}" class="form-control" valueChangeListener="#{membreBean.changeListener}"
-										converter="#{groupeConverter}">
+									<h:selectOneMenu id="role" required="true" onchange="submit()"
+										value="#{membreBean.membre.role}" class="form-control"
+										valueChangeListener="#{membreBean.changeListener}">
 										<f:selectItem itemLabel="-- choisir un role --" />
 										<f:selectItems value="#{membreBean.roles}" />
 									</h:selectOneMenu>

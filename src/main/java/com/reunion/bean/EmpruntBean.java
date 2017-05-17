@@ -145,14 +145,14 @@ public class EmpruntBean implements Serializable {
 	}
 
 	public double calculDuFondDeCaisse() {
-		HttpSession session = SessionUtil.getSession();
-		Membre membreActuel = (Membre) session.getAttribute(SessionUtil.MEMBRE_ACTUEL);
-		fondDeCaisse = membres.stream().filter(m -> {
-			return (m.getGroupe() != null && m.getGroupe().getId() == membreActuel.getGroupe().getId());
-		}).mapToDouble(m -> m.getFondDeCaisse()).sum();
-		for (Emprunt emprunt : emprunts) {
-			fondDeCaisse -= emprunt.getSommeEmpruntee();
-		}
+//		HttpSession session = SessionUtil.getSession();
+//		Membre membreActuel = (Membre) session.getAttribute(SessionUtil.MEMBRE_ACTUEL);
+//		fondDeCaisse = membres.stream().filter(m -> {
+//			return (m.getGroupe() != null && m.getGroupe().getId() == membreActuel.getGroupe().getId());
+//		}).mapToDouble(m -> m.getFondDeCaisse()).sum();
+//		for (Emprunt emprunt : emprunts) {
+//			fondDeCaisse -= emprunt.getSommeEmpruntee();
+//		}
 		return fondDeCaisse;
 	}
 

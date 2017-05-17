@@ -2,10 +2,10 @@ package com.reunion.bean;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,6 +22,7 @@ import com.reunion.enums.RoleType;
 import com.reunion.helper.ModelInitializer;
 import com.reunion.model.Groupe;
 import com.reunion.model.Membre;
+import com.reunion.util.CalendarUtils;
 
 @Named
 @ConversationScoped
@@ -49,9 +50,6 @@ public class MembreBean implements Serializable {
 		allMembers = membreService.findAll();
 		groupes = groupeService.findAll(Groupe.class);
 	}
-
-	
-
 
 	public boolean getEditMode() {
 		return editMode;
@@ -148,10 +146,11 @@ public class MembreBean implements Serializable {
 		return Pages.MEMBRES;
 	}
 
-	public void changeListener(ValueChangeEvent  event) {
-	    Object oldValue = event.getOldValue();
+	public String changeListener(ValueChangeEvent  event) {
 	    Object newValue = event.getNewValue();
-		System.out.println("yes");
+		this.membre.setRole((RoleType)newValue);
+		membreService.createMembre(this.membre);
+		return Pages.MEMBRE;
 	}
 
 	public String delete(Long id) {
@@ -166,5 +165,9 @@ public class MembreBean implements Serializable {
 
 	public List<RoleType> getRoles(){
 		return Arrays.asList(RoleType.values());
+	}
+	
+	public String retireLannnee(Date date){
+		return CalendarUtils.getMonthYear(date);
 	}
 }

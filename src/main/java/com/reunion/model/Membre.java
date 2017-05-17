@@ -1,16 +1,22 @@
 package com.reunion.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -57,9 +63,6 @@ public class Membre implements Serializable {
 			CascadeType.REFRESH})
 	private DonneesBanquaire donneesBanquaire;
 
-	@Column(length = 2, name = "fondDeCaisse")
-	private double fondDeCaisse;
-
 	@Column(name = "monImage")
 	@Lob
 	private byte[] monImage;
@@ -67,6 +70,10 @@ public class Membre implements Serializable {
 	@Enumerated
 	@Column(name = "role")
 	private RoleType role;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,
+			CascadeType.REMOVE})
+	private List<FondDeCaisseParAnnee> fondDeCaissParAnnee = new ArrayList<FondDeCaisseParAnnee>();
 
 	public Long getId() {
 		return this.id;
@@ -132,6 +139,48 @@ public class Membre implements Serializable {
 		this.motDePass = motDePass;
 	}
 
+	public boolean getEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public DonneesBanquaire getDonneesBanquaire() {
+		return donneesBanquaire;
+	}
+
+	public void setDonneesBanquaire(DonneesBanquaire donneesBanquaire) {
+		this.donneesBanquaire = donneesBanquaire;
+	}
+
+	public byte[] getMonImage() {
+		return monImage;
+	}
+
+	public void setMonImage(byte[] monImage) {
+		this.monImage = monImage;
+	}
+
+	public RoleType getRole() {
+		return role;
+	}
+
+	public void setRole(RoleType role) {
+		this.role = role;
+	}
+
+
+	public List<FondDeCaisseParAnnee> getFondDeCaissParAnnee() {
+		return this.fondDeCaissParAnnee;
+	}
+
+	public void setFondDeCaissParAnnee(
+			final List<FondDeCaisseParAnnee> fondDeCaissParAnnee) {
+		this.fondDeCaissParAnnee = fondDeCaissParAnnee;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -157,50 +206,8 @@ public class Membre implements Serializable {
 		return result;
 	}
 
-	public boolean getEditable() {
-		return editable;
-	}
-
-	public void setEditable(boolean editable) {
-		this.editable = editable;
-	}
-
-	public DonneesBanquaire getDonneesBanquaire() {
-		return donneesBanquaire;
-	}
-
-	public void setDonneesBanquaire(DonneesBanquaire donneesBanquaire) {
-		this.donneesBanquaire = donneesBanquaire;
-	}
-
-	public double getFondDeCaisse() {
-		return fondDeCaisse;
-	}
-
-	public void setFondDeCaisse(double fondDeCaisse) {
-		this.fondDeCaisse = fondDeCaisse;
-	}
-
-	public byte[] getMonImage() {
-		return monImage;
-	}
-
-	public void setMonImage(byte[] monImage) {
-		this.monImage = monImage;
-	}
-
-	public RoleType getRole() {
-		return role;
-	}
-
-	public void setRole(RoleType role) {
-		this.role = role;
-	}
-
-
 	@Override
 	public String toString() {
-		return nom+" "+prenom;
+		return nom + " " + prenom;
 	}
-
 }
